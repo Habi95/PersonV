@@ -19,7 +19,7 @@ namespace DbTest
         public Form1()
         {
             InitializeComponent();
-           
+           //
             var entities = new PersonEntities();
             PersonRepository repo = new PersonRepository(entities);        
 
