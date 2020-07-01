@@ -22,11 +22,8 @@ namespace PersonData
         public bool deleted_inaktiv { get; set; }
         public bool newsletter_flag { get; set; }
 
-        
         public IList<AddressPerson> addresses { get; set; }
-        //public List<AddressPerson> comments { get; set; }
+        public List<AddressPerson> comments { get; set; }
         public List<AddressPerson> contacts { get; set; }
-
-
     }
 }
