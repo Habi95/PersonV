@@ -10,7 +10,7 @@ namespace PersonData
     {
         public DbSet<Person> person { get; set; }
         public DbSet<Address> address { get; set; }
-        public DbSet<AdressPerson> adressperson { get; set; }
+        public DbSet<AddressPerson> addressperson { get; set; }
         public DbSet<Contact> contact { get; set; }
         public DbSet<Comment> comment { get; set; }
 
