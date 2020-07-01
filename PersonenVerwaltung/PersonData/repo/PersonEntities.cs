@@ -2,6 +2,7 @@
 using PersonData.model;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace PersonData
@@ -27,24 +28,13 @@ namespace PersonData
            
            
             //entitity for addressTable
-            modelBuilder.Entity<Address>(entity =>
-            {
-                entity.HasKey(x => x.id);
-                entity.Property(x => x.createdAt);
-
-            });
+            modelBuilder.Entity<Address>().HasKey(x => x.id);             
             //entity for personTable
-            modelBuilder.Entity<Person>(entity =>
-            {
-                entity.HasKey(x => x.id);
-                entity.Property(x => x.name1).IsRequired();
-                entity.Property(x => x.name2).IsRequired();
-                entity.Property(x => x.function).IsRequired();
-                entity.Property(x => x.aktiv).IsRequired();
-                entity.Property(x => x.deleted_inaktiv).IsRequired();
-                entity.Property(x => x.newsletter_flag).IsRequired();
-                entity.Property(x => x.createdAt).IsRequired();
-            });
+            modelBuilder.Entity<Person>().HasKey(x => x.id);
+            //entity for contactTable
+             modelBuilder.Entity<Contact>().HasKey(x => x.id);
+            //entity for commentTable
+            modelBuilder.Entity<Comment>().HasKey(x => x.id);
 
             //realtion personTable=>adressPersonTable
             modelBuilder.Entity<Person>().HasMany(x => x.addresses).WithOne();
@@ -57,7 +47,7 @@ namespace PersonData
                             entity.HasKey(x => x.id);
                         });
 
-//realtion adressPersonTable id-adressId-personId
+            //realtion adressPersonTable id-adressId-personId
             modelBuilder.Entity<AddressPerson>()
                 .HasOne(x => x.person)
                 .WithMany(x => x.addresses)
@@ -65,7 +55,21 @@ namespace PersonData
             modelBuilder.Entity<AddressPerson>()
                 .HasOne(x => x.address)
                 .WithMany(x => x.persons)
-                .HasForeignKey(x => x.adressId);
+                .HasForeignKey(x => x.addressId);
+
+           
+
+            //realtion contactTable with personTable
+            modelBuilder.Entity<Contact>()
+                .HasOne(x => x.person)
+                .WithMany(x => x.contacts)
+                .HasForeignKey(x => x.person_id);
+
+            //realation commenTable with personTable
+            modelBuilder.Entity<Comment>()
+                .HasOne(x => x.person)
+                .WithMany(x => x.comments)
+                .HasForeignKey(x => x.person_id);
 
 
 

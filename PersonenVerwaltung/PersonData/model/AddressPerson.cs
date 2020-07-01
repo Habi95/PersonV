@@ -10,7 +10,7 @@ namespace PersonData.model
     {
 
         public int id { get; set; }
-        public int adressId { get; set; }
+        public int addressId { get; set; }
         public int personId { get; set; }
 
         public Address address { get; set; }

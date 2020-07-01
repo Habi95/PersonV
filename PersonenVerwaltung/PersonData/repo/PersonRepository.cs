@@ -13,10 +13,26 @@ namespace PersonData.repo
         {
             this.entities = entities;
         }
-        public List<Person> GetPersons()
+        public void GetPersons()
         {
-
-            return entities.person.Include(x => x.addresses).Include(x => x.contacts).ToList();
+             entities.person
+                .Include(x =>
+                    x.addresses)
+                .Include(x =>
+                    x.contacts)
+                .Include(x =>
+                    x.comments)
+                .ToList();
+            entities.address
+                .Include(x =>
+                    x.persons)
+                .ToList();
+            
         }
+
+        //public List<Address> GetAddresses()
+        //{
+        //    return 
+        //}
     }
 }

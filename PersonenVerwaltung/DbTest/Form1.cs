@@ -19,13 +19,41 @@ namespace DbTest
         public Form1()
         {
             InitializeComponent();
-           //
+           
             var entities = new PersonEntities();
-            PersonRepository repo = new PersonRepository(entities);        
+            PersonRepository repo = new PersonRepository(entities);
 
             repo.GetPersons();
-            var x = entities.person.Where(x => x.id == 2).FirstOrDefault();
+            //repo.GetAddresses();
+            //entities.person.Add(new Person() 
+            //{
+            //    name1 = "Helga", name2 = "Strolz", 
+            //    gender = "weiblich", createdAt = DateTime.Now
+            //});
+            //entities.contact.Add(new Contact()
+            //{
+            //    person_id = 2,art_of_communication = EKindOfCommunication.Email,
+            //    contact_value ="test.lala@dcv.at",contact_type = EContactType.Geschäftlich,
+            //    main_contact = true,createdAt = DateTime.Now 
+            //});
+            entities.comment.Add(new Comment()
+            {
+                person_id = 2,
+                comment_value = "TEST TEST 1 2 3 lalelu",
+                value_date = DateTime.Parse("15.04.2020"),
+                createdAt = DateTime.Now
+            }) ;
+            
             entities.SaveChanges();
+
+            var x = entities.person.Where(x => x.id == 2).FirstOrDefault();
+            //var y = entities.address.FirstOrDefault();
+            x.addresses[0].address.street = "Updatestraße 3";
+            x.addresses[0].address.modifyAt = DateTime.Now;
+            entities.SaveChanges();
+            var xy = entities.address.FirstOrDefault();
+            
+            Console.WriteLine(" ");
 
         }
 

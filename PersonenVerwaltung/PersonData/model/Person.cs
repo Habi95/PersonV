@@ -23,9 +23,9 @@ namespace PersonData
         public bool newsletter_flag { get; set; }
 
         
-        public IList<AddressPerson> addresses { get; set; }
-        //public List<AddressPerson> comments { get; set; }
-        public List<AddressPerson> contacts { get; set; }
+        public List<AddressPerson> addresses { get; set; }
+        public List<Comment> comments { get; set; }
+        public List<Contact> contacts { get; set; }
 
 
     }
