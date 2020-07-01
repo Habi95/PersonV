@@ -52,17 +52,17 @@ namespace PersonData
             modelBuilder.Entity<Address>().HasMany(x => x.persons).WithOne();
 
             //realtion adressPersonTable id-adressId-personId
-            modelBuilder.Entity<AdressPerson>(entity =>
+            modelBuilder.Entity<AddressPerson>(entity =>
                         {
                             entity.HasKey(x => x.id);
                         });
 
 
-            modelBuilder.Entity<AdressPerson>()
+            modelBuilder.Entity<AddressPerson>()
                 .HasOne(x => x.person)
                 .WithMany(x => x.addresses)
                 .HasForeignKey(x => x.personId);
-            modelBuilder.Entity<AdressPerson>()
+            modelBuilder.Entity<AddressPerson>()
                 .HasOne(x => x.address)
                 .WithMany(x => x.persons)
                 .HasForeignKey(x => x.adressId);

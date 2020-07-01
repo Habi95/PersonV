@@ -1,4 +1,5 @@
-﻿using PersonData.model;
+﻿
+using PersonData.model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -22,7 +23,7 @@ namespace PersonData
         public bool newsletter_flag { get; set; }
 
         
-        public IList<AdressPerson> addresses { get; set; }
+        public IList<AddressPerson> addresses { get; set; }
         //public List<AdressPerson> comments { get; set; }
         //public List<AdressPerson> contacts { get; set; }
 
