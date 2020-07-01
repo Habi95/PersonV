@@ -6,26 +6,50 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PersonController;
 using PersonData;
+using PersonData.model;
 
 namespace PersonREST.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("[controller]")]
     public class PersonController : ControllerBase
     {
         Datahandling datahandling = new Datahandling();
-
-        [HttpGet] 
-        public Person GetPerson(int id)
+        
+        [HttpGet("{id}")] 
+        public ActionResult<Person> GetPerson(int id)
         {
-            return datahandling.FindPerson(id);
+            var person = datahandling.FindPerson(id);
+            if (person == null)
+            {
+                return NotFound();
+            }
+            return person;
+        }
+
+        [HttpPost("create")]
+        public IActionResult Create(Person person)
+        {
+            datahandling.AddPerson(person);
+            return Accepted();
         }
 
         [HttpGet]
-        public List<Person> GetPersonsBasic(int id)
+        public List<BasePerson> getAllPersonsBasicData()
         {
             return datahandling.findAllPersonsBasicData();
         }
 
+        //[HttpGet("address/{id}")]
+        //public List<Address> getAddress(int id)
+        //{
+        //    return datahandling.FindAddress(id);
+        //}
+        //
+        //[HttpGet("contact/{id}")]
+        //public Person get(int id)
+        //{
+        //    return datahandling.FindPerson(id);
+        //}
     }
 }
