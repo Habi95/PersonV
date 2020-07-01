@@ -19,9 +19,7 @@ namespace DbTest
         public Form1()
         {
             InitializeComponent();
-            //Person person = new Person() {name1 = "peter" , name2 = "Maier", gender = "männlich", date = DateTime.Parse("20.05.1998"),
-            //    function = EFunction.Interessent, aktiv = true, deleted_inaktiv = false, newsletter_flag = false, createdAt = DateTime.Now };
-            //Address address = new Address() { street = "hallistreet 56", place = "mäder" };
+           
             var entities = new PersonEntities();
             PersonRepository repo = new PersonRepository(entities);        
 
