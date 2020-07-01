@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PersonData.model
 {
-    class AdressPerson
+   public class AdressPerson
     {
 
         public int id { get; set; }
