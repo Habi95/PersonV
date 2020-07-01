@@ -10,7 +10,6 @@ namespace PersonData
     
    public class Person : BasePerson
     {
-       
         public string title { get; set; }
         public int sv_nr {get; set; }   
         public string gender { get; set; }
@@ -22,7 +21,10 @@ namespace PersonData
         public bool deleted_inaktiv { get; set; }
         public bool newsletter_flag { get; set; }
 
-        public List<Address> addresses { get; set; }
+        
+        public IList<AdressPerson> addresses { get; set; }
+        //public List<AdressPerson> comments { get; set; }
+        //public List<AdressPerson> contacts { get; set; }
 
 
     }

@@ -1,12 +1,22 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace PersonData.repo
 {
-    interface PersonRepository : Repository<Person>
+    public class PersonRepository : Repository<Person>
     {
+        PersonEntities entities;
+        public PersonRepository(PersonEntities entities)
+        {
+            this.entities = entities;
+        }
+        public List<Person> GetPersons()
+        {
 
-
+            return entities.person.Include(x => x.addresses).ToList();
+        }
     }
 }

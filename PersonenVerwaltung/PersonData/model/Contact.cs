@@ -13,5 +13,6 @@ namespace PersonData
         public string contact_value { get; set; }
         public EContactType contact_type { get; set; }
         public bool main_contact { get; set; }
+        public Person person { get; set; }
     }
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PersonData.repo
 {
-    interface Repository
+    interface Repository<t>
     {
     }
 }

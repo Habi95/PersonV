@@ -10,5 +10,8 @@ namespace PersonData.model
         public int id { get; set; }
         public int adressId { get; set; }
         public int personId { get; set; }
+
+        public Address address { get; set; }
+        public Person person { get; set; }
     }
 }
