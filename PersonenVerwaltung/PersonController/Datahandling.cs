@@ -20,7 +20,7 @@ namespace PersonController
         /// <returns>The found Person</returns>
         public Person FindPerson(int id)
         {
-            return new Person();  // PersonRepository.create();
+            return new Person();  // PersonRepository.FindPerson();
         }
 
         /// <summary>
