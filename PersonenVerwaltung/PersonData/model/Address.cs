@@ -12,6 +12,6 @@ namespace PersonData
         public EContactType contact_type { get; set; }
         public bool billing_address { get; set; }
 
-        public IList<AddressPerson> persons { get; set; }
+        public List<AddressPerson> persons { get; set; }
     }
 }
