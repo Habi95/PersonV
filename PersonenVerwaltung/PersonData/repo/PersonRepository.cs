@@ -24,6 +24,7 @@ namespace PersonData.repo
 
         public void GetPersons()
         {
+            //this methode must be called for entities fill the child list / parent class
             entities.person
                .Include(x =>
                    x.addresses)
