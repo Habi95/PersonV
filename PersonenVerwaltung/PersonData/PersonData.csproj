@@ -5,6 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="CreatedModify.cs" />
+    <Compile Remove="EContactType.cs" />
+    <Compile Remove="EEmployment.cs" />
+    <Compile Remove="EFunction.cs" />
+    <Compile Remove="EKindOfCommunication.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.20" />
   </ItemGroup>
 

@@ -6,27 +6,35 @@ using System.Text;
 
 namespace PersonData
 {
-    public class PersonEntities : BaseEntities
+    public class PersonEntities : DbContext
     {
         public DbSet<Person> person { get; set; }
+        public DbSet<Address> address { get; set; }
 
-       /* protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseMySQL("server=localhost;database=personadmin;user=root");
-        }*/
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+         {
+             optionsBuilder.UseMySQL("server=localhost;database=personadmin;user=root");
+         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Address>(entity =>
+            {
+                entity.HasKey(x => x.id);
+                entity.HasMany(x => x.person_id)
+            });
+
             modelBuilder.Entity<Person>(entity =>
             {
                 entity.HasKey(x => x.id);
-                entity.Property(x => x.firstname).IsRequired();
-                entity.Property(x => x.lastname).IsRequired();
+                entity.Property(x => x.name1).IsRequired();
+                entity.Property(x => x.name2).IsRequired();
                 entity.Property(x => x.title);
                 entity.Property(x => x.sv_nr);
-                entity.Property(x => x.geb_date);
+                entity.Property(x => x.date);
                 entity.Property(x => x.gender);
                 entity.Property(x => x.busy);
                 entity.Property(x => x.busy_by);

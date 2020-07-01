@@ -6,9 +6,9 @@ namespace PersonController
 {
     public class Datahandling
     {
-        List<master_file> persons = new List<master_file>();
+        List<Person> Persons = new List<Person>();
 
-        public void AddPerson(master_file person)
+        public void AddPerson(Person Person)
         {
             
         } 
@@ -18,18 +18,18 @@ namespace PersonController
         /// </summary>
         /// <param name="id"></param>
         /// <returns>The found Person</returns>
-        public master_file FindPerson(int id)
+        public Person FindPerson(int id)
         {
-            return new master_file();  // PersonRepository.create();
+            return new Person();  // PersonRepository.create();
         }
 
         /// <summary>
         /// Returns basic data form ALl Persons
         /// </summary>
         /// <returns></returns>
-        public List<master_file> findAllPersonsBasicData()
+        public List<Person> findAllPersonsBasicData()
         {
-            return new List<master_file>(); // PersonRepository.findOne(int id);
+            return new List<Person>(); // PersonRepository.findOne(int id);
         }
 
 
@@ -38,7 +38,7 @@ namespace PersonController
         /// </summary>
         private void updatePersons()
         {
-            persons = new List<master_file>(); // PersonRepository.findAll();
+            Persons = new List<Person>(); // PersonRepository.findAll();
         }
     }
 }

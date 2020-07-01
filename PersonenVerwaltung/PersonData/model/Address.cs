@@ -6,8 +6,7 @@ namespace PersonData
 {
     public class Address : CreatedModify
     {
-        public int id { get; set; }
-        public int master_file_id { get; set; }
+        public int id { get; set; }        
         public string street { get; set; }
         public string place { get; set; }
         public int zip { get; set; }

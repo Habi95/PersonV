@@ -16,13 +16,13 @@ namespace PersonREST.Controllers
         Datahandling datahandling = new Datahandling();
 
         [HttpGet] 
-        public master_file GetPerson(int id)
+        public Person GetPerson(int id)
         {
             return datahandling.FindPerson(id);
         }
 
         [HttpGet]
-        public List<master_file> GetPersonsBasic(int id)
+        public List<Person> GetPersonsBasic(int id)
         {
             return datahandling.findAllPersonsBasicData();
         }

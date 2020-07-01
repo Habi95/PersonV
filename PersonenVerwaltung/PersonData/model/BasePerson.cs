@@ -4,12 +4,12 @@ using System.Text;
 
 namespace PersonData.model
 {
-    class BasePerson
+    public class BasePerson : CreatedModify
     {
         //TODO ask marc for the base person class 
         public int id { get; set; }
-        public string firstname { get; set; }
-        public string lastname { get; set; }
-        public DateTime geb_date { get; set; }
+        public string name1 { get; set; }
+        public string name2 { get; set; }
+        public DateTime date { get; set; }
     }
 }
