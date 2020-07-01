@@ -8,6 +8,7 @@ using System.Text;
 
 namespace PersonData
 {
+    //TODO add entity document and other stuff for person
     
    public class Person : BasePerson
     {
@@ -26,7 +27,5 @@ namespace PersonData
         public List<AddressPerson> addresses { get; set; }
         public List<Comment> comments { get; set; }
         public List<Contact> contacts { get; set; }
-
-
     }
 }
