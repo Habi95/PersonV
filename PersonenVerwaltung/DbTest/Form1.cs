@@ -23,10 +23,7 @@ namespace DbTest
             //    function = EFunction.Interessent, aktiv = true, deleted_inaktiv = false, newsletter_flag = false, createdAt = DateTime.Now };
             //Address address = new Address() { street = "hallistreet 56", place = "mäder" };
             var entities = new PersonEntities();
-            PersonRepository repo = new PersonRepository(entities);
-            // AdressPerson adressP = new AdressPerson() { adressId = 1, personId = 2 };
-            //var lala = entities.address.ToList();
-            //var lala1 = entities.adressperson.ToList();
+            PersonRepository repo = new PersonRepository(entities);        
 
             repo.GetPersons();
             var x = entities.person.Where(x => x.id == 2).FirstOrDefault();
