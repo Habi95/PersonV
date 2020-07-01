@@ -1,4 +1,5 @@
-﻿using PersonData.model;
+﻿
+using PersonData.model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,7 +11,6 @@ namespace PersonData
     
    public class Person : BasePerson
     {
-       
         public string title { get; set; }
         public int sv_nr {get; set; }   
         public string gender { get; set; }
