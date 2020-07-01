@@ -8,7 +8,7 @@ namespace PersonData
 {
     public class PersonEntities : BaseEntities
     {
-        public DbSet<master_file> master_file { get; set; }
+        public DbSet<Person> person { get; set; }
 
        /* protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -19,7 +19,7 @@ namespace PersonData
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<master_file>(entity =>
+            modelBuilder.Entity<Person>(entity =>
             {
                 entity.HasKey(x => x.id);
                 entity.Property(x => x.firstname).IsRequired();

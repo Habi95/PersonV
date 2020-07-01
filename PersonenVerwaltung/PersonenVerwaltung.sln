@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PersonController", "PersonC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PersonREST", "PersonREST\PersonREST.csproj", "{193FC779-5416-4795-B590-0DE0DC8525A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersonForms", "PersonForms\PersonForms.csproj", "{FBD1903E-2F28-4774-9E1C-30003A2CF37D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{193FC779-5416-4795-B590-0DE0DC8525A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{193FC779-5416-4795-B590-0DE0DC8525A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{193FC779-5416-4795-B590-0DE0DC8525A0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FBD1903E-2F28-4774-9E1C-30003A2CF37D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FBD1903E-2F28-4774-9E1C-30003A2CF37D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FBD1903E-2F28-4774-9E1C-30003A2CF37D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FBD1903E-2F28-4774-9E1C-30003A2CF37D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
