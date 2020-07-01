@@ -1,16 +1,27 @@
 ﻿using PersonData;
+using PersonData.model;
+using PersonData.repo;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PersonController
 {
     public class Datahandling
     {
+        private PersonRepository repository = new PersonRepository();
+
         List<Person> Persons = new List<Person>();
 
-        public void AddPerson(Person Person)
+        public Datahandling()
         {
-            
+            updatePersons();
+        }
+
+        public void AddPerson(Person person)
+        {
+            repository.create(person);
+            updatePersons();
         } 
 
         /// <summary>
@@ -20,25 +31,24 @@ namespace PersonController
         /// <returns>The found Person</returns>
         public Person FindPerson(int id)
         {
-            return new Person();  // PersonRepository.FindPerson();
+            return Persons.FirstOrDefault(x => x.id == id);
         }
 
         /// <summary>
         /// Returns basic data form ALl Persons
         /// </summary>
         /// <returns></returns>
-        public List<Person> findAllPersonsBasicData()
+        public List<BasePerson> findAllPersonsBasicData()
         {
-            return new List<Person>(); // PersonRepository.findOne(int id);
+            return Persons.ToList<BasePerson>();//.ConvertAll(x => (BasePerson)x);
         }
-
 
         /// <summary>
         /// Find all Persons from Mysql DB
         /// </summary>
         private void updatePersons()
         {
-            Persons = new List<Person>(); // PersonRepository.findAll();
+            Persons = repository.findAll();
         }
     }
 }

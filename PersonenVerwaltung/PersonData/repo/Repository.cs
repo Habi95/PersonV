@@ -4,7 +4,11 @@ using System.Text;
 
 namespace PersonData.repo
 {
-    interface Repository<t>
+    interface Repository<T>
     {
+        List<T> findAll();
+        T findOne(int id);
+        int create(T entity); // returns last insert id
+        void deleteOne(T entity);
     }
 }
