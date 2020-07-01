@@ -51,13 +51,13 @@ namespace PersonData
             //realtion  adressTable => adressPersonTable
             modelBuilder.Entity<Address>().HasMany(x => x.persons).WithOne();
 
-            //realtion adressPersonTable id-adressId-personId
+            //entity for addressPersonTable
             modelBuilder.Entity<AddressPerson>(entity =>
                         {
                             entity.HasKey(x => x.id);
                         });
 
-
+//realtion adressPersonTable id-adressId-personId
             modelBuilder.Entity<AddressPerson>()
                 .HasOne(x => x.person)
                 .WithMany(x => x.addresses)

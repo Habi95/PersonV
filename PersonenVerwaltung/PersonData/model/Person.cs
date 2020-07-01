@@ -24,8 +24,8 @@ namespace PersonData
 
         
         public IList<AddressPerson> addresses { get; set; }
-        //public List<AdressPerson> comments { get; set; }
-        //public List<AdressPerson> contacts { get; set; }
+        //public List<AddressPerson> comments { get; set; }
+        public List<AddressPerson> contacts { get; set; }
 
 
     }

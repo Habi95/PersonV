@@ -16,7 +16,7 @@ namespace PersonData.repo
         public List<Person> GetPersons()
         {
 
-            return entities.person.Include(x => x.addresses).ToList();
+            return entities.person.Include(x => x.addresses).Include(x => x.contacts).ToList();
         }
     }
 }
