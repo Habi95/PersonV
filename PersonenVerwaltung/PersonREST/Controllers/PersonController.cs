@@ -27,7 +27,7 @@ namespace PersonREST.Controllers
             return person;
         }
 
-        [HttpPost("create")]
+        [HttpPost]
         public IActionResult Create(Person person)
         {
             datahandling.AddPerson(person);
