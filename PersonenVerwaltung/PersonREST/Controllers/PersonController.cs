@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +16,13 @@ namespace PersonREST.Controllers
     public class PersonController : ControllerBase
     {
         Datahandling datahandling = new Datahandling();
-        
+
+        [HttpGet]
+        public List<BasePerson> getAllPersonsBasicData()
+        {
+            return datahandling.findAllPersonsBasicData();
+        }
+
         [HttpGet("{id}")] 
         public ActionResult<Person> GetPerson(int id)
         {
@@ -27,18 +34,21 @@ namespace PersonREST.Controllers
             return person;
         }
 
+        //[HttpPut("{id}")]
+        //public HttpResponseMessage updatePerson(Person person)
+        //{
+        //    return Request.(HttpStatusCode.Created, result)
+        //}
+
         [HttpPost]
         public IActionResult Create(Person person)
         {
+            person.createdAt = DateTime.Now;
+            person.modifyAt = DateTime.Now;
             datahandling.AddPerson(person);
             return Accepted();
         }
 
-        [HttpGet]
-        public List<BasePerson> getAllPersonsBasicData()
-        {
-            return datahandling.findAllPersonsBasicData();
-        }
 
         //[HttpGet("address/{id}")]
         //public List<Address> getAddress(int id)

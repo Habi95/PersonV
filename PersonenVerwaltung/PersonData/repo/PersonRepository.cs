@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,7 +24,8 @@ namespace PersonData.repo
 
         public List<Person> findAll()
         {
-            return entities.person.ToList();
+            //return entities.person.ToList();
+            return entities.person.Include(x => x.addresses).Include(x => x.contacts).Include(x => x.comments).ToList();
         }
 
         public Person findOne(int id)
