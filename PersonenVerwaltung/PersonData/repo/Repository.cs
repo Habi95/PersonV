@@ -6,9 +6,10 @@ namespace PersonData.repo
 {
     interface Repository<T>
     {
-        List<T> findAll();
-        T findOne(int id);
-        int create(T entity); // returns last insert id
-        void deleteOne(T entity);
+        List<T> FindAll();
+        T FindOne(int id);
+        int Create(T entity); // returns last insert id
+        void DeleteOne(T entity);
+        void Update(T entity);
     }
 }

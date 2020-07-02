@@ -9,26 +9,31 @@ namespace PersonData.repo
     {
         PersonEntities entities = new PersonEntities();
 
-        public int create(Address address)
+        public int Create(Address address)
         {
             entities.address.Add(address);
             return entities.SaveChanges();
         }
 
-        public void deleteOne(Address address)
+        public void DeleteOne(Address address)
         {
             entities.address.Remove(address);
             entities.SaveChanges();
         }
 
-        public List<Address> findAll()
+        public List<Address> FindAll()
         {
             return entities.address.ToList();
         }
 
-        public Address findOne(int id)
+        public Address FindOne(int id)
         {
             return entities.address.FirstOrDefault(x => x.id == id);
+        }
+
+        public void Update(Address entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }

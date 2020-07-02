@@ -16,34 +16,19 @@ namespace PersonData.repo
             this.entities = entities;
         }
 
-        public int create(Person person)
+        public int Create(Person person)
         {
             entities.person.Add(person);
             return entities.SaveChanges();
         }
 
-        public void GetPersons()
-        {
-            //this methode must be called for entities fill the child list / parent class
-            var x = entities.person
-               .Include(x =>
-                   x.addresses)
-               .ThenInclude(x => x.address)
-               .Include(x =>
-                   x.contacts)
-               .Include(x =>
-                   x.comments)
-               .ToList();
-            Console.WriteLine();
-        }
-
-        public void deleteOne(Person person)
+        public void DeleteOne(Person person)
         {
             entities.person.Remove(person);
             entities.SaveChanges();
         }
 
-        public List<Person> findAll()
+        public List<Person> FindAll()
         {            
             return entities.person
                .Include(x =>
@@ -53,12 +38,47 @@ namespace PersonData.repo
                    x.contacts)
                .Include(x =>
                    x.comments)
-               .ToList(); //entities.person.ToList();
+               .ToList();
         }
 
-        public Person findOne(int id)
+        public Person FindOne(int id)
         {
             return entities.person.FirstOrDefault(x => x.id == id);
         }
+
+        public void Update(Person entity)
+        {
+            //entities.person.Update(entity);
+
+            var exist = entities.person.Find(entity.id);
+
+            for (int i = 0; i < exist.addresses.Count(); i++)
+            {
+                if (exist.addresses[i] != entity.addresses[i])
+                {
+                    //entities.person.Find(exist.id).addresses[i].address = entity.addresses[i].address;
+                    exist.addresses[i].address = entity.addresses[i].address;
+                }
+            }
+
+            //entities.Entry(exist).CurrentValues.SetValues(entity);
+            entities.Update(exist);
+            entities.SaveChanges();
+        }
+
+        //public void GetPersons()
+        //{
+        //    //this methode must be called for entities fill the child list / parent class
+        //    var x = entities.person
+        //       .Include(x =>
+        //           x.addresses)
+        //       .ThenInclude(x => x.address)
+        //       .Include(x =>
+        //           x.contacts)
+        //       .Include(x =>
+        //           x.comments)
+        //       .ToList();
+        //    Console.WriteLine();
+        //}
     }
 }

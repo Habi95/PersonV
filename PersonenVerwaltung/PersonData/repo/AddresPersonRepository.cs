@@ -10,26 +10,31 @@ namespace PersonData.repo
     {
         PersonEntities entities = new PersonEntities();
 
-        public int create(AddressPerson addressperson)
+        public int Create(AddressPerson addressperson)
         {
             entities.addressperson.Add(addressperson);
             return entities.SaveChanges();
         }
 
-        public void deleteOne(AddressPerson addressPerson)
+        public void DeleteOne(AddressPerson addressPerson)
         {
             entities.addressperson.Remove(addressPerson);
             entities.SaveChanges();
         }
 
-        public List<AddressPerson> findAll()
+        public List<AddressPerson> FindAll()
         {
             return entities.addressperson.ToList();
         }
 
-        public AddressPerson findOne(int id)
+        public AddressPerson FindOne(int id)
         {
             return entities.addressperson.FirstOrDefault(x => x.id == id);
+        }
+
+        public void Update(AddressPerson entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }

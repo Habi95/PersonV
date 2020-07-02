@@ -17,15 +17,28 @@ namespace PersonController
         public Datahandling()
         {
             repository = new PersonRepository(entities);
-            updatePersons();
+            UpdatePersons();
         }
 
+        /// <summary>
+        /// Add a new Person to the DB
+        /// </summary>
+        /// <param name="person"></param>
         public void AddPerson(Person person)
         {
-            repository.create(person);
-            updatePersons();
+            repository.Create(person);
+            UpdatePersons();
         }
 
+        /// <summary>
+        /// Updates a Person in DB
+        /// </summary>
+        /// <param name="person"></param>
+        public void UpdatePerson(Person person)
+        {
+            repository.Update(person);
+            UpdatePersons();
+        }
 
         /// <summary>
         /// Returns one Person with the ID
@@ -41,24 +54,21 @@ namespace PersonController
         /// Returns basic data form ALl Persons
         /// </summary>
         /// <returns></returns>
-        public List<BasePerson> findAllPersonsBasicData()
+        public List<BasePerson> FindAllPersonsBasicData()
         {
             List<BasePerson> output = new List<BasePerson>();
-
-            //Persons.ToList<BasePerson>().ForEach(item =>
-            //{
-            //    output.Add(new BasePerson() { id = item.id, name1 = item.name1, name2 = item.name2, date = item.date, createdAt = item.createdAt, modifyAt = item.modifyAt, modifyDate = item.modifyDate }); ;
-            //});
-
             return Persons.ConvertAll(c => CreateBasePerson(c));//Persons.ToList<BasePerson>();//.ConvertAll(x => (BasePerson)x);
         }
 
-
+        /// <summary>
+        /// Converts Person to Base Person
+        /// </summary>
+        /// <param name="person"></param>
+        /// <returns></returns>
         private BasePerson CreateBasePerson(Person person)
         {
             var basePerson = new BasePerson()
             {
-
                 id = person.id,
                 name1 = person.name1,
                 name2 = person.name2,
@@ -67,17 +77,15 @@ namespace PersonController
                 modifyAt = person.modifyAt,
                 modifyDate = person.modifyDate
             };
-
             return basePerson;
         }
 
         /// <summary>
-        /// Find all Persons from Mysql DB
+        /// Finds all Persons from Mysql DB
         /// </summary>
-        private void updatePersons()
+        private void UpdatePersons()
         {
-            //repository.GetPersons();
-            Persons = repository.findAll();
+            Persons = repository.FindAll();
         }
     }
 }

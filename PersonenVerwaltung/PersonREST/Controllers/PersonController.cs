@@ -21,7 +21,7 @@ namespace PersonREST.Controllers
         [HttpGet]
         public List<BasePerson> getAllPersonsBasicData()
         {
-            return datahandling.findAllPersonsBasicData();
+            return datahandling.FindAllPersonsBasicData();
         }
 
         [HttpGet("{id}")] 
@@ -36,12 +36,12 @@ namespace PersonREST.Controllers
             return person;
         }
 
-        //[HttpPut("{id}")]
-        //public HttpStatusCode updatePerson(Person person)
-        //{
-        //    datahandling.update(person);
-        //    return HttpStatusCode.Created;
-        //}
+        [HttpPut]
+        public HttpStatusCode UpdatePerson(Person person)
+        {
+            datahandling.UpdatePerson(person);
+            return HttpStatusCode.Created;
+        }
 
         [HttpPost]
         public IActionResult Create(Person person)

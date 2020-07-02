@@ -9,26 +9,31 @@ namespace PersonData.repo
     {
         PersonEntities entities = new PersonEntities();
 
-        public int create(Comment comment)
+        public int Create(Comment comment)
         {
             entities.comment.Add(comment);
             return entities.SaveChanges();
         }
 
-        public void deleteOne(Comment comment)
+        public void DeleteOne(Comment comment)
         {
             entities.comment.Remove(comment);
             entities.SaveChanges();
         }
 
-        public List<Comment> findAll()
+        public List<Comment> FindAll()
         {
             return entities.comment.ToList();
         }
 
-        public Comment findOne(int id)
+        public Comment FindOne(int id)
         {
             return entities.comment.FirstOrDefault(x => x.id == id);
+        }
+
+        public void Update(Comment entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }

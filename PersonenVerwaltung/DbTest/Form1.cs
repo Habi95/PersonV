@@ -23,7 +23,7 @@ namespace DbTest
             var entities = new PersonEntities();
             PersonRepository repo = new PersonRepository(entities);
 
-            repo.GetPersons();
+            //repo.GetPersons();
             //repo.GetAddresses();
             //entities.person.Add(new Person() 
             //{
@@ -55,7 +55,7 @@ namespace DbTest
             //}) ;
             //entities.SaveChanges();
             //var adr = entities.address.FirstOrDefault();
- var x = entities.person.FirstOrDefault();
+            //var x = entities.person.FirstOrDefault();
             //entities.addressperson.Add(new AddressPerson() 
             //{
             //    addressId = adr.id,
@@ -64,19 +64,17 @@ namespace DbTest
             //entities.SaveChanges();
            
             
-            x.addresses[0].address.contact_type = EContactType.Geschäftlich;
-
-            
-            x.addresses[0].address.modifyAt = DateTime.Now;
-            entities.Update(x);
-            entities.SaveChanges();
-            var xy = repo.findAll();
-            
-           
-            
-                Console.WriteLine(" ");
-
+            //x.addresses[0].address.contact_type = EContactType.Geschäftlich;
+            //
+            //
+            //x.addresses[0].address.modifyAt = DateTime.Now;
+            //entities.Update(x);
+            //entities.SaveChanges();
+            //var xy = repo.FindAll();
+            //
+            //
+            //
+            //    Console.WriteLine(" ");
         }
-
     }
 }
