@@ -9,12 +9,14 @@ namespace PersonController
 {
     public class Datahandling
     {
-        private PersonRepository repository = new PersonRepository();
+        PersonEntities entities = new PersonEntities();
+        private PersonRepository repository;
 
         List<Person> Persons = new List<Person>();
 
         public Datahandling()
         {
+            repository = new PersonRepository(entities);
             updatePersons();
         }
 
