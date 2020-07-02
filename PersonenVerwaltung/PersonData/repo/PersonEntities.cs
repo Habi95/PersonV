@@ -18,7 +18,7 @@ namespace PersonData
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySQL("server=localhost;database=personadmin;user=root");
+            optionsBuilder.UseMySQL("server=192.168.0.94;database=dcv;user=root");
 
         }
 
