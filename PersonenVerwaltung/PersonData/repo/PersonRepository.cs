@@ -28,15 +28,16 @@ namespace PersonData.repo
             entities.person
                .Include(x =>
                    x.addresses)
+               .ThenInclude(x => x.address)
                .Include(x =>
                    x.contacts)
                .Include(x =>
                    x.comments)
                .ToList();
-            entities.address
-                .Include(x =>
-                    x.persons)
-                .ToList();
+            //entities.address
+            //    .Include(x =>
+            //        x.,)
+            //    .ToList();
 
         }
         public void deleteOne(Person person)

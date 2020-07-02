@@ -51,7 +51,8 @@ namespace PersonData
                 .HasForeignKey(x => x.person_id);
 
 
-            //realtion personTable=>adressPersonTable 1:N
+            //realtion personTable=>adressPersonTable 1:N,03
+
             modelBuilder.Entity<Person>()
                 .HasMany(x => x.addresses)
                 .WithOne();
