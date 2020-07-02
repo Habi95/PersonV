@@ -35,12 +35,12 @@ namespace PersonREST.Controllers
             return person;
         }
 
-        [HttpPut("{id}")]
-        public HttpStatusCode updatePerson(Person person)
-        {
-            datahandling.update(person);
-            return HttpStatusCode.Created;
-        }
+        //[HttpPut("{id}")]
+        //public HttpStatusCode updatePerson(Person person)
+        //{
+        //    datahandling.update(person);
+        //    return HttpStatusCode.Created;
+        //}
 
         [HttpPost]
         public IActionResult Create(Person person)

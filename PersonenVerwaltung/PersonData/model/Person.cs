@@ -13,7 +13,7 @@ namespace PersonData
    public class Person : BasePerson
     {
         public string title { get; set; }
-        public int sv_nr {get; set; }   
+        public int? sv_nr {get; set; }   
         public string gender { get; set; }
         public string busy { get; set; }
         public string busy_by { get; set; }
@@ -23,7 +23,6 @@ namespace PersonData
         public bool deleted_inaktiv { get; set; }
         public bool newsletter_flag { get; set; }
 
-        
         public List<AddressPerson> addresses { get; set; }
         public List<Comment> comments { get; set; }
         public List<Contact> contacts { get; set; }
