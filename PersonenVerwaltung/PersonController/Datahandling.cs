@@ -76,6 +76,7 @@ namespace PersonController
         /// </summary>
         private void updatePersons()
         {
+            //repository.GetPersons();
             Persons = repository.findAll();
         }
     }
