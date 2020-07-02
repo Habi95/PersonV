@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -34,11 +35,12 @@ namespace PersonREST.Controllers
             return person;
         }
 
-        //[HttpPut("{id}")]
-        //public HttpResponseMessage updatePerson(Person person)
-        //{
-        //    return Request.(HttpStatusCode.Created, result)
-        //}
+        [HttpPut("{id}")]
+        public HttpStatusCode updatePerson(Person person)
+        {
+            datahandling.update(person);
+            return HttpStatusCode.Created;
+        }
 
         [HttpPost]
         public IActionResult Create(Person person)
@@ -48,18 +50,5 @@ namespace PersonREST.Controllers
             datahandling.AddPerson(person);
             return Accepted();
         }
-
-
-        //[HttpGet("address/{id}")]
-        //public List<Address> getAddress(int id)
-        //{
-        //    return datahandling.FindAddress(id);
-        //}
-        //
-        //[HttpGet("contact/{id}")]
-        //public Person get(int id)
-        //{
-        //    return datahandling.FindPerson(id);
-        //}
     }
 }

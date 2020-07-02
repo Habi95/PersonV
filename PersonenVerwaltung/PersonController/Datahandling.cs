@@ -15,13 +15,13 @@ namespace PersonController
 
         public Datahandling()
         {
-            updatePersons();
+            UpdatePersons();
         }
 
         public void AddPerson(Person person)
         {
             repository.create(person);
-            updatePersons();
+            UpdatePersons();
         } 
 
         /// <summary>
@@ -43,10 +43,15 @@ namespace PersonController
             return Persons.ToList<BasePerson>();//.ConvertAll(x => (BasePerson)x);
         }
 
+        public int update(Person person)
+        {
+            return repository.update(person);
+        }
+
         /// <summary>
         /// Find all Persons from Mysql DB
         /// </summary>
-        private void updatePersons()
+        private void UpdatePersons()
         {
             Persons = repository.findAll();
         }

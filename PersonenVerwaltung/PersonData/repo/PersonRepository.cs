@@ -24,13 +24,19 @@ namespace PersonData.repo
 
         public List<Person> findAll()
         {
-            //return entities.person.ToList();
-            return entities.person.Include(x => x.addresses).Include(x => x.contacts).Include(x => x.comments).ToList();
+            return entities.person.ToList();
+            //return entities.person.Include(x => x.addresses).Include(x => x.contacts).Include(x => x.comments).ToList();
         }
 
         public Person findOne(int id)
         {
             return entities.person.FirstOrDefault(x => x.id == id);
+        }
+
+        public int update(Person person)
+        {
+            entities.person.Update(person);
+            return entities.SaveChanges();
         }
     }
 }

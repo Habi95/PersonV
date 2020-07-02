@@ -13,7 +13,5 @@ namespace PersonData
         public string country { get; set; }
         public EContactType contact_type { get; set; }
         public bool billing_address { get; set; }
-
-
     }
 }
