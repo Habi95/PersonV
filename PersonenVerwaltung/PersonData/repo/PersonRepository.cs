@@ -11,9 +11,9 @@ namespace PersonData.repo
        
         private PersonEntities entities;
 
-        public PersonRepository(PersonEntities entities1)
+        public PersonRepository(PersonEntities entities)
         {
-            this.entities = entities1;
+            this.entities = entities;
         }
 
         public int create(Person person)
@@ -34,12 +34,8 @@ namespace PersonData.repo
                .Include(x =>
                    x.comments)
                .ToList();
-            //entities.address
-            //    .Include(x =>
-            //        x.,)
-            //    .ToList();
-
         }
+
         public void deleteOne(Person person)
         {
             entities.person.Remove(person);
@@ -54,9 +50,6 @@ namespace PersonData.repo
         public Person findOne(int id)
         {
             return entities.person.FirstOrDefault(x => x.id == id);
-
         }
-
-
     }
 }

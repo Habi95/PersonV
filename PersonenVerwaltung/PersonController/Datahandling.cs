@@ -9,12 +9,14 @@ namespace PersonController
 {
     public class Datahandling
     {
-        private PersonRepository repository = new PersonRepository();
-
         List<Person> Persons = new List<Person>();
+        PersonEntities entities = new PersonEntities();
+
+        public PersonRepository repository;
 
         public Datahandling()
         {
+            repository = new PersonRepository(entities);
             updatePersons();
         }
 
@@ -22,7 +24,7 @@ namespace PersonController
         {
             repository.create(person);
             updatePersons();
-        } 
+        }
 
         /// <summary>
         /// Returns one Person with the ID
@@ -40,7 +42,32 @@ namespace PersonController
         /// <returns></returns>
         public List<BasePerson> findAllPersonsBasicData()
         {
-            return Persons.ToList<BasePerson>();//.ConvertAll(x => (BasePerson)x);
+            List<BasePerson> output = new List<BasePerson>();
+
+            //Persons.ToList<BasePerson>().ForEach(item =>
+            //{
+            //    output.Add(new BasePerson() { id = item.id, name1 = item.name1, name2 = item.name2, date = item.date, createdAt = item.createdAt, modifyAt = item.modifyAt, modifyDate = item.modifyDate }); ;
+            //});
+
+            return Persons.ConvertAll(c => CreateBasePerson(c));//Persons.ToList<BasePerson>();//.ConvertAll(x => (BasePerson)x);
+        }
+
+
+        private BasePerson CreateBasePerson(Person person)
+        {
+            var basePerson = new BasePerson()
+            {
+
+                id = person.id,
+                name1 = person.name1,
+                name2 = person.name2,
+                date = person.date,
+                createdAt = person.createdAt,
+                modifyAt = person.modifyAt,
+                modifyDate = person.modifyDate
+            };
+
+            return basePerson;
         }
 
         /// <summary>
