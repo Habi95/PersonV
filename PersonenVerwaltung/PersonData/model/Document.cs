@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PersonData.model;
+using PersonData.model.ENUM;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
@@ -17,12 +19,14 @@ namespace PersonData
         [Column("comment", TypeName = "varchar(500)")]
         public string Comment { get; set; }
         [Column("reminder_id")]
-        public int ReminderId { get; set; }
+        public int? ReminderId { get; set; }
         [Column("created@")]
         public DateTime CreatedAt { get; set; }
         [Column("modified@")]
-        public DateTime ModifiedAt { get; set; }
+        public DateTime? ModifiedAt { get; set; }
         [Column("type", TypeName = "varchar(50)")]
-         public string Type { get; set; }//EDocumentType
+         public EDocumentType type { get; set; }
+
+        public List<DocumentPerson> person { get; set; }
     }
 }

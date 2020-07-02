@@ -14,10 +14,13 @@ namespace PersonData
         public DbSet<AddressPerson> addressperson { get; set; }
         public DbSet<Contact> contact { get; set; }
         public DbSet<Comment> comment { get; set; }
+        public DbSet<Document> documents { get; set; }
+        public DbSet<DocumentPerson> documentperson { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySQL("server=192.168.0.94;database=dcv;user=root;Convert Zero Datetime=True");
+            //192.168.0.94
+            optionsBuilder.UseMySQL("server=localhost;database=dcv;user=root;Convert Zero Datetime=True");
             //optionsBuilder.EnableSensitiveDataLogging();
         }
 
@@ -35,6 +38,10 @@ namespace PersonData
             modelBuilder.Entity<Comment>().HasKey(x => x.id);
             //entity for addressPersonTable
             modelBuilder.Entity<AddressPerson>().HasKey(x => x.id);
+            //entity for documents
+            modelBuilder.Entity<Document>().HasKey(x => x.Id);
+            //entity for documentperson
+            modelBuilder.Entity<DocumentPerson>().HasKey(x => x.id);
 
             //realtion contactTable with personTable
             modelBuilder.Entity<Contact>()
@@ -48,7 +55,7 @@ namespace PersonData
                 .WithMany(x => x.comments)
                 .HasForeignKey(x => x.person_id);
 
-            //realtion personTable=>adressPersonTable 1:N,03
+            //realtion personTable=>adressPersonTable 1:N
             modelBuilder.Entity<Person>()
                 .HasMany(x => x.addresses)
                 .WithOne();
@@ -57,6 +64,17 @@ namespace PersonData
             modelBuilder.Entity<Address>()
                 .HasMany(x => x.persons)
                 .WithOne();
+            
+            //realtion documentTable => documentPersonTable 1:N
+            modelBuilder.Entity<Document>()
+                .HasMany(x => x.person)
+                .WithOne();
+
+            //realtion personTable => documentPersonTable 1:N
+            modelBuilder.Entity<Person>()
+                .HasMany(x => x.documents)
+                .WithOne();
+
 
             //realtion adressPersonTable id-adressId-personId
             modelBuilder.Entity<AddressPerson>()
@@ -69,6 +87,23 @@ namespace PersonData
                 .HasOne(x => x.address)
                 .WithMany(x => x.persons)
                 .HasForeignKey(x => x.addressId);
+
+
+            //realtion documentPersonTable id - documentId - personId-
+            modelBuilder.Entity<DocumentPerson>()
+                .HasOne(x => x.person)
+                .WithMany(x => x.documents)
+                .HasForeignKey(x => x.person_Id);
+            //M:M realtion
+            modelBuilder.Entity<DocumentPerson>()
+                .HasOne(x => x.document)
+                .WithMany(x => x.person)
+                .HasForeignKey(x => x.document_Id);
+
+
+
+
+
         }
     }
 }

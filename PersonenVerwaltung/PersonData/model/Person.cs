@@ -26,5 +26,6 @@ namespace PersonData
         public List<AddressPerson> addresses { get; set; }
         public List<Comment> comments { get; set; }
         public List<Contact> contacts { get; set; }
+        public List<DocumentPerson> documents { get; set; }
     }
 }
