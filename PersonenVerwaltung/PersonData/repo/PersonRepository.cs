@@ -25,7 +25,7 @@ namespace PersonData.repo
         public void GetPersons()
         {
             //this methode must be called for entities fill the child list / parent class
-            entities.person
+            var x = entities.person
                .Include(x =>
                    x.addresses)
                .ThenInclude(x => x.address)
@@ -34,6 +34,7 @@ namespace PersonData.repo
                .Include(x =>
                    x.comments)
                .ToList();
+            Console.WriteLine();
         }
 
         public void deleteOne(Person person)
@@ -44,7 +45,15 @@ namespace PersonData.repo
 
         public List<Person> findAll()
         {            
-            return entities.person.ToList();
+            return entities.person
+               .Include(x =>
+                   x.addresses)
+               .ThenInclude(x => x.address)
+               .Include(x =>
+                   x.contacts)
+               .Include(x =>
+                   x.comments)
+               .ToList(); //entities.person.ToList();
         }
 
         public Person findOne(int id)

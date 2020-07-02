@@ -27,6 +27,7 @@ namespace PersonREST.Controllers
         [HttpGet("{id}")] 
         public ActionResult<Person> GetPerson(int id)
         {
+            
             var person = datahandling.FindPerson(id);
             if (person == null)
             {
