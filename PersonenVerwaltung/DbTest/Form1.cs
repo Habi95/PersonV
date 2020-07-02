@@ -43,15 +43,36 @@ namespace DbTest
             //    value_date = DateTime.Parse("15.04.2020"),
             //    createdAt = DateTime.Now
             //}) ;
+            //entities.address.Add(new Address()
+            //{
+            //    street = "Mökleburg",
+            //    place = "Bregenz",
+            //    zip = 6800,
+            //    country = "Austria",
+            //    contact_type = EContactType.Privat,
+            //    billing_address = true,
+            //    createdAt = DateTime.Now
+            //}) ;
+            //entities.SaveChanges();
+            //var adr = entities.address.FirstOrDefault();
+ var x = entities.person.FirstOrDefault();
+            //entities.addressperson.Add(new AddressPerson() 
+            //{
+            //    addressId = adr.id,
+            //    personId = x.id
+            //});
+            //entities.SaveChanges();
+           
             
-            //entities.SaveChanges();
+            x.addresses[0].address.contact_type = EContactType.Geschäftlich;
 
-            //var x = entities.person.Where(x => x.id == 2).FirstOrDefault();
-            //////var y = entities.address.FirstOrDefault();
-            //x.addresses[0].address.street = "Updatestraße 3";
-            //x.addresses[0].address.modifyAt = DateTime.Now;
-            //entities.SaveChanges();
+            
+            x.addresses[0].address.modifyAt = DateTime.Now;
+            entities.Update(x);
+            entities.SaveChanges();
             var xy = repo.findAll();
+            
+           
             
                 Console.WriteLine(" ");
 
