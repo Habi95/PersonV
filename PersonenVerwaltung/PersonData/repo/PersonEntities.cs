@@ -43,7 +43,51 @@ namespace PersonData
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            PrimKeys(modelBuilder);
+            RealtionComment(modelBuilder);
+            RealtionContact(modelBuilder);
+            RealtionAddresses(modelBuilder);
+        }
+        private void RealtionComment(ModelBuilder modelBuilder)
+        {
+            //realation commenTable with personTable
+            modelBuilder.Entity<Comment>()
+                .HasOne(x => x.person)
+                .WithMany(x => x.comments)
+                .HasForeignKey(x => x.person_id);
+        }
+        private void RealtionContact(ModelBuilder modelBuilder)
+        {
+            //realtion contactTable with personTable
+            modelBuilder.Entity<Contact>()
+                .HasOne(x => x.person)
+                .WithMany(x => x.contacts)
+                .HasForeignKey(x => x.person_id);
+        }
+        private void RealtionAddresses(ModelBuilder modelBuilder)
+        {
+            //realtion personTable=>adressPersonTable 1:N
+            modelBuilder.Entity<Person>()
+                .HasMany(x => x.addresses)
+                .WithOne();
+            //realtion  adressTable => adressPersonTable 1:N
+            modelBuilder.Entity<Address>()
+                .HasMany(x => x.persons)
+                .WithOne();
+            //realtion adressPersonTable id-adressId-personId
+            modelBuilder.Entity<AddressPerson>()
+                .HasOne(x => x.person)
+                .WithMany(x => x.addresses)
+                .HasForeignKey(x => x.personId);
+            //M:M realtion
+            modelBuilder.Entity<AddressPerson>()
+                .HasOne(x => x.address)
+                .WithMany(x => x.persons)
+                .HasForeignKey(x => x.addressId);
+        }
 
+        private void PrimKeys(ModelBuilder modelBuilder)
+        {
             //entitity for addressTable
             modelBuilder.Entity<Address>().HasKey(x => x.id);
             //entity for personTable
@@ -58,47 +102,6 @@ namespace PersonData
             modelBuilder.Entity<Document>().HasKey(x => x.Id);
             //entity for documentperson
             modelBuilder.Entity<DocumentClass>().HasKey(x => x.id);
-
-            //realtion contactTable with personTable
-            modelBuilder.Entity<Contact>()
-                .HasOne(x => x.person)
-                .WithMany(x => x.contacts)
-                .HasForeignKey(x => x.person_id);
-
-            //realation commenTable with personTable
-            modelBuilder.Entity<Comment>()
-                .HasOne(x => x.person)
-                .WithMany(x => x.comments)
-                .HasForeignKey(x => x.person_id);
-
-            //realtion personTable=>adressPersonTable 1:N
-            modelBuilder.Entity<Person>()
-                .HasMany(x => x.addresses)
-                .WithOne();
-
-            //realtion  adressTable => adressPersonTable 1:N
-            modelBuilder.Entity<Address>()
-                .HasMany(x => x.persons)
-                .WithOne();
-            
-            
-            //realtion adressPersonTable id-adressId-personId
-            modelBuilder.Entity<AddressPerson>()
-                .HasOne(x => x.person)
-                .WithMany(x => x.addresses)
-                .HasForeignKey(x => x.personId);
-
-            //M:M realtion
-            modelBuilder.Entity<AddressPerson>()
-                .HasOne(x => x.address)
-                .WithMany(x => x.persons)
-                .HasForeignKey(x => x.addressId);
-
-
-            
-
-
-
         }
     }
 }
