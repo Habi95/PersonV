@@ -12,13 +12,16 @@ namespace PersonController
         List<Person> Persons = new List<Person>();
         PersonEntities Entities = new PersonEntities();
 
-        public PersonRepository RepositoryPerson;
-        public AddressRepository RepositoryAddress;
+        private PersonRepository RepositoryPerson;
+        private AddressRepository RepositoryAddress;
+        private AddresPersonRepository RepositoryAddressPerson;
+
 
         public Datahandling()
         {
             RepositoryPerson = new PersonRepository(Entities);
             RepositoryAddress = new AddressRepository(Entities);
+            RepositoryAddressPerson = new AddresPersonRepository(Entities);
             Update();
         }
 
@@ -92,7 +95,11 @@ namespace PersonController
 
         public void AddAddress(Address address)
         {
-
+            var personId = address.id;
+            address.id = 0;
+            var addressId = RepositoryAddress.Create(address);
+            var AddressPerson = new AddressPerson() { addressId = addressId, personId = personId };
+            RepositoryAddressPerson.Create(AddressPerson);
         }
     }
 }
