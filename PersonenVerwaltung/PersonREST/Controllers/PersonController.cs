@@ -19,9 +19,9 @@ namespace PersonREST.Controllers
         Datahandling datahandling = new Datahandling();
 
         [HttpGet]
-        public List<BasePerson> getAllPersonsBasicData()
+        public List</*Base*/Person> getAllPersonsBasicData()
         {
-            return datahandling.FindAllPersonsBasicData();
+            return datahandling.findAll(); //datahandling.FindAllPersonsBasicData();
         }
 
         [HttpGet("{id}")] 

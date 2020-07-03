@@ -45,8 +45,8 @@ namespace PersonData.repo
                    x.contacts)
                .Include(x =>
                    x.comments)
-               .Include(x =>
-                    x.documents)
+               //.Include(x =>
+               //   x.documents)
                //.ThenInclude(x =>
                //     x.documentClass)
                //.ThenInclude(x =>

@@ -22,6 +22,10 @@ namespace DbTest
            
             var entities = new PersonEntities();
             PersonRepository repo = new PersonRepository(entities);
+            repo.FindAll();
+            DocumentRepository document = new DocumentRepository(entities);
+
+            var x = document.GetDocuments("Person");
 
             //repo.GetPersons();
             //repo.GetAddresses();
@@ -75,9 +79,8 @@ namespace DbTest
             //entities.Update(x);
             //entities.SaveChanges();
             //var xy = repo.FindAll();
-            //
-            //
-            //
+           
+
                 Console.WriteLine(" ");
         }
     }

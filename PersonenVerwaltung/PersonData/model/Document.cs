@@ -27,6 +27,6 @@ namespace PersonData
         [Column("type", TypeName = "varchar(50)")]
          public EDocumentType type { get; set; }
 
-        public List<DocumentPerson> person { get; set; }
+        //public List<DocumentClass> person { get; set; }
     }
 }

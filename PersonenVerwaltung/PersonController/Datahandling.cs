@@ -1,4 +1,5 @@
-﻿using PersonData;
+﻿using Org.BouncyCastle.Asn1.Crmf;
+using PersonData;
 using PersonData.model;
 using PersonData.repo;
 using System;
@@ -14,11 +15,13 @@ namespace PersonController
 
         public PersonRepository RepositoryPerson;
         public AddressRepository RepositoryAddress;
+        public DocumentRepository DocumentRepository;
 
         public Datahandling()
         {
             RepositoryPerson = new PersonRepository(Entities);
             RepositoryAddress = new AddressRepository(Entities);
+            DocumentRepository = new DocumentRepository(Entities);
             Update();
         }
 
@@ -51,7 +54,27 @@ namespace PersonController
         {
             return Persons.FirstOrDefault(x => x.id == id);
         }
-
+        /// <summary>
+        /// Returns all persons with all info
+        /// + persons get document
+        /// </summary>
+        /// <returns></returns>
+        public List<Person> findAll()
+        {
+            List<Person> per = RepositoryPerson.FindAll();
+            Dictionary<int,List<Document>> doc = DocumentRepository.GetDocuments(typeof(Person).Name.ToString());
+            foreach (var docDic in doc)
+            {
+                foreach (var perList in per)
+                {
+                    if (docDic.Key == perList.id)
+                    {
+                        perList.documents = docDic.Value;
+                    }
+                }
+            }
+            return per;
+        }
         /// <summary>
         /// Returns basic data form ALl Persons
         /// </summary>
@@ -94,5 +117,7 @@ namespace PersonController
         {
 
         }
+
+        
     }
 }
