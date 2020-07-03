@@ -13,10 +13,11 @@ namespace PersonController
         PersonEntities entities = new PersonEntities();
 
         public PersonRepository repository;
-
+        public DocumentRepository documentRepository;
         public Datahandling()
         {
             repository = new PersonRepository(entities);
+            documentRepository = new DocumentRepository(entities);
             UpdatePersons();
         }
 

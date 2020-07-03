@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,16 +29,29 @@ namespace PersonData.repo
             entities.SaveChanges();
         }
 
+        //public IList GetDocuments<T>(int id)
+        //{
+        //    $"select * from documents where class = {typeof(T).Name} and class_id = {id}";
+        //}
+
         public List<Person> FindAll()
         {            
             return entities.person
                .Include(x =>
                    x.addresses)
-               .ThenInclude(x => x.address)
+               .ThenInclude(x =>
+                   x.address)
                .Include(x =>
                    x.contacts)
                .Include(x =>
                    x.comments)
+               .Include(x =>
+                    x.documents)
+               //.ThenInclude(x =>
+               //     x.documentClass)
+               //.ThenInclude(x =>
+               //     x.documents)
+               .AsNoTracking()
                .ToList();
         }
 
