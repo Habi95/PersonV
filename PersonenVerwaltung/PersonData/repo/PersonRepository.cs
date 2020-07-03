@@ -8,7 +8,6 @@ namespace PersonData.repo
 {
     public class PersonRepository : Repository<Person>
     {
-       
         private PersonEntities entities;
 
         public PersonRepository(PersonEntities entities)
@@ -30,14 +29,14 @@ namespace PersonData.repo
 
         public List<Person> FindAll()
         {            
-            return entities.person
+         return entities.person
                .Include(x =>
                    x.addresses)
                .ThenInclude(x => x.address)
                .Include(x =>
                    x.contacts)
                .Include(x =>
-                   x.comments)
+                   x.comments).AsNoTracking()
                .ToList();
         }
 
@@ -48,23 +47,14 @@ namespace PersonData.repo
 
         public void Update(Person entity)
         {
-            //entities.person.Update(entity);
+            entity.modifyAt = DateTime.Now; // Todoo: find out what was changed
 
-            var exist = entities.person.Find(entity.id);
-
-            for (int i = 0; i < exist.addresses.Count(); i++)
-            {
-                if (exist.addresses[i] != entity.addresses[i])
-                {
-                    //entities.person.Find(exist.id).addresses[i].address = entity.addresses[i].address;
-                    exist.addresses[i].address = entity.addresses[i].address;
-                }
-            }
-
-            //entities.Entry(exist).CurrentValues.SetValues(entity);
-            entities.Update(exist);
+            entities.Update(entity);
             entities.SaveChanges();
         }
+
+       
+
 
         //public void GetPersons()
         //{

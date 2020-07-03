@@ -19,8 +19,8 @@ namespace PersonData
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //192.168.0.94
-            optionsBuilder.UseMySQL("server=localhost;database=dcv;user=root;Convert Zero Datetime=True");
+            //
+            optionsBuilder.UseMySQL("server=192.168.0.94;database=dcv;user=root;Convert Zero Datetime=True");
             //optionsBuilder.EnableSensitiveDataLogging();
         }
 
