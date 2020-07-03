@@ -5,9 +5,14 @@ using System.Text;
 
 namespace PersonData.repo
 {
-    class AddressRepository : Repository<Address>
+    public class AddressRepository : Repository<Address>
     {
         PersonEntities entities = new PersonEntities();
+
+        public AddressRepository(PersonEntities entities)
+        {
+            this.entities = entities;
+        }
 
         public int Create(Address address)
         {

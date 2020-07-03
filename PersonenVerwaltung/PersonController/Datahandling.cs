@@ -10,15 +10,16 @@ namespace PersonController
     public class Datahandling
     {
         List<Person> Persons = new List<Person>();
-        PersonEntities entities = new PersonEntities();
+        PersonEntities Entities = new PersonEntities();
 
-        public PersonRepository repository;
-        public DocumentRepository documentRepository;
+        public PersonRepository RepositoryPerson;
+        public AddressRepository RepositoryAddress;
+
         public Datahandling()
         {
-            repository = new PersonRepository(entities);
-            documentRepository = new DocumentRepository(entities);
-            UpdatePersons();
+            RepositoryPerson = new PersonRepository(Entities);
+            RepositoryAddress = new AddressRepository(Entities);
+            Update();
         }
 
         /// <summary>
@@ -27,8 +28,8 @@ namespace PersonController
         /// <param name="person"></param>
         public void AddPerson(Person person)
         {
-            repository.Create(person);
-            UpdatePersons();
+            RepositoryPerson.Create(person);
+            Update();
         }
 
         /// <summary>
@@ -37,8 +38,8 @@ namespace PersonController
         /// <param name="person"></param>
         public void UpdatePerson(Person person)
         {
-            repository.Update(person);
-            UpdatePersons();
+            RepositoryPerson.Update(person);
+            Update();
         }
 
         /// <summary>
@@ -82,11 +83,16 @@ namespace PersonController
         }
 
         /// <summary>
-        /// Finds all Persons from Mysql DB
+        /// Gets all Data from Mysql DB
         /// </summary>
-        private void UpdatePersons()
+        private void Update()
         {
-            Persons = repository.FindAll();
+            Persons = RepositoryPerson.FindAll();
+        }
+
+        public void AddAddress(Address address)
+        {
+
         }
     }
 }

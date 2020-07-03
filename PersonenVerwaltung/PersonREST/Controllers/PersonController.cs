@@ -51,5 +51,13 @@ namespace PersonREST.Controllers
             datahandling.AddPerson(person);
             return Accepted();
         }
+        [HttpPost("address")]
+        public IActionResult CreateAddress(Address address)
+        {
+            address.createdAt = DateTime.Now;
+            address.modifyAt = DateTime.Now;
+            datahandling.AddAddress(address);
+            return Accepted();
+        }
     }
 }

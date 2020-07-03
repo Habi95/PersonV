@@ -55,7 +55,11 @@ namespace DbTest
             //}) ;
             //entities.SaveChanges();
             //var adr = entities.address.FirstOrDefault();
-            //var x = entities.person.FirstOrDefault();
+           //var y = entities.documents.FirstOrDefault();
+           // var x = entities.person.FirstOrDefault();
+           // var k = entities.documentperson.Add(new DocumentPerson() { document_Id = y.Id, person_Id = x.id });
+           // entities.SaveChanges();
+           // var o = entities.person.FirstOrDefault();
             //entities.addressperson.Add(new AddressPerson() 
             //{
             //    addressId = adr.id,
@@ -74,7 +78,7 @@ namespace DbTest
             //
             //
             //
-            //    Console.WriteLine(" ");
+                Console.WriteLine(" ");
         }
     }
 }
