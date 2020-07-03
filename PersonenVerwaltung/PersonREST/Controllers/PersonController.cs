@@ -18,16 +18,29 @@ namespace PersonREST.Controllers
     {
         Datahandling datahandling = new Datahandling();
 
+        /// <summary>
+        /// base.url/Person 
+        /// </summary>
+        /// <returns>A list of all Base Person Objects from the DB</returns>
         [HttpGet]
-        public List<BasePerson> getAllPersonsBasicData()
+        public ActionResult<List<BasePerson>> getAllPersonsBasicData()
         {
-            return datahandling.FindAllPersonsBasicData();
+            var personList = datahandling.FindAllPersonsBasicData();
+            if (personList == null)
+            {
+                return NotFound();
+            }
+            return personList;
         }
 
+        /// <summary>
+        /// base.url/Person/{id}
+        /// </summary>
+        /// <param name="id">Person id</param>
+        /// <returns>Object of Person</returns>
         [HttpGet("{id}")] 
         public ActionResult<Person> GetPerson(int id)
         {
-            
             var person = datahandling.FindPerson(id);
             if (person == null)
             {
@@ -36,29 +49,70 @@ namespace PersonREST.Controllers
             return person;
         }
 
+        /// <summary>
+        /// base.url/Person
+        /// </summary>
+        /// <param name="person">Object of Person with changed parameters</param>
+        /// <returns>HttpStatusCode</returns>
         [HttpPut]
-        public HttpStatusCode UpdatePerson(Person person)
+        public void UpdatePerson(Person person)
         {
-            datahandling.UpdatePerson(person);
-            return HttpStatusCode.Created;
+            if (person.id != 0)
+            {
+                try
+                {
+                    datahandling.UpdatePerson(person);
+                }
+                catch (PersonAlreadyExistsException ex)
+                {
+                    Response.StatusCode = 500;
+                    Response.WriteAsync(ex.Message);
+                    throw;
+                }                
+                catch (Exception)
+                {
+                    Response.StatusCode = 500;
+                    throw;
+                }
+
+                Response.StatusCode = 201;
+            }
+            else
+            {
+                Response.StatusCode = 409;
+            }
         }
 
         [HttpPost]
-        public IActionResult Create(Person person)
+        public HttpStatusCode Create(Person person)
         {
-            person.createdAt = DateTime.Now;
-            person.modifyAt = DateTime.Now;
-            datahandling.AddPerson(person);
-            return Accepted();
+            if (person.id == 0)
+            {
+                person.createdAt = DateTime.Now;
+                person.modifyAt = DateTime.Now;
+                datahandling.AddPerson(person);
+                return HttpStatusCode.Created;
+            }
+            else
+            {
+                return HttpStatusCode.Conflict;
+            }
         }
 
-        [HttpPost("address")]
-        public IActionResult CreateAddress(Address address)
+        [HttpPost("address/{id}")]
+        public HttpStatusCode CreateAddress(int id, Address address)
         {
-            address.createdAt = DateTime.Now;
-            address.modifyAt = DateTime.Now;
-            datahandling.AddAddress(address);
-            return Accepted();
+            if (address.id == 0 && id != 0)
+            {
+                address.createdAt = DateTime.Now;
+                address.modifyAt = DateTime.Now;
+                datahandling.AddAddress(id, address);
+                return HttpStatusCode.Created;
+            }
+            else
+            {
+                return HttpStatusCode.Conflict;
+            }
         }
     }
 }

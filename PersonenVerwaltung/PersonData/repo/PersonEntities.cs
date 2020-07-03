@@ -32,6 +32,7 @@ namespace PersonData
             modelBuilder.Entity<Address>().HasKey(x => x.id);
             //entity for personTable
             modelBuilder.Entity<Person>().HasKey(x => x.id);
+            modelBuilder.Entity<Person>().Property(x => x.name1).IsRequired();
             //entity for contactTable
             modelBuilder.Entity<Contact>().HasKey(x => x.id);
             //entity for commentTable

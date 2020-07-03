@@ -62,7 +62,7 @@ namespace PersonController
         public List<BasePerson> FindAllPersonsBasicData()
         {
             List<BasePerson> output = new List<BasePerson>();
-            return Persons.ConvertAll(c => CreateBasePerson(c));//Persons.ToList<BasePerson>();//.ConvertAll(x => (BasePerson)x);
+            return Persons.ConvertAll(c => CreateBasePerson(c));
         }
 
         /// <summary>
@@ -93,10 +93,9 @@ namespace PersonController
             Persons = RepositoryPerson.FindAll();
         }
 
-        public void AddAddress(Address address)
+        public void AddAddress(int id, Address address)
         {
-            var personId = address.id;
-            address.id = 0;
+            var personId = id;
             var addressId = RepositoryAddress.Create(address);
             var AddressPerson = new AddressPerson() { addressId = addressId, personId = personId };
             RepositoryAddressPerson.Create(AddressPerson);
