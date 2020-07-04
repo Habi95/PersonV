@@ -49,7 +49,7 @@ namespace PersonData.repo
         }
         public Dictionary<int, List<Document>> GetDocuments(string classType)
         {
-            Dictionary<int, List<Document>> dd = new Dictionary<int, List<Document>>();
+            Dictionary<int, List<Document>> documentDic = new Dictionary<int, List<Document>>();
             List<Document> doclist;
             MySqlCommand command = connection().CreateCommand();
             MySqlDataReader dataReader;
@@ -62,35 +62,33 @@ namespace PersonData.repo
                 while (dataReader.Read())
                 {
                     int id = (int)(int?)dataReader[3];
-                    var x = dataReader[8].ToString();
-                    var y = dataReader[10].ToString();
+                    var reminder = dataReader[8].ToString();
+                    var modify = dataReader[10].ToString();
                     Document doc = new Document()
                     {
                      Id = (int)dataReader[4],
                      Url = dataReader[5].ToString(),
                      Name = dataReader[6].ToString(),
-                    Comment = dataReader[7].ToString(),                    
-                     ReminderId = string.IsNullOrEmpty(x) ? 0 : int.Parse(x),
+                     Comment = dataReader[7].ToString(),                    
+                     ReminderId = string.IsNullOrEmpty(reminder) ? 0 : int.Parse(reminder),
                      CreatedAt = (DateTime)dataReader[9],                    
-                     ModifiedAt = string.IsNullOrEmpty(y) ? DateTime.Parse("01.01.2000 00:00:00") : DateTime.Parse(y),
+                     ModifiedAt = string.IsNullOrEmpty(modify) ? DateTime.Parse("01.01.2000 00:00:00") : DateTime.Parse(modify),
                      type = (EDocumentType)dataReader[11]
-
                     };
-                    if (!dd.ContainsKey(id))
+                    if (!documentDic.ContainsKey(id))
                     {
                         doclist = new List<Document>();
-                        dd.Add(id, doclist);
-                        dd[id].Add(doc);
-
+                        documentDic.Add(id, doclist);
+                        documentDic[id].Add(doc);
                     }
                     else
                     {
-                        dd[id].Add(doc);
+                        documentDic[id].Add(doc);
                     }
                 }
             }
 
-            return dd;
+            return documentDic;
 
         }
 

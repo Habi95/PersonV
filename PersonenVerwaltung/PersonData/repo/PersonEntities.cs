@@ -36,7 +36,8 @@ namespace PersonData
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             
-            optionsBuilder.UseMySQL(DbLocal);
+           var f = optionsBuilder.UseMySQL(DbLocal);
+            Console.WriteLine();
             //optionsBuilder.EnableSensitiveDataLogging();
         }
 

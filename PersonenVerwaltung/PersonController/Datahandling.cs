@@ -10,18 +10,22 @@ namespace PersonController
 {
     public class Datahandling
     {
-        List<Person> Persons = new List<Person>();
+
         PersonEntities Entities = new PersonEntities();
 
         public PersonRepository RepositoryPerson;
         public AddressRepository RepositoryAddress;
-        public DocumentRepository DocumentRepository;
+        public DocumentRepository RepositoryDocument;
+        public AddressPersonRepository RepositoryAddressPerson;
+        Controller controller = new Controller();
+        List<Person> peopleList;
 
         public Datahandling()
         {
             RepositoryPerson = new PersonRepository(Entities);
             RepositoryAddress = new AddressRepository(Entities);
-            DocumentRepository = new DocumentRepository(Entities);
+            RepositoryDocument = new DocumentRepository(Entities);
+            RepositoryAddressPerson = new AddressPersonRepository(Entities);
             Update();
         }
 
@@ -52,28 +56,7 @@ namespace PersonController
         /// <returns>The found Person</returns>
         public Person FindPerson(int id)
         {
-            return Persons.FirstOrDefault(x => x.id == id);
-        }
-        /// <summary>
-        /// Returns all persons with all info
-        /// + persons get document
-        /// </summary>
-        /// <returns></returns>
-        public List<Person> findAll()
-        {
-            List<Person> per = RepositoryPerson.FindAll();
-            Dictionary<int,List<Document>> doc = DocumentRepository.GetDocuments(typeof(Person).Name.ToString());
-            foreach (var docDic in doc)
-            {
-                foreach (var perList in per)
-                {
-                    if (docDic.Key == perList.id)
-                    {
-                        perList.documents = docDic.Value;
-                    }
-                }
-            }
-            return per;
+            return peopleList.FirstOrDefault(x => x.id == id); //Persons.FirstOrDefault(x => x.id == id);
         }
         /// <summary>
         /// Returns basic data form ALl Persons
@@ -81,8 +64,8 @@ namespace PersonController
         /// <returns></returns>
         public List<BasePerson> FindAllPersonsBasicData()
         {
-            List<BasePerson> output = new List<BasePerson>();
-            return Persons.ConvertAll(c => CreateBasePerson(c));//Persons.ToList<BasePerson>();//.ConvertAll(x => (BasePerson)x);
+            Update();
+            return peopleList.ConvertAll(c => CreateBasePerson(c));//Persons.ToList<BasePerson>();//.ConvertAll(x => (BasePerson)x);
         }
 
         /// <summary>
@@ -110,14 +93,34 @@ namespace PersonController
         /// </summary>
         private void Update()
         {
-            Persons = RepositoryPerson.FindAll();
-        }
+            List<Person> per = RepositoryPerson.FindAll();
+            Dictionary<int, List<Document>>
+                doc = RepositoryDocument.GetDocuments(typeof(Person).Name.ToString());
+            if (peopleList != null)
+            {
+                peopleList.Clear();
+            }
 
+            peopleList = controller.GetPeople(per, doc);
+        }
+        /// <summary>
+        /// address id is by getting object id from person
+        /// </summary>
+        /// <param name="address"></param>
         public void AddAddress(Address address)
         {
+            int personId = address.id;
+            address.id = 0;
+            int addressId = RepositoryAddress.Create(address);
+            RepositoryAddressPerson.Create(new AddressPerson()
+            {
+                addressId = addressId,
+                personId = personId
+            });
+            Entities.SaveChanges();
 
         }
 
-        
+
     }
 }
