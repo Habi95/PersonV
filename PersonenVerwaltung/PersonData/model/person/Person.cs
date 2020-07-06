@@ -1,4 +1,5 @@
 ﻿
+using Data.Models;
 using PersonData.model;
 using System;
 using System.Collections.Generic;
@@ -27,8 +28,17 @@ namespace PersonData
         public List<Comment> comments { get; set; }
         public List<Contact> contacts { get; set; }
 
+        public List<RelCourseTrainer> courseTrainers { get; set; }
+        public List<RelCourseParticipant> courseParticipants { get; set;}
+
         [NotMapped]
         public List<Document> documents { get; set; }
+
+        [NotMapped]
+        public List<Course> CompletedCourse { get; set; } 
+        [NotMapped]
+        public List<Course> NotCompletedCourse { get; set; }
+
 
     }
 }

@@ -39,18 +39,20 @@ namespace PersonData.repo
             return entities.person
                .Include(x =>
                    x.addresses)
-               .ThenInclude(x =>
-                   x.address)
+                    .ThenInclude(x =>
+                        x.address)
                .Include(x =>
                    x.contacts)
                .Include(x =>
                    x.comments)
-               //.Include(x =>
-               //   x.documents)
-               //.ThenInclude(x =>
-               //     x.documentClass)
-               //.ThenInclude(x =>
-               //     x.documents)
+              .Include(x =>
+                   x.courseParticipants)
+                    .ThenInclude(x =>
+                        x.Course)
+               .Include(x =>
+                    x.courseTrainers)
+                        .ThenInclude(x => 
+                            x.Course)            
                .AsNoTracking()
                .ToList();
         }

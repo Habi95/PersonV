@@ -1,4 +1,5 @@
-﻿using Org.BouncyCastle.Asn1.Crmf;
+﻿using Data.Models;
+using Org.BouncyCastle.Asn1.Crmf;
 using PersonData;
 using PersonData.model;
 using PersonData.repo;
@@ -17,6 +18,7 @@ namespace PersonController
         public AddressRepository RepositoryAddress;
         public DocumentRepository RepositoryDocument;
         public AddressPersonRepository RepositoryAddressPerson;
+        public CourseRepository RepositoryCourse;
         Controller controller = new Controller();
         List<Person> peopleList;
 
@@ -26,6 +28,7 @@ namespace PersonController
             RepositoryAddress = new AddressRepository(Entities);
             RepositoryDocument = new DocumentRepository(Entities);
             RepositoryAddressPerson = new AddressPersonRepository(Entities);
+            RepositoryCourse = new CourseRepository(Entities);
             Update();
         }
 
@@ -96,12 +99,15 @@ namespace PersonController
             List<Person> per = RepositoryPerson.FindAll();
             Dictionary<int, List<Document>>
                 doc = RepositoryDocument.GetDocuments<Person>();
+            var result = RepositoryCourse.CompletedCourses<int, List<Course>>();           
             if (peopleList != null)
             {
                 peopleList.Clear();
-            }
 
-            peopleList = controller.GetPeople(per, doc);
+            }         
+                peopleList = controller.GetPeople(per, doc,result.Item1,result.Item2);
+            
+
         }
         /// <summary>
         /// address id is by getting object id from person
