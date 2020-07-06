@@ -11,7 +11,8 @@ namespace PersonData.model.ENUM
         Bill,
         Dun,
         Diploma,
+        Information,
         Note,
-        Other,
+        Other
     }
 }

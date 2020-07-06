@@ -17,7 +17,7 @@ namespace PersonData.repo
 
         private MySqlConnection connection()
         {
-            var conn = new MySqlConnection(entities.DbLocal);
+            var conn = new MySqlConnection(entities.DbServer);
             conn.Open();
             return conn;
         }
@@ -47,7 +47,7 @@ namespace PersonData.repo
         {
             throw new NotImplementedException();
         }
-        public Dictionary<int, List<Document>> GetDocuments(string classType)
+        public Dictionary<int, List<Document>> GetDocuments<T>()
         {
             Dictionary<int, List<Document>> documentDic = new Dictionary<int, List<Document>>();
             List<Document> doclist;
@@ -56,7 +56,7 @@ namespace PersonData.repo
             command.CommandText =
             $"SELECT * FROM `document_class`" +
             $" Inner JOIN documents on doc_id = documents.id " +
-            $"WHERE class = '{classType}'";
+            $"WHERE class = '{typeof(T).Name}'";
             using (dataReader = command.ExecuteReader())
             {
                 while (dataReader.Read())
@@ -66,14 +66,14 @@ namespace PersonData.repo
                     var modify = dataReader[10].ToString();
                     Document doc = new Document()
                     {
-                     Id = (int)dataReader[4],
-                     Url = dataReader[5].ToString(),
-                     Name = dataReader[6].ToString(),
-                     Comment = dataReader[7].ToString(),                    
-                     ReminderId = string.IsNullOrEmpty(reminder) ? 0 : int.Parse(reminder),
-                     CreatedAt = (DateTime)dataReader[9],                    
-                     ModifiedAt = string.IsNullOrEmpty(modify) ? DateTime.Parse("01.01.2000 00:00:00") : DateTime.Parse(modify),
-                     type = (EDocumentType)dataReader[11]
+                        Id = (int)dataReader[4],
+                        Url = dataReader[5].ToString(),
+                        Name = dataReader[6].ToString(),
+                        Comment = dataReader[7].ToString(),
+                        ReminderId = string.IsNullOrEmpty(reminder) ? 0 : int.Parse(reminder),
+                        CreatedAt = (DateTime)dataReader[9],
+                        ModifiedAt = string.IsNullOrEmpty(modify) ? DateTime.Parse("01.01.2000 00:00:00") : DateTime.Parse(modify),
+                        type = (EDocumentType) Enum.Parse(typeof(EDocumentType), dataReader[11].ToString(),true)
                     };
                     if (!documentDic.ContainsKey(id))
                     {

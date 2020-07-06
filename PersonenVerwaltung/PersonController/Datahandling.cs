@@ -95,7 +95,7 @@ namespace PersonController
         {
             List<Person> per = RepositoryPerson.FindAll();
             Dictionary<int, List<Document>>
-                doc = RepositoryDocument.GetDocuments(typeof(Person).Name.ToString());
+                doc = RepositoryDocument.GetDocuments<Person>();
             if (peopleList != null)
             {
                 peopleList.Clear();
