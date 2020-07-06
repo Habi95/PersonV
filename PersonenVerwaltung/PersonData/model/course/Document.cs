@@ -1,4 +1,4 @@
-﻿using PersonData.model;
+﻿
 using PersonData.model.ENUM;
 using System;
 using System.Collections.Generic;
@@ -26,6 +26,8 @@ namespace PersonData
         public DateTime? ModifiedAt { get; set; }
         [Column("type", TypeName = "varchar(50)")]
          public EDocumentType type { get; set; }
+
+        
 
     }
 }

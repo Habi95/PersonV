@@ -8,12 +8,12 @@ using System.Text;
 
 namespace PersonData
 {
-    //TODO add entity document and other stuff for person
+    //TODO add list course teacher and student  list of courses , same realton communication as documents
     
    public class Person : BasePerson
     {
         public string title { get; set; }
-        public int? sv_nr {get; set; }   
+        public decimal? sv_nr {get; set; }   
         public string gender { get; set; }
         public string busy { get; set; }
         public string busy_by { get; set; }
@@ -29,5 +29,6 @@ namespace PersonData
 
         [NotMapped]
         public List<Document> documents { get; set; }
+
     }
 }
