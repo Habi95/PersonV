@@ -4,6 +4,7 @@ using PersonData.repo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace PersonController
 {
@@ -31,8 +32,8 @@ namespace PersonController
         /// <param name="person"></param>
         public void AddPerson(Person person)
         {
-            RepositoryPerson.Create(person);
-            Update();
+                RepositoryPerson.Create(person);
+                Update();
         }
 
         /// <summary>
@@ -41,8 +42,18 @@ namespace PersonController
         /// <param name="person"></param>
         public void UpdatePerson(Person person)
         {
-            RepositoryPerson.Update(person);
-            Update();
+            try
+            {
+                if (Persons.FirstOrDefault(x => x.id == person.id).id != null)
+                {
+                    RepositoryPerson.Update(person);
+                    Update();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new PersonException($"Person with ID {person.id} does not exist!");
+            }
         }
 
         /// <summary>

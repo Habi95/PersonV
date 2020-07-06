@@ -63,12 +63,12 @@ namespace PersonREST.Controllers
                 {
                     datahandling.UpdatePerson(person);
                 }
-                catch (PersonAlreadyExistsException ex)
+                catch (PersonException ex)
                 {
                     Response.StatusCode = 500;
                     Response.WriteAsync(ex.Message);
                     throw;
-                }                
+                }
                 catch (Exception)
                 {
                     Response.StatusCode = 500;
@@ -80,22 +80,32 @@ namespace PersonREST.Controllers
             else
             {
                 Response.StatusCode = 409;
+                Response.WriteAsync("PersonID incorrect!");
             }
         }
 
         [HttpPost]
-        public HttpStatusCode Create(Person person)
+        public void Create(Person person)
         {
             if (person.id == 0)
             {
-                person.createdAt = DateTime.Now;
-                person.modifyAt = DateTime.Now;
-                datahandling.AddPerson(person);
-                return HttpStatusCode.Created;
+                try
+                {
+                    person.createdAt = DateTime.Now;
+                    person.modifyAt = DateTime.Now;
+                    datahandling.AddPerson(person);
+                    Response.StatusCode = 201;
+                }
+                catch (Exception ex)
+                {
+                    Response.StatusCode = 500;
+                    throw;
+                }
             }
             else
             {
-                return HttpStatusCode.Conflict;
+                Response.StatusCode = 409;
+                Response.WriteAsync("Person ID incorrect!");
             }
         }
 

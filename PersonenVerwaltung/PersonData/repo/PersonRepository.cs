@@ -49,7 +49,7 @@ namespace PersonData.repo
         {
             entity.modifyAt = DateTime.Now; // Todoo: find out what was changed
 
-            //if (entity.id > 0)
+            //if ()
             //    throw new PersonAlreadyExistsException($"Person mit der ID {entity.id} existiert bereits!");
             entities.Update(entity);
             entities.SaveChanges();
