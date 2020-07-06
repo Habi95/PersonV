@@ -13,7 +13,7 @@ namespace PersonData
    public class Person : BasePerson
     {
         public string title { get; set; }
-        public int? sv_nr {get; set; }   
+        public decimal? sv_nr {get; set; }   
         public string gender { get; set; }
         public string busy { get; set; }
         public string busy_by { get; set; }

@@ -11,6 +11,7 @@ namespace PersonController
     public class Datahandling
     {
         List<Person> Persons = new List<Person>();
+        List<Address> Addresses = new List<Address>();
         PersonEntities Entities = new PersonEntities();
 
         private PersonRepository RepositoryPerson;
@@ -44,13 +45,13 @@ namespace PersonController
         {
             try
             {
-                if (Persons.FirstOrDefault(x => x.id == person.id).id != null)
+                if (Persons.FirstOrDefault(x => x.id == person.id) != null)
                 {
                     RepositoryPerson.Update(person);
                     Update();
                 }
             }
-            catch (Exception ex)
+            catch (NullReferenceException)
             {
                 throw new PersonException($"Person with ID {person.id} does not exist!");
             }
@@ -63,7 +64,22 @@ namespace PersonController
         /// <returns>The found Person</returns>
         public Person FindPerson(int id)
         {
-            return Persons.FirstOrDefault(x => x.id == id);
+            try
+            {
+                var tempPerson =  Persons.FirstOrDefault(x => x.id == id);
+                if (tempPerson != null)
+                {
+                    return tempPerson;
+                }
+                else
+                {
+                    throw new PersonException($"Person with ID {id} does not exist!");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -72,8 +88,14 @@ namespace PersonController
         /// <returns></returns>
         public List<BasePerson> FindAllPersonsBasicData()
         {
-            List<BasePerson> output = new List<BasePerson>();
-            return Persons.ConvertAll(c => CreateBasePerson(c));
+            try
+            {
+                return Persons.ConvertAll(c => CreateBasePerson(c));
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -102,14 +124,37 @@ namespace PersonController
         private void Update()
         {
             Persons = RepositoryPerson.FindAll();
+            Addresses = RepositoryAddress.FindAll();
         }
 
         public void AddAddress(int id, Address address)
         {
             var personId = id;
-            var addressId = RepositoryAddress.Create(address);
-            var AddressPerson = new AddressPerson() { addressId = addressId, personId = personId };
-            RepositoryAddressPerson.Create(AddressPerson);
+            var addressId = 0;
+
+            try
+            {
+                if (Addresses.FirstOrDefault(x => x.street == address.street) == null)
+                {
+                    addressId = RepositoryAddress.Create(address);
+                }
+                else if (Addresses.Where(x => x.street == address.street).ToList().FirstOrDefault(x => x.zip == address.zip) == null)
+                {
+                    addressId = RepositoryAddress.Create(address);
+                }
+                else
+                {
+                    addressId = Addresses.Where(x => x.street == address.street).ToList().FirstOrDefault(x => x.zip == address.zip).id;
+                }
+
+                var AddressPerson = new AddressPerson() { addressId = addressId, personId = personId };
+                RepositoryAddressPerson.Create(AddressPerson);
+                Update();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

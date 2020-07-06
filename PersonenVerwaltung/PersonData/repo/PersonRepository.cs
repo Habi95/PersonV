@@ -28,16 +28,17 @@ namespace PersonData.repo
         }
 
         public List<Person> FindAll()
-        {            
-         return entities.person
-               .Include(x =>
-                   x.addresses)
-               .ThenInclude(x => x.address)
-               .Include(x =>
-                   x.contacts)
-               .Include(x =>
-                   x.comments).AsNoTracking()
-               .ToList();
+        {
+            return entities.person
+                  .Include(x =>
+                      x.addresses)
+                  .ThenInclude(x => x.address)
+                  .Include(x =>
+                      x.contacts)
+                  .Include(x =>
+                      x.comments)
+                  .AsNoTracking()
+                  .ToList();
         }
 
         public Person FindOne(int id)
@@ -47,30 +48,8 @@ namespace PersonData.repo
 
         public void Update(Person entity)
         {
-            entity.modifyAt = DateTime.Now; // Todoo: find out what was changed
-
-            //if ()
-            //    throw new PersonAlreadyExistsException($"Person mit der ID {entity.id} existiert bereits!");
             entities.Update(entity);
             entities.SaveChanges();
         }
-
-       
-
-
-        //public void GetPersons()
-        //{
-        //    //this methode must be called for entities fill the child list / parent class
-        //    var x = entities.person
-        //       .Include(x =>
-        //           x.addresses)
-        //       .ThenInclude(x => x.address)
-        //       .Include(x =>
-        //           x.contacts)
-        //       .Include(x =>
-        //           x.comments)
-        //       .ToList();
-        //    Console.WriteLine();
-        //}
     }
 }

@@ -19,57 +19,75 @@ namespace PersonREST.Controllers
         Datahandling datahandling = new Datahandling();
 
         /// <summary>
-        /// base.url/Person 
+        /// base.url/Person Lists all Base Persons 
         /// </summary>
         /// <returns>A list of all Base Person Objects from the DB</returns>
         [HttpGet]
-        public ActionResult<List<BasePerson>> getAllPersonsBasicData()
+        public List<BasePerson> getAllPersonsBasicData()
         {
-            var personList = datahandling.FindAllPersonsBasicData();
-            if (personList == null)
+            try
             {
-                return NotFound();
+                var personList = datahandling.FindAllPersonsBasicData();
+                Response.StatusCode = 200;
+                return personList;
             }
-            return personList;
+            catch (Exception) // general Exception
+            {
+                Response.StatusCode = 500;
+                throw;
+            }
         }
 
         /// <summary>
-        /// base.url/Person/{id}
+        /// base.url/Person/{id} returns one Person
         /// </summary>
         /// <param name="id">Person id</param>
         /// <returns>Object of Person</returns>
-        [HttpGet("{id}")] 
-        public ActionResult<Person> GetPerson(int id)
+        [HttpGet("{id}")]
+        public Person GetPerson(int id)
         {
-            var person = datahandling.FindPerson(id);
-            if (person == null)
+            try
             {
-                return NotFound();
+                var person = datahandling.FindPerson(id);
+                Response.StatusCode = 200;
+                return person;
             }
-            return person;
+            catch (PersonException ex) // if the person doesn't exists
+            {
+                Response.StatusCode = 500;
+                Response.WriteAsync(ex.Message);
+                throw;
+            }
+            catch (Exception) // general Exception
+            {
+                Response.StatusCode = 500;
+                throw;
+            }
         }
 
+
         /// <summary>
-        /// base.url/Person
+        /// base.url/Person updates one Person 
         /// </summary>
         /// <param name="person">Object of Person with changed parameters</param>
         /// <returns>HttpStatusCode</returns>
         [HttpPut]
         public void UpdatePerson(Person person)
         {
-            if (person.id != 0)
+            if (person.id != 0) // ID has to be greater than 0
             {
                 try
                 {
+                    person.modifyAt = DateTime.Now; // sollte vom Web schon mitkommen!!! weil wir nicht wissen was geändert wurde.
                     datahandling.UpdatePerson(person);
                 }
-                catch (PersonException ex)
+                catch (PersonException ex) // if the person doesn't exists
                 {
                     Response.StatusCode = 500;
                     Response.WriteAsync(ex.Message);
                     throw;
                 }
-                catch (Exception)
+                catch (Exception) // general Exception
                 {
                     Response.StatusCode = 500;
                     throw;
@@ -80,7 +98,7 @@ namespace PersonREST.Controllers
             else
             {
                 Response.StatusCode = 409;
-                Response.WriteAsync("PersonID incorrect!");
+                Response.WriteAsync("Person ID incorrect!");
             }
         }
 
@@ -91,12 +109,12 @@ namespace PersonREST.Controllers
             {
                 try
                 {
-                    person.createdAt = DateTime.Now;
-                    person.modifyAt = DateTime.Now;
+                    person.createdAt = DateTime.Now; // sollte vom Web schon mitkommen!!!
+                    person.modifyAt = DateTime.Now; // sollte vom Web schon mitkommen!!!
                     datahandling.AddPerson(person);
                     Response.StatusCode = 201;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     Response.StatusCode = 500;
                     throw;
@@ -109,19 +127,33 @@ namespace PersonREST.Controllers
             }
         }
 
+        /// <summary>
+        /// Creat's a new Address in DB if the address don't exists
+        /// </summary>
+        /// <param name="id">Person ID</param>
+        /// <param name="address">Address Object</param>
+        /// <returns></returns>
         [HttpPost("address/{id}")]
-        public HttpStatusCode CreateAddress(int id, Address address)
+        public void CreateAddress(int id, Address address)
         {
             if (address.id == 0 && id != 0)
             {
-                address.createdAt = DateTime.Now;
-                address.modifyAt = DateTime.Now;
-                datahandling.AddAddress(id, address);
-                return HttpStatusCode.Created;
+                try
+                {
+                    address.createdAt = DateTime.Now; // sollte vom Web schon mitkommen!!!
+                    address.modifyAt = DateTime.Now; // sollte vom Web schon mitkommen!!!
+                    datahandling.AddAddress(id, address);
+                    Response.StatusCode = 201;
+                }
+                catch (Exception)
+                {
+                    Response.StatusCode = 500;
+                    throw;
+                }
             }
             else
             {
-                return HttpStatusCode.Conflict;
+                Response.StatusCode = 409;
             }
         }
     }

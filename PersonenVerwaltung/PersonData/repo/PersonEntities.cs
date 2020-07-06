@@ -100,11 +100,6 @@ namespace PersonData
                 .HasOne(x => x.document)
                 .WithMany(x => x.person)
                 .HasForeignKey(x => x.document_Id);
-
-
-
-
-
         }
     }
 }
