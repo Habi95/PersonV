@@ -33,8 +33,10 @@ namespace PersonData.repo
                   .Include(x =>
                       x.addresses)
                   .ThenInclude(x => x.address)
+                  .AsNoTracking()
                   .Include(x =>
                       x.contacts)
+                  .AsNoTracking()
                   .Include(x =>
                       x.comments)
                   .AsNoTracking()

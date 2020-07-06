@@ -18,7 +18,9 @@ namespace PersonController
         public DocumentRepository RepositoryDocument;
         public AddressPersonRepository RepositoryAddressPerson;
         Controller controller = new Controller();
+
         List<Person> peopleList;
+        List<Address> Addresses = new List<Address>();
 
         public Datahandling()
         {
@@ -45,8 +47,18 @@ namespace PersonController
         /// <param name="person"></param>
         public void UpdatePerson(Person person)
         {
-            RepositoryPerson.Update(person);
-            Update();
+            try
+            {
+                if (peopleList.FirstOrDefault(x => x.id == person.id) != null)
+                {
+                    RepositoryPerson.Update(person);
+                    Update();
+                }
+            }
+            catch (NullReferenceException)
+            {
+                throw new PersonException($"Person with ID {person.id} does not exist!");
+            }
         }
 
         /// <summary>
@@ -56,7 +68,22 @@ namespace PersonController
         /// <returns>The found Person</returns>
         public Person FindPerson(int id)
         {
-            return peopleList.FirstOrDefault(x => x.id == id); //Persons.FirstOrDefault(x => x.id == id);
+            try
+            {
+                var tempPerson = peopleList.FirstOrDefault(x => x.id == id);
+                if (tempPerson != null)
+                {
+                    return tempPerson;
+                }
+                else
+                {
+                    throw new PersonException($"Person with ID {id} does not exist!");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         /// <summary>
         /// Returns basic data form ALl Persons
@@ -64,8 +91,15 @@ namespace PersonController
         /// <returns></returns>
         public List<BasePerson> FindAllPersonsBasicData()
         {
-            Update();
-            return peopleList.ConvertAll(c => CreateBasePerson(c));//Persons.ToList<BasePerson>();//.ConvertAll(x => (BasePerson)x);
+            Update(); 
+            try
+            {
+                return peopleList.ConvertAll(c => CreateBasePerson(c));
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -102,25 +136,40 @@ namespace PersonController
             }
 
             peopleList = controller.GetPeople(per, doc);
+            Addresses = RepositoryAddress.FindAll();
         }
         /// <summary>
-        /// address id is by getting object id from person
+        /// id == Person ID
         /// </summary>
         /// <param name="address"></param>
-        public void AddAddress(Address address)
+        public void AddAddress(int id, Address address)
         {
-            int personId = address.id;
-            address.id = 0;
-            int addressId = RepositoryAddress.Create(address);
-            RepositoryAddressPerson.Create(new AddressPerson()
+            var personId = id;
+            var addressId = 0;
+
+            try
             {
-                addressId = addressId,
-                personId = personId
-            });
-            Entities.SaveChanges();
+                if (Addresses.FirstOrDefault(x => x.street == address.street) == null)
+                {
+                    addressId = RepositoryAddress.Create(address);
+                }
+                else if (Addresses.Where(x => x.street == address.street).ToList().FirstOrDefault(x => x.zip == address.zip) == null)
+                {
+                    addressId = RepositoryAddress.Create(address);
+                }
+                else
+                {
+                    addressId = Addresses.Where(x => x.street == address.street).ToList().FirstOrDefault(x => x.zip == address.zip).id;
+                }
 
+                var AddressPerson = new AddressPerson() { addressId = addressId, personId = personId };
+                RepositoryAddressPerson.Create(AddressPerson);
+                Update();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
-
-
     }
 }
