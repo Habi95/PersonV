@@ -21,8 +21,6 @@ namespace PersonController
         public CourseRepository RepositoryCourse;
         Controller controller = new Controller();
 
-        List<Person> peopleList;
-        List<Address> Addresses = new List<Address>();
 
         public Datahandling()
         {
@@ -52,8 +50,10 @@ namespace PersonController
         {
             try
             {
-                if (peopleList.FirstOrDefault(x => x.id == person.id) != null)
+                var isExisting = Entities.person.Any(x => x.id == person.id);
+                if (isExisting)
                 {
+                    //peopleList[peopleList.IndexOf(existingPerson)] = person;
                     RepositoryPerson.Update(person);
                     Update();
                 }
@@ -73,7 +73,7 @@ namespace PersonController
         {
             try
             {
-                var tempPerson = peopleList.FirstOrDefault(x => x.id == id);
+                var tempPerson = Entities.person.FirstOrDefault(x => x.id == id);
                 if (tempPerson != null)
                 {
                     return tempPerson;
@@ -94,10 +94,9 @@ namespace PersonController
         /// <returns></returns>
         public List<BasePerson> FindAllPersonsBasicData()
         {
-            Update(); 
             try
             {
-                return peopleList.ConvertAll(c => CreateBasePerson(c));
+                return Entities.person.ToList().ConvertAll(c => CreateBasePerson(c));
             }
             catch (Exception ex)
             {
@@ -130,18 +129,18 @@ namespace PersonController
         /// </summary>
         private void Update()
         {
-            List<Person> per = RepositoryPerson.FindAll();
-            Dictionary<int, List<Document>>
-                doc = RepositoryDocument.GetDocuments<Person>();
-            var result = RepositoryCourse.CompletedCourses<int, List<Course>>();           
-            if (peopleList != null)
-            {
-                peopleList.Clear();
-            }         
-                peopleList = controller.GetPeople(per, doc,result.Item1,result.Item2);
-            
-            //peopleList = controller.GetPeople(per, doc);
-            Addresses = RepositoryAddress.FindAll();
+            //List<Person> per = RepositoryPerson.FindAll();
+            //Dictionary<int, List<Document>>
+            //    doc = RepositoryDocument.GetDocuments<Person>();
+            //var result = RepositoryCourse.CompletedCourses<int, List<Course>>();
+            //if (peopleList != null)
+            //{
+            //    peopleList.Clear();
+            //}
+            ////peopleList = controller.GetPeople(per, doc, result.Item1, result.Item2);
+
+            ////peopleList = controller.GetPeople(per, doc);
+            //Addresses = RepositoryAddress.FindAll();
         }
         /// <summary>
         /// id == Person ID
@@ -154,22 +153,21 @@ namespace PersonController
 
             try
             {
-                if (Addresses.FirstOrDefault(x => x.street == address.street) == null)
+                if (!Entities.address.Any(x => x.street == address.street))
                 {
                     addressId = RepositoryAddress.Create(address);
                 }
-                else if (Addresses.Where(x => x.street == address.street).ToList().FirstOrDefault(x => x.zip == address.zip) == null)
+                else if (!Entities.address.Where(x => x.street == address.street).ToList().Any(x => x.zip == address.zip))
                 {
                     addressId = RepositoryAddress.Create(address);
                 }
                 else
                 {
-                    addressId = Addresses.Where(x => x.street == address.street).ToList().FirstOrDefault(x => x.zip == address.zip).id;
+                    addressId = Entities.address.Where(x => x.street == address.street).ToList().FirstOrDefault(x => x.zip == address.zip).id;
                 }
 
                 var AddressPerson = new AddressPerson() { addressId = addressId, personId = personId };
                 RepositoryAddressPerson.Create(AddressPerson);
-                Update();
             }
             catch (Exception ex)
             {

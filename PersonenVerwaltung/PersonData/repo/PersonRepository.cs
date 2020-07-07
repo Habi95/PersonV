@@ -30,18 +30,22 @@ namespace PersonData.repo
         public List<Person> FindAll()
         {
             return entities.person
+                //.AsNoTracking()
                .Include(x =>
                    x.addresses)
                     .ThenInclude(x =>
                         x.address)
                .Include(x =>
                    x.contacts)
+               //.AsNoTracking()
                .Include(x =>
                    x.comments)
+               //.AsNoTracking()
               .Include(x =>
                    x.courseParticipants)
                     .ThenInclude(x =>
                         x.Course)
+                    //.AsNoTracking()
                .Include(x =>
                     x.courseTrainers)
                         .ThenInclude(x => 
@@ -68,8 +72,13 @@ namespace PersonData.repo
 
         public void Update(Person entity)
         {
-            entities.Update(entity);
-            entities.SaveChanges();
+            //entities.Entry(entity).State = EntityState.Detached;
+            //entities.person.Where(x => x.id == entity.id).AsNoTracking();
+            //using (PersonEntities entities = new PersonEntities())
+            //{
+                entities.Update(entity);
+                entities.SaveChanges();
+            //}
         }
     }
 }
