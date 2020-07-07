@@ -19,7 +19,10 @@ namespace PersonController
         public DocumentRepository RepositoryDocument;
         public AddressPersonRepository RepositoryAddressPerson;
         public CourseRepository RepositoryCourse;
-        
+        public ContactRepository RepositoryContact;
+        public CommentRepository RepositoryComment;
+
+        Controller controller = new Controller();
 
 
         public Datahandling()
@@ -29,7 +32,8 @@ namespace PersonController
             RepositoryDocument = new DocumentRepository(Entities);
             RepositoryAddressPerson = new AddressPersonRepository(Entities);
             RepositoryCourse = new CourseRepository(Entities);
-            
+            RepositoryContact = new ContactRepository(Entities);
+            RepositoryComment = new CommentRepository(Entities);
         }
 
         /// <summary>
@@ -39,7 +43,6 @@ namespace PersonController
         public void AddPerson(Person person)
         {
             RepositoryPerson.Create(person);
-            
         }
 
         /// <summary>
@@ -50,11 +53,9 @@ namespace PersonController
         {
             try
             {
-                var isExisting = Entities.person.Any(x => x.id == person.id);
-                if (isExisting)
+                if (Entities.person.Any(x => x.id == person.id))
                 {
                     RepositoryPerson.Update(person);
-                   
                 }
             }
             catch (NullReferenceException)
@@ -72,6 +73,7 @@ namespace PersonController
         {
             try
             {
+
                 var tempPerson = RepositoryPerson.FindAll().FirstOrDefault(x => x.id == id);
                 
                 if (tempPerson != null)
@@ -128,8 +130,7 @@ namespace PersonController
             };
             return basePerson;
         }
-
-        
+      
         /// <summary>
         /// id == Person ID
         /// </summary>
@@ -163,6 +164,33 @@ namespace PersonController
             }
         }
 
-       
+        public Person getPerson(int id)
+        {
+            return new Person();
+        }
+
+        public void AddContact(Contact contactInfo)
+        {
+            try
+            {
+                RepositoryContact.Create(contactInfo);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void AddComment(Comment comment)
+        {
+            try
+            {
+                RepositoryComment.Create(comment);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }
