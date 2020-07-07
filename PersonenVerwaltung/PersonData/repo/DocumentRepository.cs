@@ -7,7 +7,7 @@ using System.Text;
 
 namespace PersonData.repo
 {
-    public class DocumentRepository : Repository<Document>
+    public class DocumentRepository : IRepository<Document>
     {
         private PersonEntities entities;
         public DocumentRepository(PersonEntities entities)

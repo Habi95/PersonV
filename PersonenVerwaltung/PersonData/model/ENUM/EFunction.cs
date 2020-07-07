@@ -6,6 +6,6 @@ namespace PersonData
 {
    public enum EFunction
     {
-        Schüler,Trainer_Intern,Trainer_Extern,Interessent,Büro 
+        Trainer_Intern,Trainer_Extern,Büro 
     }
 }

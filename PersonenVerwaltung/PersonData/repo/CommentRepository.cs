@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PersonData.repo
 {
-    class CommentRepository : Repository<Comment>
+    class CommentRepository : IRepository<Comment>
     {
         PersonEntities entities = new PersonEntities();
 

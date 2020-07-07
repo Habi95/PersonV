@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PersonData.repo
 {
-    public class AddressRepository : Repository<Address>
+    public class AddressRepository : IRepository<Address>
     {
         PersonEntities entities = new PersonEntities();
 

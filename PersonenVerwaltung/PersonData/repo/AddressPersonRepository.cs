@@ -6,7 +6,7 @@ using System.Text;
 
 namespace PersonData.repo
 {
-    public class AddressPersonRepository : Repository<AddressPerson>
+    public class AddressPersonRepository : IRepository<AddressPerson>
     {
         PersonEntities entities;
         public AddressPersonRepository(PersonEntities entities)
