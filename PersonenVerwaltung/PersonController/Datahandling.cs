@@ -22,8 +22,6 @@ namespace PersonController
         public ContactRepository RepositoryContact;
         public CommentRepository RepositoryComment;
 
-        Controller controller = new Controller();
-
 
         public Datahandling()
         {
