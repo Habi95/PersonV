@@ -53,16 +53,16 @@ namespace PersonData.repo
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public Dictionary<int, List<Document>> GetDocuments<T>()
+        public List<Document> GetDocuments<T>(int Pid)
         {
-            Dictionary<int, List<Document>> documentDic = new Dictionary<int, List<Document>>();
-            List<Document> doclist;
+           
+            List<Document> doclist = new List<Document>();
             MySqlCommand command = connection().CreateCommand();
             MySqlDataReader dataReader;
             command.CommandText =
             $"SELECT * FROM `document_class`" +
             $" Inner JOIN documents on doc_id = documents.id " +
-            $"WHERE class = '{typeof(T).Name}'";
+            $"WHERE class = '{typeof(T).Name}' And class_id = {Pid}";
             using (dataReader = command.ExecuteReader())
             {
                 while (dataReader.Read())
@@ -81,20 +81,11 @@ namespace PersonData.repo
                         ModifiedAt = string.IsNullOrEmpty(modify) ? DateTime.Parse("01.01.2000 00:00:00") : DateTime.Parse(modify),
                         type = (EDocumentType) Enum.Parse(typeof(EDocumentType), dataReader[11].ToString(),true)
                     };
-                    if (!documentDic.ContainsKey(id))
-                    {
-                        doclist = new List<Document>();
-                        documentDic.Add(id, doclist);
-                        documentDic[id].Add(doc);
-                    }
-                    else
-                    {
-                        documentDic[id].Add(doc);
-                    }
+                    doclist.Add(doc);
                 }
             }
 
-            return documentDic;
+            return doclist;
 
         }
 

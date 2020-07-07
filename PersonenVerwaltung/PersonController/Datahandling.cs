@@ -73,9 +73,17 @@ namespace PersonController
         {
             try
             {
-                if (Entities.person.Any(x => x.id == id))
+
+                var tempPerson = RepositoryPerson.FindAll().FirstOrDefault(x => x.id == id);
+                
+                if (tempPerson != null)
                 {
-                    return getPerson(id);
+                    
+                    var result = RepositoryCourse.CompletedCourses<Course>(id);                    
+                    tempPerson.CompletedCourse = result.Item1;
+                    tempPerson.NotCompletedCourse = result.Item2;
+                    tempPerson.documents = RepositoryDocument.GetDocuments<Person>(id);
+                    return tempPerson;
                 }
                 else
                 {
@@ -122,26 +130,7 @@ namespace PersonController
             };
             return basePerson;
         }
-
-        /// <summary>
-        /// Gets all Data from Mysql DB
-        /// </summary>
-        private void Update()
-        {
-            //List<Person> per = RepositoryPerson.FindAll();
-            //Dictionary<int, List<Document>>
-            //    doc = RepositoryDocument.GetDocuments<Person>();
-            //var result = RepositoryCourse.CompletedCourses<int, List<Course>>();
-            //if (peopleList != null)
-            //{
-            //    peopleList.Clear();
-            //}
-            ////peopleList = controller.GetPeople(per, doc, result.Item1, result.Item2);
-
-            ////peopleList = controller.GetPeople(per, doc);
-            //Addresses = RepositoryAddress.FindAll();
-        }
-
+      
         /// <summary>
         /// id == Person ID
         /// </summary>
