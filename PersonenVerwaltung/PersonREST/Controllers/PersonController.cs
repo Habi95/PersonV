@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Connections.Features;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PersonController;
@@ -143,6 +144,52 @@ namespace PersonREST.Controllers
                     address.createdAt = DateTime.Now; // sollte vom Web schon mitkommen!!!
                     address.modifyAt = DateTime.Now; // sollte vom Web schon mitkommen!!!
                     datahandling.AddAddress(id, address);
+                    Response.StatusCode = 201;
+                }
+                catch (Exception)
+                {
+                    Response.StatusCode = 500;
+                    throw;
+                }
+            }
+            else
+            {
+                Response.StatusCode = 409;
+            }
+        }
+
+        [HttpPost("contact")]
+        public void CreateContact(Contact contact)
+        {
+            if (contact.id == 0 && contact.person_id != 0)
+            {
+                try
+                {
+                    contact.modifyDate = DateTime.Now; // sollte vom Web schon mitkommen!!!
+                    datahandling.AddContact(contact);
+                    Response.StatusCode = 201;
+                }
+                catch (Exception)
+                {
+                    Response.StatusCode = 500;
+                    throw;
+                }
+            }
+            else
+            {
+                Response.StatusCode = 409;
+            }
+        }
+
+        [HttpPost("comment")]
+        public void CreateComment(Comment comment)
+        {
+            if (comment.id == 0 && comment.person_id != 0)
+            {
+                try
+                {
+                    comment.modifyDate = DateTime.Now; // sollte vom Web schon mitkommen!!!
+                    datahandling.AddComment(comment);
                     Response.StatusCode = 201;
                 }
                 catch (Exception)

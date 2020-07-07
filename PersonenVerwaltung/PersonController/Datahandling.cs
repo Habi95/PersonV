@@ -19,6 +19,9 @@ namespace PersonController
         public DocumentRepository RepositoryDocument;
         public AddressPersonRepository RepositoryAddressPerson;
         public CourseRepository RepositoryCourse;
+        public ContactRepository RepositoryContact;
+        public CommentRepository RepositoryComment;
+
         Controller controller = new Controller();
 
 
@@ -29,7 +32,8 @@ namespace PersonController
             RepositoryDocument = new DocumentRepository(Entities);
             RepositoryAddressPerson = new AddressPersonRepository(Entities);
             RepositoryCourse = new CourseRepository(Entities);
-            Update();
+            RepositoryContact = new ContactRepository(Entities);
+            RepositoryComment = new CommentRepository(Entities);
         }
 
         /// <summary>
@@ -39,7 +43,6 @@ namespace PersonController
         public void AddPerson(Person person)
         {
             RepositoryPerson.Create(person);
-            Update();
         }
 
         /// <summary>
@@ -50,12 +53,9 @@ namespace PersonController
         {
             try
             {
-                var isExisting = Entities.person.Any(x => x.id == person.id);
-                if (isExisting)
+                if (Entities.person.Any(x => x.id == person.id))
                 {
-                    //peopleList[peopleList.IndexOf(existingPerson)] = person;
                     RepositoryPerson.Update(person);
-                    Update();
                 }
             }
             catch (NullReferenceException)
@@ -73,10 +73,9 @@ namespace PersonController
         {
             try
             {
-                var tempPerson = Entities.person.FirstOrDefault(x => x.id == id);
-                if (tempPerson != null)
+                if (Entities.person.Any(x => x.id == id))
                 {
-                    return tempPerson;
+                    return getPerson(id);
                 }
                 else
                 {
@@ -142,6 +141,7 @@ namespace PersonController
             ////peopleList = controller.GetPeople(per, doc);
             //Addresses = RepositoryAddress.FindAll();
         }
+
         /// <summary>
         /// id == Person ID
         /// </summary>
@@ -168,6 +168,35 @@ namespace PersonController
 
                 var AddressPerson = new AddressPerson() { addressId = addressId, personId = personId };
                 RepositoryAddressPerson.Create(AddressPerson);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public Person getPerson(int id)
+        {
+            return new Person();
+        }
+
+        public void AddContact(Contact contactInfo)
+        {
+            try
+            {
+                RepositoryContact.Create(contactInfo);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void AddComment(Comment comment)
+        {
+            try
+            {
+                RepositoryComment.Create(comment);
             }
             catch (Exception ex)
             {
