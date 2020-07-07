@@ -17,7 +17,9 @@ namespace PersonData.repo
         public int Create(Address address)
         {
             entities.address.Add(address);
-            return entities.SaveChanges();
+            entities.SaveChanges();
+
+            return entities.address.Where(x => x.street == address.street).ToList().FirstOrDefault(x => x.zip == address.zip).id;
         }
 
         public void DeleteOne(Address address)

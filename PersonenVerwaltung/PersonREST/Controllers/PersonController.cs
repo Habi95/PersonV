@@ -18,46 +18,143 @@ namespace PersonREST.Controllers
     {
         Datahandling datahandling = new Datahandling();
 
+        /// <summary>
+        /// base.url/Person Lists all Base Persons 
+        /// </summary>
+        /// <returns>A list of all Base Person Objects from the DB</returns>
         [HttpGet]
         public List<BasePerson> getAllPersonsBasicData()
         {
-            return datahandling.FindAllPersonsBasicData();
-        }
-
-        [HttpGet("{id}")] 
-        public ActionResult<Person> GetPerson(int id)
-        {
-            
-            var person = datahandling.FindPerson(id);
-            if (person == null)
+            try
             {
-                return NotFound();
+                var personList = datahandling.FindAllPersonsBasicData();
+                Response.StatusCode = 200;
+                return personList;
             }
-            return person;
+            catch (Exception) // general Exception
+            {
+                Response.StatusCode = 500;
+                throw;
+            }
         }
 
-        [HttpPut]
-        public HttpStatusCode UpdatePerson(Person person)
+        /// <summary>
+        /// base.url/Person/{id} returns one Person
+        /// </summary>
+        /// <param name="id">Person id</param>
+        /// <returns>Object of Person</returns>
+        [HttpGet("{id}")]
+        public Person GetPerson(int id)
         {
-            datahandling.UpdatePerson(person);
-            return HttpStatusCode.Created;
+            try
+            {
+                var person = datahandling.FindPerson(id);
+                Response.StatusCode = 200;
+                return person;
+            }
+            catch (PersonException ex) // if the person doesn't exists
+            {
+                Response.StatusCode = 500;
+                Response.WriteAsync(ex.Message);
+                throw;
+            }
+            catch (Exception) // general Exception
+            {
+                Response.StatusCode = 500;
+                throw;
+            }
+        }
+
+
+        /// <summary>
+        /// base.url/Person updates one Person 
+        /// </summary>
+        /// <param name="person">Object of Person with changed parameters</param>
+        /// <returns>HttpStatusCode</returns>
+        [HttpPut]
+        public void UpdatePerson(Person person)
+        {
+            if (person.id != 0) // ID has to be greater than 0
+            {
+                try
+                {
+                    person.modifyAt = DateTime.Now; // sollte vom Web schon mitkommen!!! weil wir nicht wissen was geändert wurde.
+                    datahandling.UpdatePerson(person);
+                }
+                catch (PersonException ex) // if the person doesn't exists
+                {
+                    Response.StatusCode = 500;
+                    Response.WriteAsync(ex.Message);
+                    throw;
+                }
+                catch (Exception) // general Exception
+                {
+                    Response.StatusCode = 500;
+                    throw;
+                }
+
+                Response.StatusCode = 201;
+            }
+            else
+            {
+                Response.StatusCode = 409;
+                Response.WriteAsync("Person ID incorrect!");
+            }
         }
 
         [HttpPost]
-        public IActionResult Create(Person person)
+        public void Create(Person person)
         {
-            person.createdAt = DateTime.Now;
-            person.modifyAt = DateTime.Now;
-            datahandling.AddPerson(person);
-            return Accepted();
+            if (person.id == 0)
+            {
+                try
+                {
+                    person.createdAt = DateTime.Now; // sollte vom Web schon mitkommen!!!
+                    person.modifyAt = DateTime.Now; // sollte vom Web schon mitkommen!!!
+                    datahandling.AddPerson(person);
+                    Response.StatusCode = 201;
+                }
+                catch (Exception)
+                {
+                    Response.StatusCode = 500;
+                    throw;
+                }
+            }
+            else
+            {
+                Response.StatusCode = 409;
+                Response.WriteAsync("Person ID incorrect!");
+            }
         }
-        [HttpPost("address")]
-        public IActionResult CreateAddress(Address address)
+
+        /// <summary>
+        /// Creat's a new Address in DB if the address don't exists
+        /// </summary>
+        /// <param name="id">Person ID</param>
+        /// <param name="address">Address Object</param>
+        /// <returns></returns>
+        [HttpPost("address/{id}")]
+        public void CreateAddress(int id, Address address)
         {
-            address.createdAt = DateTime.Now;
-            address.modifyAt = DateTime.Now;
-            datahandling.AddAddress(address);
-            return Accepted();
+            if (address.id == 0 && id != 0)
+            {
+                try
+                {
+                    address.createdAt = DateTime.Now; // sollte vom Web schon mitkommen!!!
+                    address.modifyAt = DateTime.Now; // sollte vom Web schon mitkommen!!!
+                    datahandling.AddAddress(id, address);
+                    Response.StatusCode = 201;
+                }
+                catch (Exception)
+                {
+                    Response.StatusCode = 500;
+                    throw;
+                }
+            }
+            else
+            {
+                Response.StatusCode = 409;
+            }
         }
     }
 }
