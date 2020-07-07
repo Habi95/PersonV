@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
-
-namespace PersonData.model
+﻿namespace PersonData.model
 {
-   
-   public class AddressPerson
+    public class AddressPerson
     {
-
         public int id { get; set; }
         public int addressId { get; set; }
         public int personId { get; set; }

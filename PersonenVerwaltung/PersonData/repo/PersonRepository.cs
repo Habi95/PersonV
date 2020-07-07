@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace PersonData.repo
 {
@@ -46,14 +44,14 @@ namespace PersonData.repo
                     x.courseTrainers)
                         .ThenInclude(x =>
                             x.Course)
-              .Include(x => 
+              .Include(x =>
                     x.book)
               .Include(x =>
                     x.notebook)
               .Include(x =>
-                    x.equipment)                        
+                    x.equipment)
               .AsNoTracking()
-              .ToList();           
+              .ToList();
         }
 
         public Person FindOne(int id)
@@ -64,9 +62,7 @@ namespace PersonData.repo
         public void Update(Person entity)
         {
             entities.Update(entity);
-            entities.SaveChanges();           
+            entities.SaveChanges();
         }
-
-       
     }
 }

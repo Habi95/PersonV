@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace PersonData.repo
 {
     public class CommentRepository : IRepository<Comment>
     {
-        PersonEntities entities = new PersonEntities();
+        private PersonEntities entities = new PersonEntities();
 
         public CommentRepository(PersonEntities entities)
         {

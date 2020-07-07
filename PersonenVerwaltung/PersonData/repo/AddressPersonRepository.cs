@@ -2,13 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace PersonData.repo
 {
     public class AddressPersonRepository : IRepository<AddressPerson>
     {
-        PersonEntities entities;
+        private PersonEntities entities;
+
         public AddressPersonRepository(PersonEntities entities)
         {
             this.entities = entities;

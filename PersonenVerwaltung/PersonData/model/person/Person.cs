@@ -1,21 +1,17 @@
-﻿
-using Data.Models;
+﻿using Data.Models;
 using PersonData.model;
 using PersonData.model.material;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Security.Principal;
-using System.Text;
 
 namespace PersonData
 {
     //TODO add list course teacher and student  list of courses , same realton communication as documents
-    
-   public class Person : BasePerson
+
+    public class Person : BasePerson
     {
         public string title { get; set; }
-        public decimal? sv_nr {get; set; }   
+        public decimal? sv_nr { get; set; }
         public string gender { get; set; }
         public string busy { get; set; }
         public string busy_by { get; set; }
@@ -30,7 +26,7 @@ namespace PersonData
         public List<Contact> contacts { get; set; }
 
         public List<RelCourseTrainer> courseTrainers { get; set; }
-        public List<RelCourseParticipant> courseParticipants { get; set;}
+        public List<RelCourseParticipant> courseParticipants { get; set; }
 
         public List<book> book { get; set; }
         public List<equipment> equipment { get; set; }
@@ -40,10 +36,9 @@ namespace PersonData
         public List<Document> documents { get; set; }
 
         [NotMapped]
-        public List<Course> CompletedCourse { get; set; } 
+        public List<Course> CompletedCourse { get; set; }
+
         [NotMapped]
         public List<Course> NotCompletedCourse { get; set; }
-
-
     }
 }

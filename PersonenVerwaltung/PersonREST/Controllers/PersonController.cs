@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Connections.Features;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PersonController;
 using PersonData;
 using PersonData.model;
+using System;
+using System.Collections.Generic;
 
 namespace PersonREST.Controllers
 {
@@ -17,10 +12,10 @@ namespace PersonREST.Controllers
     [Route("[controller]")]
     public class PersonController : ControllerBase
     {
-        Datahandling datahandling = new Datahandling();
+        private Datahandling datahandling = new Datahandling();
 
         /// <summary>
-        /// base.url/Person Lists all Base Persons 
+        /// base.url/Person Lists all Base Persons
         /// </summary>
         /// <returns>A list of all Base Person Objects from the DB</returns>
         [HttpGet]
@@ -66,9 +61,8 @@ namespace PersonREST.Controllers
             }
         }
 
-
         /// <summary>
-        /// base.url/Person updates one Person 
+        /// base.url/Person updates one Person
         /// </summary>
         /// <param name="person">Object of Person with changed parameters</param>
         /// <returns>HttpStatusCode</returns>

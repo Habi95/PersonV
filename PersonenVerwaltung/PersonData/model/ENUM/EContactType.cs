@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PersonData
+﻿namespace PersonData
 {
-   public enum EContactType
+    public enum EContactType
     {
-        Privat,Geschäftlich
+        Privat, Geschäftlich
     }
 }

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PersonData.model
+﻿namespace PersonData.model
 {
-   public class BaseAdress : CreatedModify
+    public class BaseAdress : CreatedModify
     {
         public int id { get; set; }
         public string street { get; set; }

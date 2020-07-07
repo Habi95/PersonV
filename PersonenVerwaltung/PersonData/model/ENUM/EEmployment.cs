@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices.ComTypes;
-using System.Text;
-
-namespace PersonData
+﻿namespace PersonData
 {
-   public enum EEmployment
+    public enum EEmployment
     {
-        AMS,PVA,Bildungskarenz
+        AMS, PVA, Bildungskarenz
     }
 }

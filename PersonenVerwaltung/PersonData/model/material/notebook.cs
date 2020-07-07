@@ -1,7 +1,4 @@
 ﻿using PersonData.model.interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace PersonData.model.material
 {
@@ -12,9 +9,10 @@ namespace PersonData.model.material
         public string make { get; set; }
         public string model { get; set; }
         public int? location_id { get; set; }
+
         //public classroom classroom { get; set; }
         public int? person_id { get; set; }
-        public Person person { get; set; }
 
+        public Person person { get; set; }
     }
 }

@@ -2,16 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using PersonData.model;
 using PersonData.model.material;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace PersonData
 {
     public class PersonEntities : DbContext
     {
         private string dbServer = "server=192.168.0.94;database=dcv;user=root;Convert Zero Datetime=True";
+
         public string DbServer
         {
             get
@@ -19,7 +16,9 @@ namespace PersonData
                 return dbServer;
             }
         }
+
         private string dbLocal = "server=localhost;database=dcv;user=root;Convert Zero Datetime=True";
+
         public string DbLocal
         {
             get
@@ -27,6 +26,7 @@ namespace PersonData
                 return dbLocal;
             }
         }
+
         public DbSet<Person> person { get; set; }
         public DbSet<Address> address { get; set; }
         public DbSet<AddressPerson> addressperson { get; set; }
@@ -40,11 +40,10 @@ namespace PersonData
         public DbSet<book> book { get; set; }
         public DbSet<equipment> equipment { get; set; }
         public DbSet<notebook> notebook { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-
             var f = optionsBuilder.UseMySQL(DbServer);
-           
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -60,6 +59,7 @@ namespace PersonData
             RealtionEquipment(modelBuilder);
             RealtionNotebook(modelBuilder);
         }
+
         private void RealtionComment(ModelBuilder modelBuilder)
         {
             //realation commenTable with personTable
@@ -68,6 +68,7 @@ namespace PersonData
                 .WithMany(x => x.comments)
                 .HasForeignKey(x => x.person_id);
         }
+
         private void RealtionContact(ModelBuilder modelBuilder)
         {
             //realtion contactTable with personTable
@@ -76,6 +77,7 @@ namespace PersonData
                 .WithMany(x => x.contacts)
                 .HasForeignKey(x => x.person_id);
         }
+
         private void RealtionAddresses(ModelBuilder modelBuilder)
         {
             //realtion personTable=>adressPersonTable 1:N
@@ -115,8 +117,8 @@ namespace PersonData
                 .HasOne(x => x.Course)
                 .WithMany(x => x.RelCourseTrainers)
                 .HasForeignKey(x => x.CourseId);
-
         }
+
         private void RealtionCourseParticipants(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Person>()
@@ -134,8 +136,8 @@ namespace PersonData
                 .HasOne(x => x.Course)
                 .WithMany(x => x.RelCourseParticipants)
                 .HasForeignKey(x => x.CourseId);
-
         }
+
         private void RealtionBook(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<book>()
@@ -143,6 +145,7 @@ namespace PersonData
                .WithMany(x => x.book)
                .HasForeignKey(x => x.person_id);
         }
+
         private void RealtionEquipment(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<equipment>()

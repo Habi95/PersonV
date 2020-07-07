@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PersonData
+﻿namespace PersonData
 {
-   public enum EKindOfCommunication
+    public enum EKindOfCommunication
     {
-        Telefon,Email,Slack
+        Telefon, Email, Slack
     }
 }

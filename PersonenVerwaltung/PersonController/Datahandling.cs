@@ -1,5 +1,4 @@
 ﻿using Data.Models;
-using Org.BouncyCastle.Asn1.Crmf;
 using PersonData;
 using PersonData.model;
 using PersonData.repo;
@@ -11,8 +10,7 @@ namespace PersonController
 {
     public class Datahandling
     {
-
-        PersonEntities Entities = new PersonEntities();
+        private PersonEntities Entities = new PersonEntities();
 
         public PersonRepository RepositoryPerson;
         public AddressRepository RepositoryAddress;
@@ -21,7 +19,6 @@ namespace PersonController
         public CourseRepository RepositoryCourse;
         public ContactRepository RepositoryContact;
         public CommentRepository RepositoryComment;
-
 
         public Datahandling()
         {
@@ -71,13 +68,11 @@ namespace PersonController
         {
             try
             {
-
                 var tempPerson = RepositoryPerson.FindAll().FirstOrDefault(x => x.id == id);
-                
+
                 if (tempPerson != null)
                 {
-                    
-                    var result = RepositoryCourse.CompletedCourses<Course>(id);                    
+                    var result = RepositoryCourse.CompletedCourses<Course>(id);
                     tempPerson.CompletedCourse = result.Item1;
                     tempPerson.NotCompletedCourse = result.Item2;
                     tempPerson.documents = RepositoryDocument.GetDocuments<Person>(id);
@@ -93,6 +88,7 @@ namespace PersonController
                 throw ex;
             }
         }
+
         /// <summary>
         /// Returns basic data form ALl Persons
         /// </summary>
@@ -128,7 +124,7 @@ namespace PersonController
             };
             return basePerson;
         }
-      
+
         /// <summary>
         /// id == Person ID
         /// </summary>

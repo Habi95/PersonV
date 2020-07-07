@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PersonData
+﻿namespace PersonData
 {
-   public enum EFunction
+    public enum EFunction
     {
-        Trainer_Intern,Trainer_Extern,Büro 
+        Trainer_Intern, Trainer_Extern, Büro
     }
 }

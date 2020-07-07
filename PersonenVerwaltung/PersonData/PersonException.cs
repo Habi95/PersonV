@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace PersonData
 {
@@ -8,7 +6,6 @@ namespace PersonData
     {
         public PersonException(string message) : base(message)
         {
-
         }
     }
 }

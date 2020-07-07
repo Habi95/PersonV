@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PersonData.model.ENUM
+﻿namespace PersonData.model.ENUM
 {
     public enum EDocumentType
     {

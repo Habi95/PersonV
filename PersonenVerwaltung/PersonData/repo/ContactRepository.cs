@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace PersonData.repo
 {
     public class ContactRepository : IRepository<Contact>
     {
-        PersonEntities entities = new PersonEntities();
+        private PersonEntities entities = new PersonEntities();
 
         public ContactRepository(PersonEntities entities)
         {

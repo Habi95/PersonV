@@ -1,15 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace PersonData.repo
 {
-    interface IRepository<T>
+    internal interface IRepository<T>
     {
         List<T> FindAll();
+
         T FindOne(int id);
+
         int Create(T entity); // returns last insert id
+
         void DeleteOne(T entity);
+
         void Update(T entity);
     }
 }

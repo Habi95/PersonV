@@ -1,15 +1,14 @@
 ﻿using MySql.Data.MySqlClient;
 using PersonData.model.ENUM;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 
 namespace PersonData.repo
 {
     public class DocumentRepository : IRepository<Document>
     {
         private PersonEntities entities;
+
         public DocumentRepository(PersonEntities entities)
         {
             this.entities = entities;
@@ -35,7 +34,6 @@ namespace PersonData.repo
         public List<Document> FindAll()
         {
             throw new NotImplementedException();
-
         }
 
         public Document FindOne(int id)
@@ -55,7 +53,6 @@ namespace PersonData.repo
         /// <returns></returns>
         public List<Document> GetDocuments<T>(int Pid)
         {
-           
             List<Document> doclist = new List<Document>();
             MySqlCommand command = connection().CreateCommand();
             MySqlDataReader dataReader;
@@ -79,15 +76,13 @@ namespace PersonData.repo
                         ReminderId = string.IsNullOrEmpty(reminder) ? 0 : int.Parse(reminder),
                         CreatedAt = (DateTime)dataReader[9],
                         ModifiedAt = string.IsNullOrEmpty(modify) ? DateTime.Parse("01.01.2000 00:00:00") : DateTime.Parse(modify),
-                        type = (EDocumentType) Enum.Parse(typeof(EDocumentType), dataReader[11].ToString(),true)
+                        type = (EDocumentType)Enum.Parse(typeof(EDocumentType), dataReader[11].ToString(), true)
                     };
                     doclist.Add(doc);
                 }
             }
 
             return doclist;
-
         }
-
     }
 }

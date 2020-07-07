@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Principal;
-using System.Text;
-
-namespace PersonData
+﻿namespace PersonData
 {
-   public class Contact :  CreatedModify
+    public class Contact : CreatedModify
     {
         public int id { get; set; }
         public int person_id { get; set; }

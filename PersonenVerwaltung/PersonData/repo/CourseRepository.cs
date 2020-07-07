@@ -2,11 +2,10 @@
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace PersonData.repo
 {
-    public class CourseRepository 
+    public class CourseRepository
     {
         private PersonEntities entities;
 
@@ -22,23 +21,23 @@ namespace PersonData.repo
             return conn;
         }
 
-        public Tuple<List<Course>,List<Course>> CompletedCourses<T>(int id)
+        public Tuple<List<Course>, List<Course>> CompletedCourses<T>(int id)
         {
             var completed = new List<Course>();
-            var notCompleted = new List<Course>();            
+            var notCompleted = new List<Course>();
             MySqlCommand command = connection().CreateCommand();
             MySqlDataReader dataReader;
-            command.CommandText = 
+            command.CommandText =
                 $"SELECT * FROM `course_participants` " +
                 $"INNER JOIN course ON course_id = course.id " +
                 $"WHERE participant_id = {id}";
             using (dataReader = command.ExecuteReader())
-            {              
+            {
                 while (dataReader.Read())
                 {
                     int partiId = int.Parse(dataReader[2].ToString());
                     int completedBool = int.Parse(dataReader[3].ToString());
-                    Course course = new Course();                                      
+                    Course course = new Course();
                     course.Id = int.Parse(dataReader[4].ToString());
                     course.Title = dataReader[5].ToString();
                     course.CourseNumber = dataReader[6].ToString();
@@ -52,20 +51,18 @@ namespace PersonData.repo
                     course.MaxParticipants = int.Parse(dataReader[14].ToString());
                     course.MinParticipants = int.Parse(dataReader[15].ToString());
                     course.CreatedAt = DateTime.Parse(dataReader[16].ToString());
-                    
+
                     if (completedBool > 0)
                     {
-                        completed.Add(course);                        
+                        completed.Add(course);
                     }
                     else
-                    {  
-                        notCompleted.Add(course);                       
+                    {
+                        notCompleted.Add(course);
                     }
                 }
-
             }
             return Tuple.Create(completed, notCompleted);
         }
-        
     }
 }
