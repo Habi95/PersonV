@@ -40,8 +40,7 @@ namespace PersonData.repo
                     int partiId = int.Parse(dataReader[2].ToString());
                     int completedBool = int.Parse(dataReader[3].ToString());
                     Course course = new Course();
-                    //{
-                    
+                                      
                     course.Id = int.Parse(dataReader[4].ToString());
 
                     course.Title = dataReader[5].ToString();
@@ -56,7 +55,7 @@ namespace PersonData.repo
                     course.MaxParticipants = int.Parse(dataReader[14].ToString());
                     course.MinParticipants = int.Parse(dataReader[15].ToString());
                     course.CreatedAt = DateTime.Parse(dataReader[16].ToString());
-                     //};
+                    
                     if (completedBool > 0)
                     {
                         if (!completed.ContainsKey(partiId))

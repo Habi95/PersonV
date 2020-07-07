@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PersonData.repo
 {
-    interface Repository<T>
+    interface IRepository<T>
     {
         List<T> FindAll();
         T FindOne(int id);

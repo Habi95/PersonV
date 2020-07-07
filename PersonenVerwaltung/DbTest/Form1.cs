@@ -25,7 +25,7 @@ namespace DbTest
             repo.FindAll();
             DocumentRepository document = new DocumentRepository(entities);
 
-            var x = document.GetDocuments("Person");
+            var x = document.GetDocuments<Person>();
 
             //repo.GetPersons();
             //repo.GetAddresses();

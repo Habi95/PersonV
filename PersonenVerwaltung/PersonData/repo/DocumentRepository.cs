@@ -7,7 +7,7 @@ using System.Text;
 
 namespace PersonData.repo
 {
-    public class DocumentRepository : Repository<Document>
+    public class DocumentRepository : IRepository<Document>
     {
         private PersonEntities entities;
         public DocumentRepository(PersonEntities entities)
@@ -47,6 +47,12 @@ namespace PersonData.repo
         {
             throw new NotImplementedException();
         }
+
+        /// <summary>
+        /// generic select from document T class is class is document_class
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public Dictionary<int, List<Document>> GetDocuments<T>()
         {
             Dictionary<int, List<Document>> documentDic = new Dictionary<int, List<Document>>();
