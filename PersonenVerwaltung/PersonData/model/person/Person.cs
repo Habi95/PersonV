@@ -20,7 +20,7 @@ namespace PersonData
         public string busy { get; set; }
         public string busy_by { get; set; }
         public string picture { get; set; }
-        public EFunction function { get; set; }
+        public EFunction? function { get; set; }
         public bool aktiv { get; set; }
         public bool deleted_inaktiv { get; set; }
         public bool newsletter_flag { get; set; }
