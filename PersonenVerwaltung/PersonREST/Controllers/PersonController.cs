@@ -132,7 +132,7 @@ namespace PersonREST.Controllers
         /// Creat's a new Address in DB if the address don't exists
         /// </summary>
         /// <param name="id">Person ID</param>
-        /// <param name="address">Address Object</param>
+        /// <param name="address">Address Json with ID=0</param>
         /// <returns></returns>
         [HttpPost("address/{id}")]
         public void CreateAddress(int id, Address address)
@@ -158,6 +158,10 @@ namespace PersonREST.Controllers
             }
         }
 
+        /// <summary>
+        /// Creat's a new Contact in DB
+        /// </summary>
+        /// <param name="contact">Contact Json with ID=0</param>
         [HttpPost("contact")]
         public void CreateContact(Contact contact)
         {
@@ -181,6 +185,10 @@ namespace PersonREST.Controllers
             }
         }
 
+        /// <summary>
+        /// Creat's a new Comment in DB
+        /// </summary>
+        /// <param name="comment">Comment Json with ID=0</param>
         [HttpPost("comment")]
         public void CreateComment(Comment comment)
         {
