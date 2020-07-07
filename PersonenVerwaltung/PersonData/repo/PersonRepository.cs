@@ -30,39 +30,24 @@ namespace PersonData.repo
         public List<Person> FindAll()
         {
             return entities.person
-                //.AsNoTracking()
-               .Include(x =>
-                   x.addresses)
-                    .ThenInclude(x =>
-                        x.address)
-               .Include(x =>
-                   x.contacts)
-               //.AsNoTracking()
-               .Include(x =>
-                   x.comments)
-               //.AsNoTracking()
               .Include(x =>
-                   x.courseParticipants)
-                    .ThenInclude(x =>
-                        x.Course)
-                    //.AsNoTracking()
-               .Include(x =>
-                    x.courseTrainers)
-                        .ThenInclude(x => 
-                            x.Course)            
-               .AsNoTracking()
-               .ToList();
-                  /*.Include(x =>
-                      x.addresses)
-                  .ThenInclude(x => x.address)
-                  .AsNoTracking()
-                  .Include(x =>
-                      x.contacts)
-                  .AsNoTracking()
-                  .Include(x =>
-                      x.comments)
-                  .AsNoTracking()
-                  .ToList();*/
+                  x.addresses)
+                   .ThenInclude(x =>
+                       x.address)
+              .Include(x =>
+                  x.contacts)
+              .Include(x =>
+                  x.comments)
+             .Include(x =>
+                  x.courseParticipants)
+                   .ThenInclude(x =>
+                       x.Course)
+              .Include(x =>
+                   x.courseTrainers)
+                       .ThenInclude(x =>
+                           x.Course)
+              .AsNoTracking()
+              .ToList();           
         }
 
         public Person FindOne(int id)
@@ -72,13 +57,10 @@ namespace PersonData.repo
 
         public void Update(Person entity)
         {
-            //entities.Entry(entity).State = EntityState.Detached;
-            //entities.person.Where(x => x.id == entity.id).AsNoTracking();
-            //using (PersonEntities entities = new PersonEntities())
-            //{
-                entities.Update(entity);
-                entities.SaveChanges();
-            //}
+            entities.Update(entity);
+            entities.SaveChanges();           
         }
+
+       
     }
 }
