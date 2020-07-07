@@ -1,6 +1,7 @@
 ﻿
 using Data.Models;
 using PersonData.model;
+using PersonData.model.material;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -30,6 +31,10 @@ namespace PersonData
 
         public List<RelCourseTrainer> courseTrainers { get; set; }
         public List<RelCourseParticipant> courseParticipants { get; set;}
+
+        public List<book> book { get; set; }
+        public List<equipment> equipment { get; set; }
+        public List<notebook> notebook { get; set; }
 
         [NotMapped]
         public List<Document> documents { get; set; }
