@@ -9,7 +9,7 @@ namespace PersonData.repo
 {
     public class DocumentRepository : Repository<Document>
     {
-        PersonEntities entities;
+        private PersonEntities entities;
         public DocumentRepository(PersonEntities entities)
         {
             this.entities = entities;

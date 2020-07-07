@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Data.Models;
+using Microsoft.EntityFrameworkCore;
 using PersonData.model;
 using System;
 using System.Collections.Generic;
@@ -10,16 +11,16 @@ namespace PersonData
     public class PersonEntities : DbContext
     {
         private string dbServer = "server=192.168.0.94;database=dcv;user=root;Convert Zero Datetime=True";
-        public string DbServer 
-        { 
+        public string DbServer
+        {
             get
             {
                 return dbServer;
             }
         }
         private string dbLocal = "server=localhost;database=dcv;user=root;Convert Zero Datetime=True";
-        public string DbLocal 
-        { 
+        public string DbLocal
+        {
             get
             {
                 return dbLocal;
@@ -32,11 +33,13 @@ namespace PersonData
         public DbSet<Comment> comment { get; set; }
         public DbSet<Document> documents { get; set; }
         public DbSet<DocumentClass> document_class { get; set; }
-
+        public DbSet<RelCourseTrainer> course_trainer { get; set; }
+        public DbSet<RelCourseParticipant> course_participants { get; set; }
+        public DbSet<Course> course { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            
-           var f = optionsBuilder.UseMySQL(DbServer);
+
+            var f = optionsBuilder.UseMySQL(DbServer);
             Console.WriteLine();
             //optionsBuilder.EnableSensitiveDataLogging();
         }
@@ -48,6 +51,8 @@ namespace PersonData
             RealtionComment(modelBuilder);
             RealtionContact(modelBuilder);
             RealtionAddresses(modelBuilder);
+            RealtionCourseTrainer(modelBuilder);
+            RealtionCourseParticipants(modelBuilder);
         }
         private void RealtionComment(ModelBuilder modelBuilder)
         {
@@ -87,6 +92,45 @@ namespace PersonData
                 .HasForeignKey(x => x.addressId);
         }
 
+        private void RealtionCourseTrainer(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Person>()
+                .HasMany(x => x.courseTrainers)
+                .WithOne();
+            modelBuilder.Entity<Course>()
+                .HasMany(x => x.RelCourseTrainers)
+                .WithOne();
+
+            modelBuilder.Entity<RelCourseTrainer>()
+                .HasOne(x => x.Person)
+                .WithMany(x => x.courseTrainers)
+                .HasForeignKey(x => x.TrainerID);
+            modelBuilder.Entity<RelCourseTrainer>()
+                .HasOne(x => x.Course)
+                .WithMany(x => x.RelCourseTrainers)
+                .HasForeignKey(x => x.CourseId);
+
+        }
+        private void RealtionCourseParticipants(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Person>()
+                .HasMany(x => x.courseParticipants)
+                .WithOne();
+            modelBuilder.Entity<Course>()
+                .HasMany(x => x.RelCourseParticipants)
+                .WithOne();
+
+            modelBuilder.Entity<RelCourseParticipant>()
+                .HasOne(x => x.Person)
+                .WithMany(x => x.courseParticipants)
+                .HasForeignKey(x => x.ParticipantId);
+            modelBuilder.Entity<RelCourseParticipant>()
+                .HasOne(x => x.Course)
+                .WithMany(x => x.RelCourseParticipants)
+                .HasForeignKey(x => x.CourseId);
+
+        }
+
         private void PrimKeys(ModelBuilder modelBuilder)
         {
             //entitity for addressTable
@@ -103,6 +147,12 @@ namespace PersonData
             modelBuilder.Entity<Document>().HasKey(x => x.Id);
             //entity for documentperson
             modelBuilder.Entity<DocumentClass>().HasKey(x => x.id);
+            //entity for course
+            modelBuilder.Entity<Course>().HasKey(x => x.Id);
+            //entity for course_trainer
+            modelBuilder.Entity<RelCourseTrainer>().HasKey(x => x.Id);
+            //entity for course_participant
+            modelBuilder.Entity<RelCourseParticipant>().HasKey(x => x.Id);
         }
     }
 }

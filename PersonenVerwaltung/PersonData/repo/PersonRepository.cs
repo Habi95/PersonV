@@ -30,7 +30,25 @@ namespace PersonData.repo
         public List<Person> FindAll()
         {
             return entities.person
-                  .Include(x =>
+               .Include(x =>
+                   x.addresses)
+                    .ThenInclude(x =>
+                        x.address)
+               .Include(x =>
+                   x.contacts)
+               .Include(x =>
+                   x.comments)
+              .Include(x =>
+                   x.courseParticipants)
+                    .ThenInclude(x =>
+                        x.Course)
+               .Include(x =>
+                    x.courseTrainers)
+                        .ThenInclude(x => 
+                            x.Course)            
+               .AsNoTracking()
+               .ToList();
+                  /*.Include(x =>
                       x.addresses)
                   .ThenInclude(x => x.address)
                   .AsNoTracking()
@@ -40,7 +58,7 @@ namespace PersonData.repo
                   .Include(x =>
                       x.comments)
                   .AsNoTracking()
-                  .ToList();
+                  .ToList();*/
         }
 
         public Person FindOne(int id)
