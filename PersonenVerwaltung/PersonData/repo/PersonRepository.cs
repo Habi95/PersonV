@@ -31,21 +31,27 @@ namespace PersonData.repo
         {
             return entities.person
               .Include(x =>
-                  x.addresses)
-                   .ThenInclude(x =>
-                       x.address)
+                    x.addresses)
+                        .ThenInclude(x =>
+                            x.address)
               .Include(x =>
-                  x.contacts)
+                    x.contacts)
               .Include(x =>
-                  x.comments)
-             .Include(x =>
-                  x.courseParticipants)
-                   .ThenInclude(x =>
-                       x.Course)
+                    x.comments)
               .Include(x =>
-                   x.courseTrainers)
-                       .ThenInclude(x =>
-                           x.Course)
+                    x.courseParticipants)
+                        .ThenInclude(x =>
+                            x.Course)
+              .Include(x =>
+                    x.courseTrainers)
+                        .ThenInclude(x =>
+                            x.Course)
+              .Include(x => 
+                    x.book)
+              .Include(x =>
+                    x.notebook)
+              .Include(x =>
+                    x.equipment)                        
               .AsNoTracking()
               .ToList();           
         }

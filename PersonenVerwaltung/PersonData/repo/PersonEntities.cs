@@ -1,6 +1,7 @@
 ﻿using Data.Models;
 using Microsoft.EntityFrameworkCore;
 using PersonData.model;
+using PersonData.model.material;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,12 +37,14 @@ namespace PersonData
         public DbSet<RelCourseTrainer> course_trainer { get; set; }
         public DbSet<RelCourseParticipant> course_participants { get; set; }
         public DbSet<Course> course { get; set; }
+        public DbSet<book> book { get; set; }
+        public DbSet<equipment> equipment { get; set; }
+        public DbSet<notebook> notebook { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
 
             var f = optionsBuilder.UseMySQL(DbServer);
-            Console.WriteLine();
-            //optionsBuilder.EnableSensitiveDataLogging();
+           
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -53,6 +56,9 @@ namespace PersonData
             RealtionAddresses(modelBuilder);
             RealtionCourseTrainer(modelBuilder);
             RealtionCourseParticipants(modelBuilder);
+            RealtionBook(modelBuilder);
+            RealtionEquipment(modelBuilder);
+            RealtionNotebook(modelBuilder);
         }
         private void RealtionComment(ModelBuilder modelBuilder)
         {
@@ -130,6 +136,28 @@ namespace PersonData
                 .HasForeignKey(x => x.CourseId);
 
         }
+        private void RealtionBook(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<book>()
+               .HasOne(x => x.person)
+               .WithMany(x => x.book)
+               .HasForeignKey(x => x.person_id);
+        }
+        private void RealtionEquipment(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<equipment>()
+               .HasOne(x => x.person)
+               .WithMany(x => x.equipment)
+               .HasForeignKey(x => x.person_id);
+        }
+
+        private void RealtionNotebook(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<notebook>()
+               .HasOne(x => x.person)
+               .WithMany(x => x.notebook)
+               .HasForeignKey(x => x.person_id);
+        }
 
         private void PrimKeys(ModelBuilder modelBuilder)
         {
@@ -153,6 +181,12 @@ namespace PersonData
             modelBuilder.Entity<RelCourseTrainer>().HasKey(x => x.Id);
             //entity for course_participant
             modelBuilder.Entity<RelCourseParticipant>().HasKey(x => x.Id);
+            //entity for book
+            modelBuilder.Entity<book>().HasKey(x => x.id);
+            //enetity for equipment
+            modelBuilder.Entity<equipment>().HasKey(x => x.id);
+            //entity for notebook
+            modelBuilder.Entity<notebook>().HasKey(x => x.id);
         }
     }
 }
