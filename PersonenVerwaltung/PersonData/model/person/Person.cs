@@ -2,6 +2,7 @@
 using PersonData.model;
 using PersonData.model.course;
 using PersonData.model.material;
+using PersonData.model.person;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -12,7 +13,23 @@ namespace PersonData
     public class Person : BasePerson
     {
         public string title { get; set; }
-        public decimal? sv_nr { get; set; }
+        private long? _sv_nr;
+
+        public long? sv_nr
+        {
+            get
+            {
+                return _sv_nr;
+            }
+            set
+            {
+                if (value.HasValue)
+                    IsValidSvnr = SocialSecurityNumberClaculator.Calculate(value.Value);
+
+                _sv_nr = value;
+            }
+        }
+
         public string gender { get; set; }
         public string busy { get; set; }
         public string busy_by { get; set; }
@@ -44,6 +61,9 @@ namespace PersonData
 
         [NotMapped]
         public List<RelCommunicationClass> Communications { get; set; }
+
+        [NotMapped]
+        public bool IsValidSvnr { get; set; }
 
         /*
          *  var bildString = Convert.ToBase64String(System.IO.File.ReadAllBytes(@"C:\xampp\lala.jpeg"));

@@ -48,17 +48,7 @@ namespace PersonController
         /// <param name="person"></param>
         public void UpdatePerson(Person person)
         {
-            try
-            {
-                if (Entities.person.Any(x => x.Id == person.Id))
-                {
-                    RepositoryPerson.Update(person);
-                }
-            }
-            catch (NullReferenceException)
-            {
-                throw new PersonException($"Person with ID {person.Id} does not exist!");
-            }
+            RepositoryPerson.Update(person);
         }
 
         /// <summary>
@@ -139,11 +129,6 @@ namespace PersonController
             {
                 throw ex;
             }
-        }
-
-        public Person getPerson(int id)
-        {
-            return new Person();
         }
 
         public void AddContact(Contact contactInfo)

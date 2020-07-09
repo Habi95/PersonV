@@ -5,6 +5,7 @@ namespace PersonData
 {
     public class BaseClassCreatedModify
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("id")]
         public int Id { get; set; }
 

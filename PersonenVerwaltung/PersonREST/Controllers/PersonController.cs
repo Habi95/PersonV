@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using PersonController;
 using PersonData;
 using PersonData.model;
+using PersonData.model.person;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PersonREST.Controllers
 {
@@ -13,6 +15,7 @@ namespace PersonREST.Controllers
     public class PersonController : ControllerBase
     {
         private Datahandling datahandling = new Datahandling();
+        private PersonEntities entities = new PersonEntities();
 
         /// <summary>
         /// base.url/Person Lists all Base Persons
@@ -21,6 +24,8 @@ namespace PersonREST.Controllers
         [HttpGet]
         public List<BasePerson> getAllPersonsBasicData()
         {
+            Person person = new Person();
+            person.sv_nr = 1951030189;
             try
             {
                 var personList = datahandling.FindAllPersonsBasicData();
@@ -69,7 +74,7 @@ namespace PersonREST.Controllers
         [HttpPut]
         public void UpdatePerson(Person person)
         {
-            if (person.Id != 0) // ID has to be greater than 0
+            if (entities.person.FirstOrDefault(x => x.Id == person.Id) != null) // check person is not null
             {
                 try
                 {
@@ -100,25 +105,45 @@ namespace PersonREST.Controllers
         [HttpPost]
         public void Create(Person person)
         {
-            if (person.Id == 0)
+            SocialSecurityNumberClaculator socialSecurity = new SocialSecurityNumberClaculator();
+            if (entities.person.FirstOrDefault(x => x.Id == person.Id) == null) //check person id is no existing
             {
-                try
-                {
-                    person.CreatedAt = DateTime.Now; // sollte vom Web schon mitkommen!!!
-                    person.ModifyAt = DateTime.Now; // sollte vom Web schon mitkommen!!!
-                    datahandling.AddPerson(person);
-                    Response.StatusCode = 201;
-                }
-                catch (Exception)
-                {
-                    Response.StatusCode = 500;
-                    throw;
-                }
+                //if (person.sv_nr.HasValue)
+                //{
+                //    if (person.IsValidSvnr)
+                //    {
+                //        CreatePerson(person);
+                //    }
+                //    else
+                //    {
+                //        Response.StatusCode = 500;
+                //    }
+                //}
+                //else
+                //{
+                CreatePerson(person);
+                //}
             }
             else
             {
                 Response.StatusCode = 409;
                 Response.WriteAsync("Person ID incorrect!");
+            }
+        }
+
+        private void CreatePerson(Person person)
+        {
+            try
+            {
+                person.CreatedAt = DateTime.Now; // sollte vom Web schon mitkommen!!!
+                person.ModifyAt = DateTime.Now; // sollte vom Web schon mitkommen!!!
+                datahandling.AddPerson(person);
+                Response.StatusCode = 201;
+            }
+            catch (Exception)
+            {
+                Response.StatusCode = 500;
+                throw;
             }
         }
 
@@ -131,7 +156,7 @@ namespace PersonREST.Controllers
         [HttpPost("address/{id}")]
         public void CreateAddress(int id, Address address)
         {
-            if (address.Id == 0 && id != 0)
+            if (entities.address.FirstOrDefault(x => x.Id == address.Id) == null) // make new  // addressPerson
             {
                 try
                 {
@@ -146,10 +171,10 @@ namespace PersonREST.Controllers
                     throw;
                 }
             }
-            else
+            else if (true)
             {
-                Response.StatusCode = 409;
             }
+            // Response.StatusCode = 409;
         }
 
         /// <summary>
