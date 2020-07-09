@@ -18,7 +18,7 @@ namespace PersonData.repo
             entities.address.Add(address);
             entities.SaveChanges();
 
-            return entities.address.Where(x => x.street == address.street).ToList().FirstOrDefault(x => x.zip == address.zip).id;
+            return entities.address.Where(x => x.street == address.street).ToList().FirstOrDefault(x => x.zip == address.zip).Id;
         }
 
         public void DeleteOne(Address address)
@@ -34,7 +34,7 @@ namespace PersonData.repo
 
         public Address FindOne(int id)
         {
-            return entities.address.FirstOrDefault(x => x.id == id);
+            return entities.address.FirstOrDefault(x => x.Id == id);
         }
 
         public void Update(Address entity)

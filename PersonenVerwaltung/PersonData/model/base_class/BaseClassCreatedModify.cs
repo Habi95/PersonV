@@ -5,15 +5,16 @@ namespace PersonData
 {
     public class BaseClassCreatedModify
     {
-        public int id { get; set; }
+        [Column("id")]
+        public int Id { get; set; }
 
         [Column("created@")]
-        public DateTime createdAt { get; set; }
+        public DateTime CreatedAt { get; set; }
 
         [Column("modified@")]
-        public DateTime? modifyAt { get; set; }
+        public DateTime? ModifyAt { get; set; }
 
         [NotMapped]
-        public DateTime modifyDate { get; set; }
+        public DateTime ModifyDate { get; set; }
     }
 }

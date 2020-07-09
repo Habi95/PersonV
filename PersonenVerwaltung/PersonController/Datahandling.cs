@@ -50,14 +50,14 @@ namespace PersonController
         {
             try
             {
-                if (Entities.person.Any(x => x.id == person.id))
+                if (Entities.person.Any(x => x.Id == person.Id))
                 {
                     RepositoryPerson.Update(person);
                 }
             }
             catch (NullReferenceException)
             {
-                throw new PersonException($"Person with ID {person.id} does not exist!");
+                throw new PersonException($"Person with ID {person.Id} does not exist!");
             }
         }
 
@@ -70,7 +70,7 @@ namespace PersonController
         {
             try
             {
-                var tempPerson = RepositoryPerson.FindAll().FirstOrDefault(x => x.id == id);
+                var tempPerson = RepositoryPerson.FindAll().FirstOrDefault(x => x.Id == id);
 
                 if (tempPerson != null)
                 {
@@ -100,32 +100,12 @@ namespace PersonController
         {
             try
             {
-                return Entities.person.ToList().ConvertAll(c => CreateBasePerson(c));
+                return Entities.person.ToList().ConvertAll(c => PersonRepository.CreateBasePerson(c));
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-        }
-
-        /// <summary>
-        /// Converts Person to Base Person
-        /// </summary>
-        /// <param name="person"></param>
-        /// <returns></returns>
-        private BasePerson CreateBasePerson(Person person)
-        {
-            var basePerson = new BasePerson()
-            {
-                id = person.id,
-                name1 = person.name1,
-                name2 = person.name2,
-                date = person.date,
-                createdAt = person.createdAt,
-                modifyAt = person.modifyAt,
-                modifyDate = person.modifyDate
-            };
-            return basePerson;
         }
 
         /// <summary>
@@ -149,7 +129,7 @@ namespace PersonController
                 }
                 else
                 {
-                    addressId = Entities.address.Where(x => x.street == address.street).ToList().FirstOrDefault(x => x.zip == address.zip).id;
+                    addressId = Entities.address.Where(x => x.street == address.street).ToList().FirstOrDefault(x => x.zip == address.zip).Id;
                 }
 
                 var AddressPerson = new AddressPerson() { addressId = addressId, personId = personId };

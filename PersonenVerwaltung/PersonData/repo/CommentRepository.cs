@@ -32,7 +32,7 @@ namespace PersonData.repo
 
         public Comment FindOne(int id)
         {
-            return entities.comment.FirstOrDefault(x => x.id == id);
+            return entities.comment.FirstOrDefault(x => x.Id == id);
         }
 
         public void Update(Comment entity)

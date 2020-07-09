@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PersonData.model;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -27,29 +28,6 @@ namespace PersonData.repo
 
         public List<Person> FindAll()
         {
-            //var e = entities.person;
-            //e.Include(x => x.addresses).ThenInclude(x => x.address);
-            //e.Include(x =>
-            //        x.contacts);
-            //e.Include(x =>
-            //        x.comments);
-            //e.Include(x =>
-            //        x.courseParticipants)
-            //            .ThenInclude(x =>
-            //                x.Course);
-            //e.Include(x =>
-            //        x.courseTrainers)
-            //            .ThenInclude(x =>
-            //                x.Course);
-            //e.Include(x =>
-            //        x.book);
-            //e.Include(x =>
-            //        x.notebook);
-            //e.Include(x =>
-            //        x.equipment);
-
-            //return e.ToList();
-
             return entities.person
               .Include(x =>
                     x.addresses)
@@ -59,14 +37,14 @@ namespace PersonData.repo
                     x.contacts)
               .Include(x =>
                     x.comments)
-              //.Include(x =>
-              //      x.courseParticipants)
-              //          .ThenInclude(x =>
-              //              x.Course)
-              //.Include(x =>
-              //      x.courseTrainers)
-              //          .ThenInclude(x =>
-              //              x.Course)
+              .Include(x =>
+                    x.courseParticipants)
+                        .ThenInclude(x =>
+                            x.Course)
+              .Include(x =>
+                    x.courseTrainers)
+                        .ThenInclude(x =>
+                            x.Course)
               .Include(x =>
                     x.book)
               .Include(x =>
@@ -79,13 +57,33 @@ namespace PersonData.repo
 
         public Person FindOne(int id)
         {
-            return entities.person.FirstOrDefault(x => x.id == id);
+            return entities.person.FirstOrDefault(x => x.Id == id);
         }
 
         public void Update(Person entity)
         {
             entities.Update(entity);
             entities.SaveChanges();
+        }
+
+        /// <summary>
+        /// Converts Person to Base Person
+        /// </summary>
+        /// <param name="person"></param>
+        /// <returns></returns>
+        public static BasePerson CreateBasePerson(Person person)
+        {
+            var basePerson = new BasePerson()
+            {
+                Id = person.Id,
+                name1 = person.name1,
+                name2 = person.name2,
+                date = person.date,
+                CreatedAt = person.CreatedAt,
+                ModifyAt = person.ModifyAt,
+                ModifyDate = person.ModifyDate
+            };
+            return basePerson;
         }
     }
 }

@@ -10,6 +10,7 @@ namespace PersonData.repo
     public class DocumentRepository : IRepository<Document>
     {
         private PersonEntities entities;
+        private PersonRepository PersonRepository;
 
         public DocumentRepository(PersonEntities entities)
         {
@@ -55,7 +56,7 @@ namespace PersonData.repo
             var documentClasses = entities.document_class.Include(x => x.Document).Where(c => c.class_id == Pid && c.classValue == className).ToList();
             documentClasses.ForEach(x =>
             {
-                x.Document.DocumentOwner = classes.FirstOrDefault(x => x.id == Pid);
+                x.Document.DocumentOwner = classes.FirstOrDefault(x => x.Id == Pid);
             });
 
             //List<Document> doclist = new List<Document>();

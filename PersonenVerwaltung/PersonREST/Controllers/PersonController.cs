@@ -69,11 +69,11 @@ namespace PersonREST.Controllers
         [HttpPut]
         public void UpdatePerson(Person person)
         {
-            if (person.id != 0) // ID has to be greater than 0
+            if (person.Id != 0) // ID has to be greater than 0
             {
                 try
                 {
-                    person.modifyAt = DateTime.Now; // sollte vom Web schon mitkommen!!! weil wir nicht wissen was geändert wurde.
+                    person.ModifyAt = DateTime.Now; // sollte vom Web schon mitkommen!!! weil wir nicht wissen was geändert wurde.
                     datahandling.UpdatePerson(person);
                 }
                 catch (PersonException ex) // if the person doesn't exists
@@ -100,12 +100,12 @@ namespace PersonREST.Controllers
         [HttpPost]
         public void Create(Person person)
         {
-            if (person.id == 0)
+            if (person.Id == 0)
             {
                 try
                 {
-                    person.createdAt = DateTime.Now; // sollte vom Web schon mitkommen!!!
-                    person.modifyAt = DateTime.Now; // sollte vom Web schon mitkommen!!!
+                    person.CreatedAt = DateTime.Now; // sollte vom Web schon mitkommen!!!
+                    person.ModifyAt = DateTime.Now; // sollte vom Web schon mitkommen!!!
                     datahandling.AddPerson(person);
                     Response.StatusCode = 201;
                 }
@@ -131,12 +131,12 @@ namespace PersonREST.Controllers
         [HttpPost("address/{id}")]
         public void CreateAddress(int id, Address address)
         {
-            if (address.id == 0 && id != 0)
+            if (address.Id == 0 && id != 0)
             {
                 try
                 {
-                    address.createdAt = DateTime.Now; // sollte vom Web schon mitkommen!!!
-                    address.modifyAt = DateTime.Now; // sollte vom Web schon mitkommen!!!
+                    address.CreatedAt = DateTime.Now; // sollte vom Web schon mitkommen!!!
+                    address.ModifyAt = DateTime.Now; // sollte vom Web schon mitkommen!!!
                     datahandling.AddAddress(id, address);
                     Response.StatusCode = 201;
                 }
@@ -159,11 +159,11 @@ namespace PersonREST.Controllers
         [HttpPost("contact")]
         public void CreateContact(Contact contact)
         {
-            if (contact.id == 0 && contact.person_id != 0)
+            if (contact.Id == 0 && contact.person_id != 0)
             {
                 try
                 {
-                    contact.modifyDate = DateTime.Now; // sollte vom Web schon mitkommen!!!
+                    contact.ModifyDate = DateTime.Now; // sollte vom Web schon mitkommen!!!
                     datahandling.AddContact(contact);
                     Response.StatusCode = 201;
                 }
@@ -186,11 +186,11 @@ namespace PersonREST.Controllers
         [HttpPost("comment")]
         public void CreateComment(Comment comment)
         {
-            if (comment.id == 0 && comment.person_id != 0)
+            if (comment.Id == 0 && comment.person_id != 0)
             {
                 try
                 {
-                    comment.modifyDate = DateTime.Now; // sollte vom Web schon mitkommen!!!
+                    comment.ModifyDate = DateTime.Now; // sollte vom Web schon mitkommen!!!
                     datahandling.AddComment(comment);
                     Response.StatusCode = 201;
                 }

@@ -32,7 +32,7 @@ namespace PersonData.repo
 
         public Contact FindOne(int id)
         {
-            return entities.contact.FirstOrDefault(x => x.id == id);
+            return entities.contact.FirstOrDefault(x => x.Id == id);
         }
 
         public void Update(Contact entity)

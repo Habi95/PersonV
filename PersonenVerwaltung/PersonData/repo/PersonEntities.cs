@@ -190,21 +190,21 @@ namespace PersonData
         private void PrimKeys(ModelBuilder modelBuilder)
         {
             //entitity for addressTable
-            modelBuilder.Entity<Address>().HasKey(x => x.id);
+            modelBuilder.Entity<Address>().HasKey(x => x.Id);
             //entity for personTable
-            modelBuilder.Entity<Person>().HasKey(x => x.id);
+            modelBuilder.Entity<Person>().HasKey(x => x.Id);
             //entity for contactTable
-            modelBuilder.Entity<Contact>().HasKey(x => x.id);
+            modelBuilder.Entity<Contact>().HasKey(x => x.Id);
             //entity for commentTable
-            modelBuilder.Entity<Comment>().HasKey(x => x.id);
+            modelBuilder.Entity<Comment>().HasKey(x => x.Id);
             //entity for addressPersonTable
             modelBuilder.Entity<AddressPerson>().HasKey(x => x.id);
             //entity for documents
-            modelBuilder.Entity<Document>().HasKey(x => x.id);
+            modelBuilder.Entity<Document>().HasKey(x => x.Id);
             //entity for documentperson
             modelBuilder.Entity<DocumentClass>().HasKey(x => x.id);
             //entity for course
-            modelBuilder.Entity<Course>().HasKey(x => x.id);
+            modelBuilder.Entity<Course>().HasKey(x => x.Id);
             //entity for course_trainer
             modelBuilder.Entity<RelCourseTrainer>().HasKey(x => x.Id);
             //entity for course_participant

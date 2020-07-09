@@ -53,10 +53,9 @@ namespace PersonData.repo
             throw new NotImplementedException();
         }
 
-        //
         public List<RelCommunicationClass> GetCommunications<T>(int Pid) where T : BaseClassCreatedModify
         {
-            var person = entities.person.FirstOrDefault(c => c.id == Pid);
+            var person = entities.person.FirstOrDefault(c => c.Id == Pid);
 
             if (person != null)
             {
@@ -65,8 +64,8 @@ namespace PersonData.repo
                 var communication = entities.communication_class.Include(x => x.Communication).Where(x => x.Communication.PersonId == Pid).ToList();
                 communication.ForEach(x =>
                 {
-                    x.Communication.Document = entities.documents.FirstOrDefault(c => c.id == x.Communication.DocumentId);
-                    x.sender = classes.FirstOrDefault(d => d.id == x.ClassId);
+                    x.Communication.Document = entities.documents.FirstOrDefault(c => c.Id == x.Communication.DocumentId);
+                    x.sender = classes.FirstOrDefault(d => d.Id == x.ClassId);
                 });
 
                 Console.WriteLine();
@@ -75,53 +74,5 @@ namespace PersonData.repo
 
             return null;
         }
-
-        //List<RelCommunicationClass> communicationClasses;
-        //MySqlCommand command = connection().CreateCommand();
-        //MySqlDataReader dataReader;
-        //command.CommandText = $"SELECT * FROM `communication_class` " +
-        //    $"Inner JOIN communication On communication.id = communication_class.id  " +
-        //    $"INNER JOIN documents ON communication.document_id = documents.id " +
-        //    $"WHERE communication.person_id = {Pid}";
-        //using (dataReader = command.ExecuteReader())
-        //{
-        //    while (dataReader.Read())
-        //    {
-        //        RelCommunicationClass communicationClass = new RelCommunicationClass()
-        //        {
-        //            Id = int.Parse(dataReader[0].ToString()),
-        //            CommunicationId = int.Parse(dataReader[1].ToString()),
-        //            Class = dataReader[2].ToString(),
-        //            ClassId = int.Parse(dataReader[3].ToString())
-        //        };
-        //        Communication communication = new Communication()
-        //        {
-        //            Id = int.Parse(dataReader[4].ToString()),
-        //            Channel = (EChannel)Enum.Parse(typeof(EChannel), dataReader[5].ToString(), true),
-        //            PersonId = int.Parse(dataReader[6].ToString()),
-        //            Date = DateTime.Parse(dataReader[7].ToString()),
-        //            comment = dataReader[8].ToString(),
-        //            DocumentId = int.Parse(dataReader[9].ToString()),
-        //            ReminderId = int.Parse(dataReader[10].ToString()),
-        //            CreatedAt = DateTime.Parse(dataReader[11].ToString()),
-        //            CommunicationClasse = communicationClass
-        //        };
-
-        //        if (communication.DocumentId.HasValue)
-        //        {
-        //            communication.Document = new Document()
-        //            {
-        //                Id = communication.DocumentId.Value,
-        //                Url = dataReader[12].ToString(),
-        //                Name = dataReader[13].ToString(),
-        //                Comment = dataReader[14].ToString(),
-        //                ReminderId = string.IsNullOrEmpty(dataReader[14].ToString()) ? 0 : int.Parse(dataReader[14].ToString()),
-        //                CreatedAt = (DateTime)dataReader[15],
-        //                ModifiedAt = null,//string.IsNullOrEmpty(dataReader[16].ToString()) ? DateTime.Parse("01.01.2000 00:00:00") : DateTime.Parse(modify),
-        //                type = (EDocumentType)Enum.Parse(typeof(EDocumentType), dataReader[17].ToString(), true)
-        //            };
-        //        }
-        //    }
-        //}
     }
 }
