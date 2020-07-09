@@ -46,12 +46,18 @@ namespace PersonData.repo
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public List<Document> GetDocuments<T>(int Pid)
+        public List<Document> GetDocuments<T>(int Pid) where T : BaseClassCreatedModify
         {
-            entities.documents.Include(x => x.Classes);
-            entities.document_class.Include(x => x.Document);
+            //entities.documents.Include(x => x.Classes);
+            //entities.document_class.Include(x => x.Document);
             var className = typeof(T).Name;
+            var classes = entities.Set<T>();
             var documentClasses = entities.document_class.Include(x => x.Document).Where(c => c.class_id == Pid && c.classValue == className).ToList();
+            documentClasses.ForEach(x =>
+            {
+                x.Document.DocumentOwner = classes.FirstOrDefault(x => x.id == Pid);
+            });
+
             //List<Document> doclist = new List<Document>();
             //MySqlCommand command = connection().CreateCommand();
             //MySqlDataReader dataReader;

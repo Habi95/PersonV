@@ -53,6 +53,7 @@ namespace PersonData.repo
             throw new NotImplementedException();
         }
 
+        //
         public List<RelCommunicationClass> GetCommunications<T>(int Pid) where T : BaseClassCreatedModify
         {
             var person = entities.person.FirstOrDefault(c => c.id == Pid);
@@ -64,7 +65,7 @@ namespace PersonData.repo
                 var communication = entities.communication_class.Include(x => x.Communication).Where(x => x.Communication.PersonId == Pid).ToList();
                 communication.ForEach(x =>
                 {
-                    x.Communication.Document = entities.documents.FirstOrDefault(c => c.Id == x.Communication.DocumentId);
+                    x.Communication.Document = entities.documents.FirstOrDefault(c => c.id == x.Communication.DocumentId);
                     x.sender = classes.FirstOrDefault(d => d.id == x.ClassId);
                 });
 

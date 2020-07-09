@@ -200,7 +200,7 @@ namespace PersonData
             //entity for addressPersonTable
             modelBuilder.Entity<AddressPerson>().HasKey(x => x.id);
             //entity for documents
-            modelBuilder.Entity<Document>().HasKey(x => x.Id);
+            modelBuilder.Entity<Document>().HasKey(x => x.id);
             //entity for documentperson
             modelBuilder.Entity<DocumentClass>().HasKey(x => x.id);
             //entity for course

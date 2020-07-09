@@ -44,5 +44,11 @@ namespace PersonData
 
         [NotMapped]
         public List<RelCommunicationClass> Communications { get; set; }
+
+        /*
+         *  var bildString = Convert.ToBase64String(System.IO.File.ReadAllBytes(@"C:\xampp\lala.jpeg"));
+
+            System.IO.File.WriteAllBytes(@"C:\xampp\lala1.jpeg", Convert.FromBase64String(bildString));
+         */
     }
 }
