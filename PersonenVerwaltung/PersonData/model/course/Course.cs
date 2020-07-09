@@ -1,3 +1,4 @@
+using PersonData;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,13 +9,13 @@ namespace Data.Models
     /// contains information to a certain course
     /// </summary>
     [Table("course")]
-    public class Course
+    public class Course : BaseClassCreatedModify
     {
         /// <summary>
         /// id in DB (is assigned by DB as autoIncrement)
         /// </summary>
-        [Column("id")]
-        public int Id { get; set; }
+        //[Column("id")]
+        //public int Id { get; set; }
 
         /// <summary>
         /// the courses' title

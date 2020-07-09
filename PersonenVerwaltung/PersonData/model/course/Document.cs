@@ -1,5 +1,6 @@
 ﻿using PersonData.model.ENUM;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PersonData
@@ -30,5 +31,8 @@ namespace PersonData
 
         [Column("type", TypeName = "varchar(50)")]
         public EDocumentType type { get; set; }
+
+        [NotMapped]
+        public List<DocumentClass> Classes { get; set; }
     }
 }

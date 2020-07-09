@@ -1,8 +1,7 @@
 ﻿namespace PersonData
 {
-    public class Contact : CreatedModify
+    public class Contact : BaseClassCreatedModify
     {
-        public int id { get; set; }
         public int person_id { get; set; }
         public EKindOfCommunication art_of_communication { get; set; }
         public string contact_value { get; set; }

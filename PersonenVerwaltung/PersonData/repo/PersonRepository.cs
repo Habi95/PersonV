@@ -27,6 +27,29 @@ namespace PersonData.repo
 
         public List<Person> FindAll()
         {
+            //var e = entities.person;
+            //e.Include(x => x.addresses).ThenInclude(x => x.address);
+            //e.Include(x =>
+            //        x.contacts);
+            //e.Include(x =>
+            //        x.comments);
+            //e.Include(x =>
+            //        x.courseParticipants)
+            //            .ThenInclude(x =>
+            //                x.Course);
+            //e.Include(x =>
+            //        x.courseTrainers)
+            //            .ThenInclude(x =>
+            //                x.Course);
+            //e.Include(x =>
+            //        x.book);
+            //e.Include(x =>
+            //        x.notebook);
+            //e.Include(x =>
+            //        x.equipment);
+
+            //return e.ToList();
+
             return entities.person
               .Include(x =>
                     x.addresses)
@@ -36,14 +59,14 @@ namespace PersonData.repo
                     x.contacts)
               .Include(x =>
                     x.comments)
-              .Include(x =>
-                    x.courseParticipants)
-                        .ThenInclude(x =>
-                            x.Course)
-              .Include(x =>
-                    x.courseTrainers)
-                        .ThenInclude(x =>
-                            x.Course)
+              //.Include(x =>
+              //      x.courseParticipants)
+              //          .ThenInclude(x =>
+              //              x.Course)
+              //.Include(x =>
+              //      x.courseTrainers)
+              //          .ThenInclude(x =>
+              //              x.Course)
               .Include(x =>
                     x.book)
               .Include(x =>

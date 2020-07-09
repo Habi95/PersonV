@@ -1,6 +1,7 @@
 ﻿using Data.Models;
 using Microsoft.EntityFrameworkCore;
 using PersonData.model;
+using PersonData.model.course;
 using PersonData.model.material;
 
 namespace PersonData
@@ -40,6 +41,8 @@ namespace PersonData
         public DbSet<book> book { get; set; }
         public DbSet<equipment> equipment { get; set; }
         public DbSet<notebook> notebook { get; set; }
+        public DbSet<RelCommunicationClass> communication_class { get; set; }
+        public DbSet<Communication> communication { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -58,6 +61,8 @@ namespace PersonData
             RealtionBook(modelBuilder);
             RealtionEquipment(modelBuilder);
             RealtionNotebook(modelBuilder);
+            RealtionDocument(modelBuilder);
+            RealtionCommunicaton(modelBuilder);
         }
 
         private void RealtionComment(ModelBuilder modelBuilder)
@@ -102,40 +107,44 @@ namespace PersonData
 
         private void RealtionCourseTrainer(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Person>()
-                .HasMany(x => x.courseTrainers)
-                .WithOne();
             modelBuilder.Entity<Course>()
-                .HasMany(x => x.RelCourseTrainers)
-                .WithOne();
+                            .HasMany(x => x.RelCourseTrainers)
+                            .WithOne(x => x.Course)
+                            .HasForeignKey(x => x.CourseId);
+
+            modelBuilder.Entity<RelCourseTrainer>()
+                            .HasOne(x => x.Course)
+                            .WithMany(x => x.RelCourseTrainers)
+                            .HasForeignKey(x => x.CourseId);
 
             modelBuilder.Entity<RelCourseTrainer>()
                 .HasOne(x => x.Person)
                 .WithMany(x => x.courseTrainers)
                 .HasForeignKey(x => x.TrainerID);
-            modelBuilder.Entity<RelCourseTrainer>()
-                .HasOne(x => x.Course)
-                .WithMany(x => x.RelCourseTrainers)
-                .HasForeignKey(x => x.CourseId);
+            modelBuilder.Entity<Person>()
+                            .HasMany(x => x.courseTrainers)
+                            .WithOne(x => x.Person);
         }
 
         private void RealtionCourseParticipants(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Person>()
-                .HasMany(x => x.courseParticipants)
-                .WithOne();
             modelBuilder.Entity<Course>()
                 .HasMany(x => x.RelCourseParticipants)
-                .WithOne();
+                .WithOne(x => x.Course)
+                .HasForeignKey(x => x.CourseId);
+
+            modelBuilder.Entity<RelCourseParticipant>()
+                            .HasOne(x => x.Course)
+                            .WithMany(x => x.RelCourseParticipants)
+                            .HasForeignKey(x => x.CourseId);
 
             modelBuilder.Entity<RelCourseParticipant>()
                 .HasOne(x => x.Person)
                 .WithMany(x => x.courseParticipants)
                 .HasForeignKey(x => x.ParticipantId);
-            modelBuilder.Entity<RelCourseParticipant>()
-                .HasOne(x => x.Course)
-                .WithMany(x => x.RelCourseParticipants)
-                .HasForeignKey(x => x.CourseId);
+            modelBuilder.Entity<Person>()
+                           .HasMany(x => x.courseParticipants)
+                           .WithOne(x => x.Person);
         }
 
         private void RealtionBook(ModelBuilder modelBuilder)
@@ -162,6 +171,22 @@ namespace PersonData
                .HasForeignKey(x => x.person_id);
         }
 
+        private void RealtionDocument(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<DocumentClass>()
+               .HasOne(x => x.Document)
+               .WithMany(x => x.Classes)
+               .HasForeignKey(x => x.doc_id);
+        }
+
+        private void RealtionCommunicaton(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<RelCommunicationClass>()
+                .HasOne(x => x.Communication)
+                .WithMany(x => x.CommunicationClass)
+                .HasForeignKey(x => x.Id);
+        }
+
         private void PrimKeys(ModelBuilder modelBuilder)
         {
             //entitity for addressTable
@@ -179,7 +204,7 @@ namespace PersonData
             //entity for documentperson
             modelBuilder.Entity<DocumentClass>().HasKey(x => x.id);
             //entity for course
-            modelBuilder.Entity<Course>().HasKey(x => x.Id);
+            modelBuilder.Entity<Course>().HasKey(x => x.id);
             //entity for course_trainer
             modelBuilder.Entity<RelCourseTrainer>().HasKey(x => x.Id);
             //entity for course_participant
@@ -190,6 +215,10 @@ namespace PersonData
             modelBuilder.Entity<equipment>().HasKey(x => x.id);
             //entity for notebook
             modelBuilder.Entity<notebook>().HasKey(x => x.id);
+            //enity for communicaton
+            modelBuilder.Entity<Communication>().HasKey(x => x.Id);
+            //entity for communicaton_class
+            modelBuilder.Entity<RelCommunicationClass>().HasKey(x => x.Id);
         }
     }
 }

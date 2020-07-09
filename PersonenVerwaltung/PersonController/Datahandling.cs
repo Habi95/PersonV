@@ -19,6 +19,7 @@ namespace PersonController
         public CourseRepository RepositoryCourse;
         public ContactRepository RepositoryContact;
         public CommentRepository RepositoryComment;
+        public CommunicationRepository RepositoryCommunication;
 
         public Datahandling()
         {
@@ -29,6 +30,7 @@ namespace PersonController
             RepositoryCourse = new CourseRepository(Entities);
             RepositoryContact = new ContactRepository(Entities);
             RepositoryComment = new CommentRepository(Entities);
+            RepositoryCommunication = new CommunicationRepository(Entities);
         }
 
         /// <summary>
@@ -76,6 +78,7 @@ namespace PersonController
                     tempPerson.CompletedCourse = result.Item1;
                     tempPerson.NotCompletedCourse = result.Item2;
                     tempPerson.documents = RepositoryDocument.GetDocuments<Person>(id);
+                    tempPerson.Communications = RepositoryCommunication.GetCommunications<Person>(id);
                     return tempPerson;
                 }
                 else

@@ -1,7 +1,9 @@
-﻿using MySql.Data.MySqlClient;
+﻿using Microsoft.EntityFrameworkCore;
+using MySql.Data.MySqlClient;
 using PersonData.model.ENUM;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PersonData.repo
 {
@@ -12,13 +14,6 @@ namespace PersonData.repo
         public DocumentRepository(PersonEntities entities)
         {
             this.entities = entities;
-        }
-
-        private MySqlConnection connection()
-        {
-            var conn = new MySqlConnection(entities.DbServer);
-            conn.Open();
-            return conn;
         }
 
         public int Create(Document entity)
@@ -53,36 +48,40 @@ namespace PersonData.repo
         /// <returns></returns>
         public List<Document> GetDocuments<T>(int Pid)
         {
-            List<Document> doclist = new List<Document>();
-            MySqlCommand command = connection().CreateCommand();
-            MySqlDataReader dataReader;
-            command.CommandText =
-            $"SELECT * FROM `document_class`" +
-            $" Inner JOIN documents on doc_id = documents.id " +
-            $"WHERE class = '{typeof(T).Name}' And class_id = {Pid}";
-            using (dataReader = command.ExecuteReader())
-            {
-                while (dataReader.Read())
-                {
-                    int id = (int)(int?)dataReader[3];
-                    var reminder = dataReader[8].ToString();
-                    var modify = dataReader[10].ToString();
-                    Document doc = new Document()
-                    {
-                        Id = (int)dataReader[4],
-                        Url = dataReader[5].ToString(),
-                        Name = dataReader[6].ToString(),
-                        Comment = dataReader[7].ToString(),
-                        ReminderId = string.IsNullOrEmpty(reminder) ? 0 : int.Parse(reminder),
-                        CreatedAt = (DateTime)dataReader[9],
-                        ModifiedAt = string.IsNullOrEmpty(modify) ? DateTime.Parse("01.01.2000 00:00:00") : DateTime.Parse(modify),
-                        type = (EDocumentType)Enum.Parse(typeof(EDocumentType), dataReader[11].ToString(), true)
-                    };
-                    doclist.Add(doc);
-                }
-            }
+            entities.documents.Include(x => x.Classes);
+            entities.document_class.Include(x => x.Document);
+            var className = typeof(T).Name;
+            var documentClasses = entities.document_class.Include(x => x.Document).Where(c => c.class_id == Pid && c.classValue == className).ToList();
+            //List<Document> doclist = new List<Document>();
+            //MySqlCommand command = connection().CreateCommand();
+            //MySqlDataReader dataReader;
+            //command.CommandText =
+            //$"SELECT * FROM `document_class`" +
+            //$" Inner JOIN documents on doc_id = documents.id " +
+            //$"WHERE class = '{typeof(T).Name}' And class_id = {Pid}";
+            //using (dataReader = command.ExecuteReader())
+            //{
+            //    while (dataReader.Read())
+            //    {
+            //        int id = (int)(int?)dataReader[3];
+            //        var reminder = dataReader[8].ToString();
+            //        var modify = dataReader[10].ToString();
+            //        Document doc = new Document()
+            //        {
+            //            Id = (int)dataReader[4],
+            //            Url = dataReader[5].ToString(),
+            //            Name = dataReader[6].ToString(),
+            //            Comment = dataReader[7].ToString(),
+            //            ReminderId = string.IsNullOrEmpty(reminder) ? 0 : int.Parse(reminder),
+            //            CreatedAt = (DateTime)dataReader[9],
+            //            ModifiedAt = string.IsNullOrEmpty(modify) ? DateTime.Parse("01.01.2000 00:00:00") : DateTime.Parse(modify),
+            //            type = (EDocumentType)Enum.Parse(typeof(EDocumentType), dataReader[11].ToString(), true)
+            //        };
+            //        doclist.Add(doc);
+            //    }
+            //}
 
-            return doclist;
+            return documentClasses.Select(x => x.Document).ToList();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Data.Models;
 using PersonData.model;
+using PersonData.model.course;
 using PersonData.model.material;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -40,5 +41,8 @@ namespace PersonData
 
         [NotMapped]
         public List<Course> NotCompletedCourse { get; set; }
+
+        [NotMapped]
+        public List<RelCommunicationClass> Communications { get; set; }
     }
 }

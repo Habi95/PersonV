@@ -3,12 +3,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PersonData
 {
-    public class CreatedModify
+    public class BaseClassCreatedModify
     {
+        public int id { get; set; }
+
         [Column("created@")]
         public DateTime createdAt { get; set; }
 
-        [Column("modify@")]
+        [Column("modified@")]
         public DateTime? modifyAt { get; set; }
 
         [NotMapped]
