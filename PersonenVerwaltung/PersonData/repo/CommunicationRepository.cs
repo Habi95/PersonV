@@ -10,7 +10,7 @@ using K4os.Hash.xxHash;
 
 namespace PersonData.repo
 {
-    public class CommunicationRepository : IRepository<Communication>
+    public class CommunicationRepository
     {
         private PersonEntities entities;
         private DocumentRepository docRepo;

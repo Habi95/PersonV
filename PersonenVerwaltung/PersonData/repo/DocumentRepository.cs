@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace PersonData.repo
 {
-    public class DocumentRepository : IRepository<Document>
+    public class DocumentRepository
     {
         private PersonEntities entities;
         private PersonRepository PersonRepository;

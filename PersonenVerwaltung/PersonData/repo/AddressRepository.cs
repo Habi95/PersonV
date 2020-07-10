@@ -41,5 +41,15 @@ namespace PersonData.repo
         {
             throw new NotImplementedException();
         }
+
+        public Address checkAddress(Address address)
+        {
+            return entities.address.FirstOrDefault(x =>
+             x.street == address.street &&
+             x.place == address.place &&
+             x.zip == address.zip &&
+             x.country == address.country
+             );
+        }
     }
 }

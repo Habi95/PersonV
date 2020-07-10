@@ -166,5 +166,12 @@ namespace PersonController
                 throw ex;
             }
         }
+
+        public void Delete<T>(T toDelete) where T : BaseClassCreatedModify
+        {
+            var x = Entities.Set<T>();
+            x.Remove(toDelete);
+            Entities.SaveChanges();
+        }
     }
 }

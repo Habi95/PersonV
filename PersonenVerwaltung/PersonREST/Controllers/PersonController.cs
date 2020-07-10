@@ -9,6 +9,13 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace PersonREST.Controllers
+
+/*
+ * TODO Delete Contact
+ * TODO Delete Person?  when person delet deleted all but not documents and communication sender
+ * TODO Delete Address => delted rel person address
+ * TODO Refact Repository generic
+ */
 {
     [ApiController]
     [Route("[controller]")]
@@ -25,8 +32,8 @@ namespace PersonREST.Controllers
         public List<BasePerson> getAllPersonsBasicData()
         {
             //1951030189
-            Person person = new Person();
-            person.sv_nr = 1951030189;
+            //Person person = new Person();
+            //person.sv_nr = 1951030189;
             try
             {
                 var personList = datahandling.FindAllPersonsBasicData();
@@ -106,29 +113,36 @@ namespace PersonREST.Controllers
         [HttpPost]
         public void Create(Person person)
         {
-            SocialSecurityNumberClaculator socialSecurity = new SocialSecurityNumberClaculator();
-            if (entities.person.FirstOrDefault(x => x.Id == person.Id) == null) //check person id is no existing
+            try
             {
-                //if (person.sv_nr.HasValue)
-                //{
-                //    if (person.IsValidSvnr)
-                //    {
-                //        CreatePerson(person);
-                //    }
-                //    else
-                //    {
-                //        Response.StatusCode = 500;
-                //    }
-                //}
-                //else
-                //{
-                CreatePerson(person);
-                //}
+                SocialSecurityNumberClaculator socialSecurity = new SocialSecurityNumberClaculator();
+                if (person.sv_nr.HasValue)
+                {
+                    if (person.Id > 0)
+                    {
+                        Response.WriteAsync("Bitte machen Sie ein Personen Update das hier ist für neue");
+                    }
+                    else
+                    {
+                        if (entities.person.FirstOrDefault(x => x.sv_nr == person.sv_nr) == null)
+                        {
+                            CreatePerson(person);
+                        }
+                        else
+                        {
+                            Response.WriteAsync("Person mit dieser Sozialversicherungs-Nummer bereits eingetragen");
+                        }
+                    }
+                }
+                else
+                {
+                    CreatePerson(person);
+                }
             }
-            else
+            catch (Exception ex)
             {
                 Response.StatusCode = 409;
-                Response.WriteAsync("Person ID incorrect!");
+                Response.WriteAsync(ex.Message);
             }
         }
 
@@ -158,14 +172,14 @@ namespace PersonREST.Controllers
         [HttpPost("address/{id}/{billingAddress}/{contactType}")]
         public void CreateAddress(int id, Address address, bool billingAddress, EContactType contactType)
         {
-            if (checkAddress(address) == null) // make new  // addressPerson
+            if (datahandling.RepositoryAddress.checkAddress(address) == null) // make new  // addressPerson
             {
                 try
                 {
                     address.CreatedAt = DateTime.Now;
                     address.ModifyAt = DateTime.Now;
                     datahandling.AddAddress(address);
-                    CreateAddressPerson(id, checkAddress(address).Id, billingAddress, contactType);
+                    CreateAddressPerson(id, datahandling.RepositoryAddress.checkAddress(address).Id, billingAddress, contactType);
 
                     if (countBillingAddress(id) == 1)
                     {
@@ -183,7 +197,7 @@ namespace PersonREST.Controllers
                     throw;
                 }
             }
-            else if (entities.addressperson.FirstOrDefault(x => x.addressId == checkAddress(address).Id) == null)
+            else if (entities.addressperson.FirstOrDefault(x => x.addressId == datahandling.RepositoryAddress.checkAddress(address).Id) == null)
             {
                 try
                 {
@@ -208,36 +222,22 @@ namespace PersonREST.Controllers
                 Response.StatusCode = 201;
                 Response.WriteAsync($"Addresse bereits eingetragen");
             }
-            //
         }
 
-        private int countBillingAddress(int PersonId)
+        [HttpDelete("address")]
+        public void DeleteAddress(Address address)
         {
-            var count = 0;
-            var x = entities.addressperson.Where(x => x.personId == PersonId).ToList();
-            entities.addressperson.Where(x => x.personId == PersonId).ToList().ForEach(x =>
-           {
-               if (x.billing_address == true)
-               {
-                   count++;
-               }
-           });
-            return count;
-        }
-
-        private Address checkAddress(Address address)
-        {
-            return entities.address.FirstOrDefault(x =>
-             x.street == address.street &&
-             x.place == address.place &&
-             x.zip == address.zip &&
-             x.country == address.country
-             );
-        }
-
-        private void CreateAddressPerson(int PersonId, int AddressId, bool billingAddress, EContactType contactType)
-        {
-            datahandling.AddAddressPerson(PersonId, AddressId, billingAddress, contactType);
+            if (datahandling.RepositoryAddress.checkAddress(address) != null)
+            {
+                datahandling.Delete<Address>(datahandling.RepositoryAddress.checkAddress(address));
+                Response.StatusCode = 201;
+                Response.WriteAsync("Erfolgreich gelöscht");
+            }
+            else
+            {
+                Response.StatusCode = 500;
+                Response.WriteAsync($"Die Addresse mit der ID: {address.Id} gibt es nicht in der Datenbank");
+            }
         }
 
         /// <summary>
@@ -292,6 +292,35 @@ namespace PersonREST.Controllers
             {
                 Response.StatusCode = 409;
             }
+        }
+
+        private int countBillingAddress(int PersonId)
+        {
+            var count = 0;
+            var x = entities.addressperson.Where(x => x.personId == PersonId).ToList();
+            entities.addressperson.Where(x => x.personId == PersonId).ToList().ForEach(x =>
+           {
+               if (x.billing_address == true)
+               {
+                   count++;
+               }
+           });
+            return count;
+        }
+
+        //private Address checkAddress(Address address)
+        //{
+        //    return entities.address.FirstOrDefault(x =>
+        //     x.street == address.street &&
+        //     x.place == address.place &&
+        //     x.zip == address.zip &&
+        //     x.country == address.country
+        //     );
+        //}
+
+        private void CreateAddressPerson(int PersonId, int AddressId, bool billingAddress, EContactType contactType)
+        {
+            datahandling.AddAddressPerson(PersonId, AddressId, billingAddress, contactType);
         }
     }
 }
