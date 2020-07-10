@@ -24,6 +24,7 @@ namespace PersonREST.Controllers
         [HttpGet]
         public List<BasePerson> getAllPersonsBasicData()
         {
+            //1951030189
             Person person = new Person();
             person.sv_nr = 1951030189;
             try
@@ -149,21 +150,32 @@ namespace PersonREST.Controllers
 
         /// <summary>
         /// Creat's a new Address in DB if the address don't exists
+        /// https://localhost:44303/person/address/1/true/Privat
         /// </summary>
         /// <param name="id">Person ID</param>
         /// <param name="address">Address Json with ID=0</param>
         /// <returns></returns>
-        [HttpPost("address/{id}")]
-        public void CreateAddress(int id, Address address)
+        [HttpPost("address/{id}/{billingAddress}/{contactType}")]
+        public void CreateAddress(int id, Address address, bool billingAddress, EContactType contactType)
         {
-            if (entities.address.FirstOrDefault(x => x.Id == address.Id) == null) // make new  // addressPerson
+            if (checkAddress(address) == null) // make new  // addressPerson
             {
                 try
                 {
-                    address.CreatedAt = DateTime.Now; // sollte vom Web schon mitkommen!!!
-                    address.ModifyAt = DateTime.Now; // sollte vom Web schon mitkommen!!!
-                    datahandling.AddAddress(id, address);
-                    Response.StatusCode = 201;
+                    address.CreatedAt = DateTime.Now;
+                    address.ModifyAt = DateTime.Now;
+                    datahandling.AddAddress(address);
+                    CreateAddressPerson(id, checkAddress(address).Id, billingAddress, contactType);
+
+                    if (countBillingAddress(id) == 1)
+                    {
+                        Response.StatusCode = 201;
+                    }
+                    else
+                    {
+                        Response.StatusCode = 201;
+                        Response.WriteAsync($"Es besteht auf der Person mit der ID {id} gesamt {countBillingAddress(id)} Rechnugsaddressen");
+                    }
                 }
                 catch (Exception)
                 {
@@ -171,10 +183,61 @@ namespace PersonREST.Controllers
                     throw;
                 }
             }
-            else if (true)
+            else if (entities.addressperson.FirstOrDefault(x => x.addressId == checkAddress(address).Id) == null)
             {
+                try
+                {
+                    if (countBillingAddress(id) == 1)
+                    {
+                        CreateAddressPerson(id, address.Id, billingAddress, contactType);
+                    }
+                    else
+                    {
+                        CreateAddressPerson(id, address.Id, billingAddress, contactType);
+                        Response.WriteAsync($"Es besteht auf der Person mit der ID {id} gesamt {countBillingAddress(id)} Rechnugsaddressen");
+                    }
+                }
+                catch (Exception)
+                {
+                    Response.StatusCode = 500;
+                    throw;
+                }
             }
-            // Response.StatusCode = 409;
+            else
+            {
+                Response.StatusCode = 201;
+                Response.WriteAsync($"Addresse bereits eingetragen");
+            }
+            //
+        }
+
+        private int countBillingAddress(int PersonId)
+        {
+            var count = 0;
+            var x = entities.addressperson.Where(x => x.personId == PersonId).ToList();
+            entities.addressperson.Where(x => x.personId == PersonId).ToList().ForEach(x =>
+           {
+               if (x.billing_address == true)
+               {
+                   count++;
+               }
+           });
+            return count;
+        }
+
+        private Address checkAddress(Address address)
+        {
+            return entities.address.FirstOrDefault(x =>
+             x.street == address.street &&
+             x.place == address.place &&
+             x.zip == address.zip &&
+             x.country == address.country
+             );
+        }
+
+        private void CreateAddressPerson(int PersonId, int AddressId, bool billingAddress, EContactType contactType)
+        {
+            datahandling.AddAddressPerson(PersonId, AddressId, billingAddress, contactType);
         }
 
         /// <summary>

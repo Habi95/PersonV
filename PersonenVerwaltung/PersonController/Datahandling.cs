@@ -102,28 +102,29 @@ namespace PersonController
         /// id == Person ID
         /// </summary>
         /// <param name="address"></param>
-        public void AddAddress(int id, Address address)
+        public void AddAddress(Address address)
         {
-            var personId = id;
-            var addressId = 0;
+            //var personId = id;
+            //var addressId = 0;
 
             try
             {
-                if (!Entities.address.Any(x => x.street == address.street))
-                {
-                    addressId = RepositoryAddress.Create(address);
-                }
-                else if (!Entities.address.Where(x => x.street == address.street).ToList().Any(x => x.zip == address.zip))
-                {
-                    addressId = RepositoryAddress.Create(address);
-                }
-                else
-                {
-                    addressId = Entities.address.Where(x => x.street == address.street).ToList().FirstOrDefault(x => x.zip == address.zip).Id;
-                }
+                RepositoryAddress.Create(address);
+                //if (!Entities.address.Any(x => x.street == address.street))
+                //{
+                //    addressId = RepositoryAddress.Create(address);
+                //}
+                //else if (!Entities.address.Where(x => x.street == address.street).ToList().Any(x => x.zip == address.zip))
+                //{
+                //    addressId = RepositoryAddress.Create(address);
+                //}
+                //else
+                //{
+                //    addressId = Entities.address.Where(x => x.street == address.street).ToList().FirstOrDefault(x => x.zip == address.zip).Id;
+                //}
 
-                var AddressPerson = new AddressPerson() { addressId = addressId, personId = personId };
-                RepositoryAddressPerson.Create(AddressPerson);
+                //var AddressPerson = new AddressPerson() { addressId = addressId, personId = personId };
+                //RepositoryAddressPerson.Create(AddressPerson);
             }
             catch (Exception ex)
             {
@@ -141,6 +142,17 @@ namespace PersonController
             {
                 throw ex;
             }
+        }
+
+        public void AddAddressPerson(int PersonId, int AddressId, bool billingAddress, EContactType contactType)
+        {
+            RepositoryAddressPerson.Create(new AddressPerson()
+            {
+                addressId = AddressId,
+                personId = PersonId,
+                billing_address = billingAddress,
+                contact_type = contactType
+            }); ;
         }
 
         public void AddComment(Comment comment)

@@ -1,6 +1,6 @@
 ﻿namespace PersonData.model
 {
-    public class BaseAdress : BaseClassCreatedModify
+    public class BaseAddress : BaseClassCreatedModify
     {
         public string street { get; set; }
         public string place { get; set; }
