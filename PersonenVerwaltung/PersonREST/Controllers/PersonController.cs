@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Internal;
 using PersonController;
 using PersonData;
 using PersonData.model;
@@ -14,7 +15,8 @@ namespace PersonREST.Controllers
  * TODO Delete Contact
  * TODO Delete Person?  when person delet deleted all but not documents and communication sender
  * TODO Delete Address => delted rel person address
- * TODO Refact Repository generic
+ * TODO Refact Repository generic  ***done***
+ * TODO Refact ADDAddress
  */
 {
     [ApiController]
@@ -22,7 +24,7 @@ namespace PersonREST.Controllers
     public class PersonController : ControllerBase
     {
         private Datahandling datahandling = new Datahandling();
-        private PersonEntities entities = new PersonEntities();
+        //private PersonEntities entities = new PersonEntities();
 
         /// <summary>
         /// base.url/Person Lists all Base Persons
@@ -82,7 +84,7 @@ namespace PersonREST.Controllers
         [HttpPut]
         public void UpdatePerson(Person person)
         {
-            if (entities.person.FirstOrDefault(x => x.Id == person.Id) != null) // check person is not null
+            if (datahandling.Entities.person.FirstOrDefault(x => x.Id == person.Id) != null) // check person is not null
             {
                 try
                 {
@@ -124,8 +126,17 @@ namespace PersonREST.Controllers
                     }
                     else
                     {
-                        if (entities.person.FirstOrDefault(x => x.sv_nr == person.sv_nr) == null)
+                        if (datahandling.Entities.person.FirstOrDefault(x => x.sv_nr == person.sv_nr) == null)
                         {
+                            person.addresses.ForEach(x =>
+                            {
+                                Address address = datahandling.RepositoryAddress.checkAddress(x.address);
+                                if (address != null)
+                                {
+                                    x.address = address;
+                                }
+                            });
+
                             CreatePerson(person);
                         }
                         else
@@ -136,6 +147,14 @@ namespace PersonREST.Controllers
                 }
                 else
                 {
+                    person.addresses.ForEach(x =>
+                    {
+                        Address address = datahandling.RepositoryAddress.checkAddress(x.address);
+                        if (address != null)
+                        {
+                            x.address = address;
+                        }
+                    });
                     CreatePerson(person);
                 }
             }
@@ -154,6 +173,7 @@ namespace PersonREST.Controllers
                 person.ModifyAt = DateTime.Now; // sollte vom Web schon mitkommen!!!
                 datahandling.AddPerson(person);
                 Response.StatusCode = 201;
+                // return person.Id;
             }
             catch (Exception)
             {
@@ -169,158 +189,170 @@ namespace PersonREST.Controllers
         /// <param name="id">Person ID</param>
         /// <param name="address">Address Json with ID=0</param>
         /// <returns></returns>
-        [HttpPost("address/{id}/{billingAddress}/{contactType}")]
-        public void CreateAddress(int id, Address address, bool billingAddress, EContactType contactType)
-        {
-            if (datahandling.RepositoryAddress.checkAddress(address) == null) // make new  // addressPerson
-            {
-                try
-                {
-                    address.CreatedAt = DateTime.Now;
-                    address.ModifyAt = DateTime.Now;
-                    datahandling.AddAddress(address);
-                    CreateAddressPerson(id, datahandling.RepositoryAddress.checkAddress(address).Id, billingAddress, contactType);
-
-                    if (countBillingAddress(id) == 1)
-                    {
-                        Response.StatusCode = 201;
-                    }
-                    else
-                    {
-                        Response.StatusCode = 201;
-                        Response.WriteAsync($"Es besteht auf der Person mit der ID {id} gesamt {countBillingAddress(id)} Rechnugsaddressen");
-                    }
-                }
-                catch (Exception)
-                {
-                    Response.StatusCode = 500;
-                    throw;
-                }
-            }
-            else if (entities.addressperson.FirstOrDefault(x => x.addressId == datahandling.RepositoryAddress.checkAddress(address).Id) == null)
-            {
-                try
-                {
-                    if (countBillingAddress(id) == 1)
-                    {
-                        CreateAddressPerson(id, address.Id, billingAddress, contactType);
-                    }
-                    else
-                    {
-                        CreateAddressPerson(id, address.Id, billingAddress, contactType);
-                        Response.WriteAsync($"Es besteht auf der Person mit der ID {id} gesamt {countBillingAddress(id)} Rechnugsaddressen");
-                    }
-                }
-                catch (Exception)
-                {
-                    Response.StatusCode = 500;
-                    throw;
-                }
-            }
-            else
-            {
-                Response.StatusCode = 201;
-                Response.WriteAsync($"Addresse bereits eingetragen");
-            }
-        }
-
-        [HttpDelete("address")]
-        public void DeleteAddress(Address address)
-        {
-            if (datahandling.RepositoryAddress.checkAddress(address) != null)
-            {
-                datahandling.Delete<Address>(datahandling.RepositoryAddress.checkAddress(address));
-                Response.StatusCode = 201;
-                Response.WriteAsync("Erfolgreich gelöscht");
-            }
-            else
-            {
-                Response.StatusCode = 500;
-                Response.WriteAsync($"Die Addresse mit der ID: {address.Id} gibt es nicht in der Datenbank");
-            }
-        }
-
-        /// <summary>
-        /// Creat's a new Contact in DB
-        /// </summary>
-        /// <param name="contact">Contact Json with ID=0</param>
-        [HttpPost("contact")]
-        public void CreateContact(Contact contact)
-        {
-            if (contact.Id == 0 && contact.person_id != 0)
-            {
-                try
-                {
-                    contact.ModifyDate = DateTime.Now; // sollte vom Web schon mitkommen!!!
-                    datahandling.AddContact(contact);
-                    Response.StatusCode = 201;
-                }
-                catch (Exception)
-                {
-                    Response.StatusCode = 500;
-                    throw;
-                }
-            }
-            else
-            {
-                Response.StatusCode = 409;
-            }
-        }
-
-        /// <summary>
-        /// Creat's a new Comment in DB
-        /// </summary>
-        /// <param name="comment">Comment Json with ID=0</param>
-        [HttpPost("comment")]
-        public void CreateComment(Comment comment)
-        {
-            if (comment.Id == 0 && comment.person_id != 0)
-            {
-                try
-                {
-                    comment.ModifyDate = DateTime.Now; // sollte vom Web schon mitkommen!!!
-                    datahandling.AddComment(comment);
-                    Response.StatusCode = 201;
-                }
-                catch (Exception)
-                {
-                    Response.StatusCode = 500;
-                    throw;
-                }
-            }
-            else
-            {
-                Response.StatusCode = 409;
-            }
-        }
-
-        private int countBillingAddress(int PersonId)
-        {
-            var count = 0;
-            var x = entities.addressperson.Where(x => x.personId == PersonId).ToList();
-            entities.addressperson.Where(x => x.personId == PersonId).ToList().ForEach(x =>
-           {
-               if (x.billing_address == true)
-               {
-                   count++;
-               }
-           });
-            return count;
-        }
-
-        //private Address checkAddress(Address address)
+        [HttpPost("address")]///{id}/{billingAddress}/{contactType} / int? id, Address address, bool billingAddress, EContactType contactType
+        public void CreateAddress(AddressPerson addressPerson)
         //{
-        //    return entities.address.FirstOrDefault(x =>
-        //     x.street == address.street &&
-        //     x.place == address.place &&
-        //     x.zip == address.zip &&
-        //     x.country == address.country
-        //     );
-        //}
 
-        private void CreateAddressPerson(int PersonId, int AddressId, bool billingAddress, EContactType contactType)
+        //    try
+        //    {
+        //        datahandling.AddAddress(new Person
+        //        {
+        //            addresses = new List<AddressPerson>
+        //            {
+        //                addressPerson
+        //            }
+        //        });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //if (datahandling.RepositoryAddress.checkAddress(address) == null) // make new  // addressPerson
+        //{
+        //    try
+        //    {
+        //        address.CreatedAt = DateTime.Now;
+        //        address.ModifyAt = DateTime.Now;
+        //        //datahandling.AddAddress(address);
+        //        CreateAddressPerson(id, datahandling.RepositoryAddress.checkAddress(address).Id, billingAddress, contactType);
+
+        //        if (datahandling.RepositoryAddress.countBillingAddress(id) == 1)
+        //        {
+        //            Response.StatusCode = 201;
+        //        }
+        //        else
+        //        {
+        //            Response.StatusCode = 201;
+        //            Response.WriteAsync($"Es besteht auf der Person mit der ID {id} gesamt {datahandling.RepositoryAddress.countBillingAddress(id)} Rechnugsaddressen");
+        //        }
+        //    }
+        //    catch (Exception)
+        //    {
+        //        Response.StatusCode = 500;
+        //        throw;
+        //    }
+        //}
+        //else if (datahandling.Entities.addressperson.FirstOrDefault(x => x.addressId == datahandling.RepositoryAddress.checkAddress(address).Id) == null)
+        //{
+        //    try
+        //    {
+        //        CreateAddressPerson(id, address.Id, billingAddress, contactType);
+
+        //        if (datahandling.RepositoryAddress.countBillingAddress(id) != 1)
+        //        {
+        //            Response.WriteAsync($"Es besteht auf der Person mit der ID {id} gesamt {datahandling.RepositoryAddress.countBillingAddress(id)} Rechnugsaddressen");
+        //        }
+        //    }
+        //    catch (Exception)
+        //    {
+        //        Response.StatusCode = 500;
+        //        throw;
+        //    }
+        //}
+        //else
+        //{
+        //    Response.StatusCode = 201;
+        //    Response.WriteAsync($"Addresse bereits eingetragen");
+        //}
+    }
+
+    [HttpDelete("address")]
+    public void DeleteAddress(Address address)
+    {
+        if (datahandling.RepositoryAddress.checkAddress(address) != null)
         {
-            datahandling.AddAddressPerson(PersonId, AddressId, billingAddress, contactType);
+            datahandling.Delete<Address>(datahandling.RepositoryAddress.checkAddress(address));
+            Response.StatusCode = 201;
+            Response.WriteAsync("Erfolgreich gelöscht");
+        }
+        else
+        {
+            Response.StatusCode = 500;
+            Response.WriteAsync($"Die Addresse mit der ID: {address.Id} gibt es nicht in der Datenbank");
         }
     }
+
+    /// <summary>
+    /// Creat's a new Contact in DB
+    /// </summary>
+    /// <param name="contact">Contact Json with ID=0</param>
+    [HttpPost("contact")]
+    public void CreateContact(Contact contact)
+    {
+        if (contact.Id == 0 && contact.person_id != 0)
+        {
+            try
+            {
+                contact.ModifyDate = DateTime.Now; // sollte vom Web schon mitkommen!!!
+                datahandling.AddContact(contact);
+                Response.StatusCode = 201;
+            }
+            catch (Exception)
+            {
+                Response.StatusCode = 500;
+                throw;
+            }
+        }
+        else
+        {
+            Response.StatusCode = 409;
+        }
+    }
+
+    /// <summary>
+    /// Creat's a new Comment in DB
+    /// </summary>
+    /// <param name="comment">Comment Json with ID=0</param>
+    [HttpPost("comment")]
+    public void CreateComment(Comment comment)
+    {
+        if (comment.Id == 0 && comment.person_id != 0)
+        {
+            try
+            {
+                comment.ModifyDate = DateTime.Now; // sollte vom Web schon mitkommen!!!
+                datahandling.AddComment(comment);
+                Response.StatusCode = 201;
+            }
+            catch (Exception)
+            {
+                Response.StatusCode = 500;
+                throw;
+            }
+        }
+        else
+        {
+            Response.StatusCode = 409;
+        }
+    }
+
+    //private int countBillingAddress(int PersonId)
+    //{
+    //    var count = 0;
+    //    var x = datahandling.Entities.addressperson.Where(x => x.personId == PersonId).ToList();
+    //    datahandling.Entities.addressperson.Where(x => x.personId == PersonId).ToList().ForEach(x =>
+    //   {
+    //       if (x.billing_address == true)
+    //       {
+    //           count++;
+    //       }
+    //   });
+    //    return count;
+    //}
+
+    //private Address checkAddress(Address address)
+    //{
+    //    return entities.address.FirstOrDefault(x =>
+    //     x.street == address.street &&
+    //     x.place == address.place &&
+    //     x.zip == address.zip &&
+    //     x.country == address.country
+    //     );
+    //}
+
+    private void CreateAddressPerson(int PersonId, int AddressId, bool billingAddress, EContactType contactType)
+    {
+        datahandling.AddAddressPerson(PersonId, AddressId, billingAddress, contactType);
+    }
+}
 }

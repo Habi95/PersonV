@@ -48,5 +48,19 @@ namespace PersonData.repo
             x.country == address.country
              );
         }
+
+        public int countBillingAddress(int PersonId)
+        {
+            var count = 0;
+            var x = entities.addressperson.Where(x => x.personId == PersonId).ToList();
+            entities.addressperson.Where(x => x.personId == PersonId).ToList().ForEach(x =>
+            {
+                if (x.billing_address == true)
+                {
+                    count++;
+                }
+            });
+            return count;
+        }
     }
 }

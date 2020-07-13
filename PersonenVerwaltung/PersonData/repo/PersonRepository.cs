@@ -22,7 +22,6 @@ namespace PersonData.repo
         //    entities.person.Remove(person);
         //    entities.SaveChanges();
         //}
-
         public override List<Person> FindAll()
         {
             return entities.person

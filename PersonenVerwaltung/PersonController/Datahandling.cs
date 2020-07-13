@@ -10,7 +10,7 @@ namespace PersonController
 {
     public class Datahandling
     {
-        private PersonEntities Entities = new PersonEntities();
+        public PersonEntities Entities = new PersonEntities();
 
         public PersonRepository RepositoryPerson;
         public AddressRepository RepositoryAddress;
@@ -105,32 +105,87 @@ namespace PersonController
         /// <param name="address"></param>
         public void AddAddress(Address address)
         {
-            //var personId = id;
-            //var addressId = 0;
+            //person.addresses.ForEach(address =>
+            //{
+            //    if (person.Id != 0)
+            //    {
+            //        if (RepositoryAddress.checkAddress(address.address) == null) // make new  // addressPerson
+            //        {
+            //            try
+            //            {
+            //                address.CreatedAt = DateTime.Now;
+            //                address.ModifyAt = DateTime.Now;
+            //                RepositoryAddress.Create(address.address);
+            //                address.personId = person.Id;
+            //                address.addressId = RepositoryAddress.checkAddress(address.address).Id;
+            //                RepositoryAddressPerson.Create(address);
 
-            try
-            {
-                RepositoryAddress.Create(address);
-                //if (!Entities.address.Any(x => x.street == address.street))
-                //{
-                //    addressId = RepositoryAddress.Create(address);
-                //}
-                //else if (!Entities.address.Where(x => x.street == address.street).ToList().Any(x => x.zip == address.zip))
-                //{
-                //    addressId = RepositoryAddress.Create(address);
-                //}
-                //else
-                //{
-                //    addressId = Entities.address.Where(x => x.street == address.street).ToList().FirstOrDefault(x => x.zip == address.zip).Id;
-                //}
+            //                if (RepositoryAddress.countBillingAddress(person.Id) != 1)
+            //                {
+            //                    throw new PersonException($"Es besteht auf der Person mit der ID {person.Id} gesamt {RepositoryAddress.countBillingAddress(person.Id)} Rechnugsaddressen");
+            //                }
+            //            }
+            //            catch (Exception ex)
+            //            {
+            //                throw ex;
+            //            }
+            //        }
+            //        else if (Entities.addressperson.FirstOrDefault(x => x.addressId == RepositoryAddress.checkAddress(address.address).Id) == null)
+            //        {
+            //            try
+            //            {
+            //                address.CreatedAt = DateTime.Now;
+            //                address.ModifyAt = DateTime.Now;
+            //                address.personId = person.Id;
+            //                address.addressId = RepositoryAddress.checkAddress(address.address).Id;
+            //                RepositoryAddressPerson.Create(address);
 
-                //var AddressPerson = new AddressPerson() { addressId = addressId, personId = personId };
-                //RepositoryAddressPerson.Create(AddressPerson);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            //                if (RepositoryAddress.countBillingAddress(person.Id) != 1)
+            //                {
+            //                    throw new PersonException($"Es besteht auf der Person mit der ID {person.Id} gesamt {RepositoryAddress.countBillingAddress(person.Id)} Rechnugsaddressen");
+            //                }
+            //            }
+            //            catch (Exception ex)
+            //            {
+            //                throw ex;
+            //            }
+            //        }
+            //        else
+            //        {
+            //            throw new PersonException($"Addresse bereits eingetragen");
+            //        }
+            //    }
+            //    else
+            //    {
+            //        if (RepositoryAddress.checkAddress(address.address) == null)
+            //        {
+            //            RepositoryAddress.Create(address.address);
+            //        }
+            //    }
+            //});
+            //try
+            //{
+            //    RepositoryAddress.Create(address);
+            //    //if (!Entities.address.Any(x => x.street == address.street))
+            //    //{
+            //    //    addressId = RepositoryAddress.Create(address);
+            //    //}
+            //    //else if (!Entities.address.Where(x => x.street == address.street).ToList().Any(x => x.zip == address.zip))
+            //    //{
+            //    //    addressId = RepositoryAddress.Create(address);
+            //    //}
+            //    //else
+            //    //{
+            //    //    addressId = Entities.address.Where(x => x.street == address.street).ToList().FirstOrDefault(x => x.zip == address.zip).Id;
+            //    //}
+
+            //    //var AddressPerson = new AddressPerson() { addressId = addressId, personId = personId };
+            //    //RepositoryAddressPerson.Create(AddressPerson);
+            //}
+            //catch (Exception ex)
+            //{
+            //    throw ex;
+            //}
         }
 
         public void AddContact(Contact contactInfo)
