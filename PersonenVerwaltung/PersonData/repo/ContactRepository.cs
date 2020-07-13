@@ -4,40 +4,37 @@ using System.Linq;
 
 namespace PersonData.repo
 {
-    public class ContactRepository : IRepository<Contact>
+    public class ContactRepository : BaseRepository<Contact>
     {
-        private PersonEntities entities = new PersonEntities();
-
-        public ContactRepository(PersonEntities entities)
+        public ContactRepository(PersonEntities entities) : base(entities)
         {
-            this.entities = entities;
         }
 
-        public int Create(Contact contact)
-        {
-            entities.contact.Add(contact);
-            return entities.SaveChanges();
-        }
+        //public int Create(Contact contact)
+        //{
+        //    entities.contact.Add(contact);
+        //    return entities.SaveChanges();
+        //}
 
-        public void DeleteOne(Contact contact)
-        {
-            entities.contact.Remove(contact);
-            entities.SaveChanges();
-        }
+        //public void DeleteOne(Contact contact)
+        //{
+        //    entities.contact.Remove(contact);
+        //    entities.SaveChanges();
+        //}
 
-        public List<Contact> FindAll()
-        {
-            return entities.contact.ToList();
-        }
+        //public List<Contact> FindAll()
+        //{
+        //    return entities.contact.ToList();
+        //}
 
-        public Contact FindOne(int id)
-        {
-            return entities.contact.FirstOrDefault(x => x.Id == id);
-        }
+        //public Contact FindOne(int id)
+        //{
+        //    return entities.contact.FirstOrDefault(x => x.Id == id);
+        //}
 
-        public void Update(Contact entity)
-        {
-            throw new NotImplementedException();
-        }
+        //public void Update(Contact entity)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

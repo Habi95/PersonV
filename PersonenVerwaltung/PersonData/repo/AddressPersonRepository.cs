@@ -5,40 +5,40 @@ using System.Linq;
 
 namespace PersonData.repo
 {
-    public class AddressPersonRepository : IRepository<AddressPerson>
+    public class AddressPersonRepository : BaseRepository<AddressPerson>
     {
-        private PersonEntities entities;
+        //private PersonEntities entities;
 
-        public AddressPersonRepository(PersonEntities entities)
+        public AddressPersonRepository(PersonEntities entities) : base(entities)
         {
             this.entities = entities;
         }
 
-        public int Create(AddressPerson addressperson)
-        {
-            entities.addressperson.Add(addressperson);
-            return entities.SaveChanges();
-        }
+        //public int Create(AddressPerson addressperson)
+        //{
+        //    entities.addressperson.Add(addressperson);
+        //    return entities.SaveChanges();
+        //}
 
-        public void DeleteOne(AddressPerson addressPerson)
-        {
-            entities.addressperson.Remove(addressPerson);
-            entities.SaveChanges();
-        }
+        //public void DeleteOne(AddressPerson addressPerson)
+        //{
+        //    entities.addressperson.Remove(addressPerson);
+        //    entities.SaveChanges();
+        //}
 
-        public List<AddressPerson> FindAll()
-        {
-            return entities.addressperson.ToList();
-        }
+        //    public List<AddressPerson> FindAll()
+        //    {
+        //        return entities.addressperson.ToList();
+        //    }
 
-        public AddressPerson FindOne(int id)
-        {
-            return entities.addressperson.FirstOrDefault(x => x.id == id);
-        }
+        //    public AddressPerson FindOne(int id)
+        //    {
+        //        return entities.addressperson.FirstOrDefault(x => x.Id == id);
+        //    }
 
-        public void Update(AddressPerson entity)
-        {
-            throw new NotImplementedException();
-        }
+        //    public void Update(AddressPerson entity)
+        //    {
+        //        throw new NotImplementedException();
+        //    }
     }
 }

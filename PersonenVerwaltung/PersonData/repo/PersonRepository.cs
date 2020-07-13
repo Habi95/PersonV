@@ -5,28 +5,25 @@ using System.Linq;
 
 namespace PersonData.repo
 {
-    public class PersonRepository : IRepository<Person>
+    public class PersonRepository : BaseRepository<Person>
     {
-        private PersonEntities entities;
-
-        public PersonRepository(PersonEntities entities)
+        public PersonRepository(PersonEntities entities) : base(entities)
         {
-            this.entities = entities;
         }
 
-        public int Create(Person person)
-        {
-            entities.person.Add(person);
-            return entities.SaveChanges();
-        }
+        //public int Create(Person person)
+        //{
+        //    entities.person.Add(person);
+        //    return entities.SaveChanges();
+        //}
 
-        public void DeleteOne(Person person)
-        {
-            entities.person.Remove(person);
-            entities.SaveChanges();
-        }
+        //public void DeleteOne(Person person)
+        //{
+        //    entities.person.Remove(person);
+        //    entities.SaveChanges();
+        //}
 
-        public List<Person> FindAll()
+        public override List<Person> FindAll()
         {
             return entities.person
               .Include(x =>
@@ -55,16 +52,16 @@ namespace PersonData.repo
               .ToList();
         }
 
-        public Person FindOne(int id)
-        {
-            return entities.person.FirstOrDefault(x => x.Id == id);
-        }
+        //public Person FindOne(int id)
+        //{
+        //    return entities.person.FirstOrDefault(x => x.Id == id);
+        //}
 
-        public void Update(Person entity)
-        {
-            entities.Update(entity);
-            entities.SaveChanges();
-        }
+        //public void Update(Person entity)
+        //{
+        //    entities.Update(entity);
+        //    entities.SaveChanges();
+        //}
 
         /// <summary>
         /// Converts Person to Base Person

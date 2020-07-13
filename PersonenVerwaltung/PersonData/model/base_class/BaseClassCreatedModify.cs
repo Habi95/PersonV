@@ -10,7 +10,7 @@ namespace PersonData
         public int Id { get; set; }
 
         [Column("created@")]
-        public DateTime CreatedAt { get; set; }
+        public DateTime? CreatedAt { get; set; }
 
         [Column("modified@")]
         public DateTime? ModifyAt { get; set; }

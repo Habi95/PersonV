@@ -69,6 +69,7 @@ namespace PersonController
                     tempPerson.NotCompletedCourse = result.Item2;
                     tempPerson.documents = RepositoryDocument.GetDocuments<Person>(id);
                     tempPerson.Communications = RepositoryCommunication.GetCommunications<Person>(id);
+
                     return tempPerson;
                 }
                 else

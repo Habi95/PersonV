@@ -2,7 +2,7 @@
 
 namespace PersonData.repo
 {
-    internal interface IRepository<T>
+    public interface IRepository<T>
     {
         List<T> FindAll();
 
@@ -10,7 +10,7 @@ namespace PersonData.repo
 
         int Create(T entity); // returns last insert id
 
-        void DeleteOne(T entity);
+        void Delete(T entity);
 
         void Update(T entity);
     }

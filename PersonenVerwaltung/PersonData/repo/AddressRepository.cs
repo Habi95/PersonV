@@ -4,51 +4,48 @@ using System.Linq;
 
 namespace PersonData.repo
 {
-    public class AddressRepository : IRepository<Address>
+    public class AddressRepository : BaseRepository<Address>
     {
-        private PersonEntities entities = new PersonEntities();
-
-        public AddressRepository(PersonEntities entities)
+        public AddressRepository(PersonEntities entities) : base(entities)
         {
-            this.entities = entities;
         }
 
-        public int Create(Address address)
-        {
-            entities.address.Add(address);
-            return entities.SaveChanges();
+        //public int Create(Address address)
+        //{
+        //    entities.address.Add(address);
+        //    return entities.SaveChanges();
 
-            // entities.address.Where(x => x.street == address.street).ToList().FirstOrDefault(x => x.zip == address.zip).Id;
-        }
+        //    // entities.address.Where(x => x.street == address.street).ToList().FirstOrDefault(x => x.zip == address.zip).Id;
+        //}
 
-        public void DeleteOne(Address address)
-        {
-            entities.address.Remove(address);
-            entities.SaveChanges();
-        }
+        //public void DeleteOne(Address address)
+        //{
+        //    entities.address.Remove(address);
+        //    entities.SaveChanges();
+        //}
 
-        public List<Address> FindAll()
-        {
-            return entities.address.ToList();
-        }
+        //public List<Address> FindAll()
+        //{
+        //    return entities.address.ToList();
+        //}
 
-        public Address FindOne(int id)
-        {
-            return entities.address.FirstOrDefault(x => x.Id == id);
-        }
+        //public Address FindOne(int id)
+        //{
+        //    return entities.address.FirstOrDefault(x => x.Id == id);
+        //}
 
-        public void Update(Address entity)
-        {
-            throw new NotImplementedException();
-        }
+        //public void Update(Address entity)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public Address checkAddress(Address address)
         {
             return entities.address.FirstOrDefault(x =>
-             x.street == address.street &&
-             x.place == address.place &&
-             x.zip == address.zip &&
-             x.country == address.country
+            x.street == address.street &&
+            x.place == address.place &&
+            x.zip == address.zip &&
+            x.country == address.country
              );
         }
     }

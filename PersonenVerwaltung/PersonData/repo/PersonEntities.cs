@@ -198,7 +198,7 @@ namespace PersonData
             //entity for commentTable
             modelBuilder.Entity<Comment>().HasKey(x => x.Id);
             //entity for addressPersonTable
-            modelBuilder.Entity<AddressPerson>().HasKey(x => x.id);
+            modelBuilder.Entity<AddressPerson>().HasKey(x => x.Id);
             //entity for documents
             modelBuilder.Entity<Document>().HasKey(x => x.Id);
             //entity for documentperson
