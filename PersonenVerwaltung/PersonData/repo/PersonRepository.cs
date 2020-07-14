@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PersonData.model;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -80,6 +81,23 @@ namespace PersonData.repo
                 ModifyDate = person.ModifyDate
             };
             return basePerson;
+        }
+
+        public bool checkPerson(Person person, AddressRepository addressRepository, ContactRepository contactRepository)
+        {
+            var p = entities.person.Include(x => x.contacts).FirstOrDefault(x => x.date == person.date && x.name1 == person.name1 && x.name2 == person.name2);
+
+            if (p == null)
+            {
+                person.contacts.ForEach(x => x.CreatedAt = System.DateTime.Now);
+                return true;
+            }
+            else if (contactRepository.checkContactList(p.contacts, contactRepository.check(person.contacts)) == 0)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

@@ -39,7 +39,14 @@ namespace PersonController
         /// <param name="person"></param>
         public void AddPerson(Person person)
         {
-            RepositoryPerson.Create(person);
+            if (RepositoryPerson.checkPerson(person, RepositoryAddress, RepositoryContact))
+            {
+                RepositoryPerson.Create(person);
+            }
+            else
+            {
+                throw new PersonException($"Person bereits vorhanden");
+            }
         }
 
         /// <summary>

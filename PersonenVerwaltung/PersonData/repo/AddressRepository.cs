@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using PersonData.model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -52,7 +54,7 @@ namespace PersonData.repo
         public int countBillingAddress(int PersonId)
         {
             var count = 0;
-            var x = entities.addressperson.Where(x => x.personId == PersonId).ToList();
+            var x = entities.addressperson.AsNoTracking().Where(x => x.personId == PersonId).ToList();
             entities.addressperson.Where(x => x.personId == PersonId).ToList().ForEach(x =>
             {
                 if (x.billing_address == true)
@@ -60,6 +62,25 @@ namespace PersonData.repo
                     count++;
                 }
             });
+            return count;
+        }
+
+        public int checkAddresses(List<AddressPerson> db, List<AddressPerson> tocheck)
+        {
+            int count = 0;
+            foreach (var item in db)
+            {
+                foreach (var item2 in tocheck)
+                {
+                    if (checkAddress(item.address) != checkAddress(item2.address))
+                    {
+                    }
+                    else
+                    {
+                        count++;
+                    }
+                }
+            }
             return count;
         }
     }
