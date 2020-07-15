@@ -12,35 +12,6 @@ namespace PersonData.repo
         {
         }
 
-        //public int Create(Address address)
-        //{
-        //    entities.address.Add(address);
-        //    return entities.SaveChanges();
-
-        //    // entities.address.Where(x => x.street == address.street).ToList().FirstOrDefault(x => x.zip == address.zip).Id;
-        //}
-
-        //public void DeleteOne(Address address)
-        //{
-        //    entities.address.Remove(address);
-        //    entities.SaveChanges();
-        //}
-
-        //public List<Address> FindAll()
-        //{
-        //    return entities.address.ToList();
-        //}
-
-        //public Address FindOne(int id)
-        //{
-        //    return entities.address.FirstOrDefault(x => x.Id == id);
-        //}
-
-        //public void Update(Address entity)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
         public Address checkAddress(Address address)
         {
             return entities.address.FirstOrDefault(x =>
@@ -82,6 +53,17 @@ namespace PersonData.repo
                 }
             }
             return count;
+        }
+
+        public bool IsAddressExist(Address address)
+        {
+            if (checkAddress(address) == null)
+            {
+                address.CreatedAt = DateTime.Now;
+                return true;
+            }
+
+            return false;
         }
     }
 }
