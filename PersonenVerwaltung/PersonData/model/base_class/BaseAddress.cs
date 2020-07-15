@@ -1,4 +1,6 @@
-﻿namespace PersonData.model
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace PersonData.model
 {
     public class BaseAddress : BaseClassCreatedModify
     {

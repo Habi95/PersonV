@@ -13,9 +13,8 @@ using System.Linq;
 namespace PersonREST.Controllers
 
 /*
- *
+ *TODO stuff for Delte wit a notMapped bool delete
  * TODO Delete Person?  when person delet deleted all but not documents and communication sender 4
- *
  *
  *
  */
@@ -97,8 +96,15 @@ namespace PersonREST.Controllers
                             Address address = datahandling.RepositoryAddress.checkAddress(x.address);
                             if (address != null)
                             {
-                                x.address = null;
-                                x.addressId = address.Id;
+                                if (x.address.Delete)
+                                {
+                                    datahandling.RepositoryAddress.Delete(address);
+                                }
+                                else
+                                {
+                                    x.address = null;
+                                    x.addressId = address.Id;
+                                }
                             }
                             else
                             {
@@ -108,6 +114,7 @@ namespace PersonREST.Controllers
                     }
                     else if (person.contacts.Count > 0)
                     {
+                        var count = 0;
                         person.contacts.ForEach(x =>
                         {
                             Contact contact = datahandling.RepositoryContact.checkContact(x);
@@ -115,7 +122,23 @@ namespace PersonREST.Controllers
                             {
                                 x.CreatedAt = DateTime.Now;
                             }
+                            else
+                            {
+                                if (x.Delete)
+                                {
+                                    datahandling.RepositoryContact.Delete(x);
+                                }
+                                else if (x.contact_value == contact.contact_value)
+                                {
+                                    x = null;
+                                    count++;
+                                }
+                            }
                         });
+                        if (count == person.contacts.Count)
+                        {
+                            person.contacts.Clear();
+                        }
                     }
 
                     person.ModifyAt = DateTime.Now; // sollte vom Web schon mitkommen!!! weil wir nicht wissen was geändert wurde.
