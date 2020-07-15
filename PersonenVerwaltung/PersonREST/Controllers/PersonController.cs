@@ -17,7 +17,7 @@ namespace PersonREST.Controllers
  * TODO Delete Person?  when person delet deleted all but not documents and communication sender 4
  *
  *
- * send jason object + response by GetPerson
+ *
  */
 {
     [ApiController]
@@ -62,20 +62,8 @@ namespace PersonREST.Controllers
             try
             {
                 var person = datahandling.FindPerson(id);
-                var p = datahandling.RepositoryAddress.countBillingAddress(person.Id);
                 Response.StatusCode = 201;
                 return person;
-                //if (p > 0)
-                //{
-                //    Response.StatusCode = 201;
-                //    Response.WriteAsync($"Auf der Personen Id {person.Id} bestehen {p} Rechnungsadressen");
-                //    return person;
-                //}
-                //else
-                //{
-                //    Response.StatusCode = 201;
-                //    return person;
-                //}
             }
             catch (PersonException ex) // if the person doesn't exists
             {
@@ -96,7 +84,7 @@ namespace PersonREST.Controllers
         /// <param name="person">Object of Person with changed parameters</param>
         /// <returns>HttpStatusCode</returns>
         [HttpPut]
-        public void UpdatePerson(Person person)
+        public Person UpdatePerson(Person person)
         {
             if (datahandling.Entities.person.AsNoTracking().FirstOrDefault(x => x.Id == person.Id) != null) // check person is not null
             {
@@ -132,6 +120,8 @@ namespace PersonREST.Controllers
 
                     person.ModifyAt = DateTime.Now; // sollte vom Web schon mitkommen!!! weil wir nicht wissen was geändert wurde.
                     datahandling.UpdatePerson(person);
+                    Response.StatusCode = 200;
+                    return person;
                 }
                 catch (PersonException ex) // if the person doesn't exists
                 {
@@ -144,21 +134,12 @@ namespace PersonREST.Controllers
                     Response.StatusCode = 500;
                     throw;
                 }
-                var p = datahandling.RepositoryAddress.countBillingAddress(person.Id);
-                if (p > 0)
-                {
-                    Response.StatusCode = 201;
-                    Response.WriteAsync($"Auf der Personen Id {person.Id} bestehen {p} Rechnungsadressen");
-                }
-                else
-                {
-                    Response.StatusCode = 201;
-                }
             }
             else
             {
                 Response.StatusCode = 409;
                 Response.WriteAsync("Person ID incorrect!");
+                return null;
             }
         }
 
@@ -220,6 +201,30 @@ namespace PersonREST.Controllers
             {
                 Response.StatusCode = 409;
                 Response.WriteAsync(ex.Message);
+            }
+        }
+
+        [HttpDelete("{PersonId}")]
+        public void DeletePerson(int PersonId)
+        {
+            try
+            {
+                var toDelete = datahandling.Entities.person.FirstOrDefault(x => x.Id == PersonId);
+                if (toDelete != null)
+                {
+                    datahandling.RepositoryPerson.Delete(toDelete);
+                    Response.StatusCode = 201;
+                    Response.WriteAsync("Erfolgreich gelöscht");
+                }
+                else
+                {
+                    Response.StatusCode = 500;
+                    Response.WriteAsync($"Die Person mit der ID: {PersonId} Existiert in der DB nicht");
+                }
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 

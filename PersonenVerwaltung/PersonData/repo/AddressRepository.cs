@@ -22,39 +22,6 @@ namespace PersonData.repo
              );
         }
 
-        public int countBillingAddress(int PersonId)
-        {
-            var count = 0;
-            var x = entities.addressperson.AsNoTracking().Where(x => x.personId == PersonId).ToList();
-            entities.addressperson.Where(x => x.personId == PersonId).ToList().ForEach(x =>
-            {
-                if (x.billing_address == true)
-                {
-                    count++;
-                }
-            });
-            return count;
-        }
-
-        public int checkAddresses(List<AddressPerson> db, List<AddressPerson> tocheck)
-        {
-            int count = 0;
-            foreach (var item in db)
-            {
-                foreach (var item2 in tocheck)
-                {
-                    if (checkAddress(item.address) != checkAddress(item2.address))
-                    {
-                    }
-                    else
-                    {
-                        count++;
-                    }
-                }
-            }
-            return count;
-        }
-
         public bool IsAddressExist(Address address)
         {
             if (checkAddress(address) == null)

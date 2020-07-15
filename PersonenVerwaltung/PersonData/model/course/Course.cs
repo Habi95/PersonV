@@ -68,8 +68,8 @@ namespace Data.Models
         /// <summary>
         /// the id of the classromm the course is held in
         /// </summary>
-        [Column("classroom_id")]
-        public int? ClassroomID { get; set; }
+        //[Column("classroom_id")]
+        //public int? ClassroomID { get; set; }
 
         /// <summary>
         /// the amount of maximum participants
