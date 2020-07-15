@@ -196,7 +196,7 @@ namespace PersonREST.Controllers
         /// <param name="id">Person ID</param>
         /// <param name="address">Address Json with ID=0</param>
         /// <returns></returns>
-        [HttpPost("address")]///{id}/{billingAddress}/{contactType} / int? id, Address address, bool billingAddress, EContactType contactType
+        [HttpPost("address")]
         public void CreateAddress(Address address)
         {
             try
@@ -209,6 +209,7 @@ namespace PersonREST.Controllers
                 else
                 {
                     var existAddress = datahandling.RepositoryAddress.checkAddress(address);
+                    Response.StatusCode = 403;
                     Response.WriteAsync($"Die Adresse:\n{existAddress.street}\n{existAddress.place} - {existAddress.zip}\n{existAddress.country}\nWurde am {existAddress.CreatedAt} erstellt");
                 }
             }
