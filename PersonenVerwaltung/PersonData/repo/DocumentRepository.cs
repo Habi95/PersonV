@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MySql.Data.MySqlClient;
+using PersonData.model.course;
 using PersonData.model.ENUM;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace PersonData.repo
@@ -22,9 +24,48 @@ namespace PersonData.repo
             throw new NotImplementedException();
         }
 
-        public void DeleteOne(Document entity)
+        public string DeleteById(int id)
         {
-            throw new NotImplementedException();
+            ///delete the Relations from Documents to Classes
+            List<DocumentClass> relationList = entities.document_class.Where(x => x.doc_id == id).ToList();
+            foreach (var item in relationList)
+            {
+                entities.document_class.Remove(item);
+            }
+            /////set the affected Absences - DocumentId to null
+            //List<Absence> absenceList = entities.Absences.Where(x => x.DocumentId == id).ToList();
+            //foreach (var item in absenceList)
+            //{
+            //    item.DocumentId = null;
+            //    entities.Absences.Update(item);
+            //}
+            ///set the affected Communications - DocumentId to null
+            List<Communication> communicationList = entities.communication.Where(x => x.DocumentId == id).ToList();
+            foreach (var item in communicationList)
+            {
+                item.DocumentId = null;
+                entities.communication.Update(item);
+            }
+
+            Document documentToDelete = entities.documents.SingleOrDefault(x => x.Id == id);
+            if (documentToDelete == null)
+            {
+                return "The Document you want to delete could not be found.";
+            }
+            ///Deletes Document with its Path
+            bool fileFound = DeleteRealDocument(documentToDelete);
+            ///Deletes Document entry in Database
+            entities.documents.Remove(documentToDelete);
+            entities.SaveChanges();
+
+            if (fileFound)
+            {
+                return "Record has been successfully deleted";
+            }
+            else
+            {
+                return "File not found.";
+            }
         }
 
         public List<Document> FindAll()
@@ -57,6 +98,29 @@ namespace PersonData.repo
                 x.Document.DocumentOwner = classes.FirstOrDefault(x => x.Id == Pid);
             });
             return documentClasses.Select(x => x.Document).ToList();
+        }
+
+        public bool DeleteRealDocument(Document documentToDelete)
+        {
+            bool fileFound = true;
+            try
+            {
+                string filename = documentToDelete.Url;
+
+                if (File.Exists(filename))
+                {
+                    File.Delete(filename);
+                }
+                else
+                {
+                    fileFound = false;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            return fileFound;
         }
     }
 }

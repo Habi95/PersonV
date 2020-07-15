@@ -15,8 +15,8 @@ namespace PersonREST.Controllers
  * TODO Delete Contact
  * TODO Delete Person?  when person delet deleted all but not documents and communication sender
  * TODO Delete Address => delted rel person address
- * TODO Refact Repository generic  ***done***
- * TODO Refact ADDAddress
+ * TODO Refact ADDAddress to person is done only address not yet
+ *
  */
 {
     [ApiController]
@@ -197,69 +197,76 @@ namespace PersonREST.Controllers
         /// <param name="address">Address Json with ID=0</param>
         /// <returns></returns>
         [HttpPost("address")]///{id}/{billingAddress}/{contactType} / int? id, Address address, bool billingAddress, EContactType contactType
-        public void CreateAddress(AddressPerson addressPerson)
+        public void CreateAddress(Address address)
         {
-            //    try
-            //    {
-            //        datahandling.AddAddress(new Person
-            //        {
-            //            addresses = new List<AddressPerson>
-            //            {
-            //                addressPerson
-            //            }
-            //        });
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        throw ex;
-            //    }
-            //if (datahandling.RepositoryAddress.checkAddress(address) == null) // make new  // addressPerson
-            //{
-            //    try
-            //    {
-            //        address.CreatedAt = DateTime.Now;
-            //        address.ModifyAt = DateTime.Now;
-            //        //datahandling.AddAddress(address);
-            //        CreateAddressPerson(id, datahandling.RepositoryAddress.checkAddress(address).Id, billingAddress, contactType);
+            try
+            {
+                if (datahandling.RepositoryAddress.checkAddress(address) == null)
+                {
+                    address.CreatedAt = DateTime.Now;
+                    datahandling.AddAddress(address);
+                }
+                else
+                {
+                    var existAddress = datahandling.RepositoryAddress.checkAddress(address);
+                    Response.WriteAsync($"Die Adresse:\n{existAddress.street}\n{existAddress.place} - {existAddress.zip}\n{existAddress.country}\nWurde am {existAddress.CreatedAt} erstellt");
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            /* try
+             {
+             }
+             catch (Exception ex)
+             {
+                 throw ex;
+             }
+             if (datahandling.RepositoryAddress.checkAddress(address) == null) // make new  // addressPerson
+             {
+                 try
+                 {
+                     CreateAddressPerson(id, datahandling.RepositoryAddress.checkAddress(address).Id, billingAddress, contactType);
 
-            //        if (datahandling.RepositoryAddress.countBillingAddress(id) == 1)
-            //        {
-            //            Response.StatusCode = 201;
-            //        }
-            //        else
-            //        {
-            //            Response.StatusCode = 201;
-            //            Response.WriteAsync($"Es besteht auf der Person mit der ID {id} gesamt {datahandling.RepositoryAddress.countBillingAddress(id)} Rechnugsaddressen");
-            //        }
-            //    }
-            //    catch (Exception)
-            //    {
-            //        Response.StatusCode = 500;
-            //        throw;
-            //    }
-            //}
-            //else if (datahandling.Entities.addressperson.FirstOrDefault(x => x.addressId == datahandling.RepositoryAddress.checkAddress(address).Id) == null)
-            //{
-            //    try
-            //    {
-            //        CreateAddressPerson(id, address.Id, billingAddress, contactType);
+                     if (datahandling.RepositoryAddress.countBillingAddress(id) == 1)
+                     {
+                         Response.StatusCode = 201;
+                     }
+                     else
+                     {
+                         Response.StatusCode = 201;
+                         Response.WriteAsync($"Es besteht auf der Person mit der ID {id} gesamt {datahandling.RepositoryAddress.countBillingAddress(id)} Rechnugsaddressen");
+                     }
+                 }
+                 catch (Exception)
+                 {
+                     Response.StatusCode = 500;
+                     throw;
+                 }
+             }
+             else if (datahandling.Entities.addressperson.FirstOrDefault(x => x.addressId == datahandling.RepositoryAddress.checkAddress(address).Id) == null)
+             {
+                 try
+                 {
+                     CreateAddressPerson(id, address.Id, billingAddress, contactType);
 
-            //        if (datahandling.RepositoryAddress.countBillingAddress(id) != 1)
-            //        {
-            //            Response.WriteAsync($"Es besteht auf der Person mit der ID {id} gesamt {datahandling.RepositoryAddress.countBillingAddress(id)} Rechnugsaddressen");
-            //        }
-            //    }
-            //    catch (Exception)
-            //    {
-            //        Response.StatusCode = 500;
-            //        throw;
-            //    }
-            //}
-            //else
-            //{
-            //    Response.StatusCode = 201;
-            //    Response.WriteAsync($"Addresse bereits eingetragen");
-            //}
+                     if (datahandling.RepositoryAddress.countBillingAddress(id) != 1)
+                     {
+                         Response.WriteAsync($"Es besteht auf der Person mit der ID {id} gesamt {datahandling.RepositoryAddress.countBillingAddress(id)} Rechnugsaddressen");
+                     }
+                 }
+                 catch (Exception)
+                 {
+                     Response.StatusCode = 500;
+                     throw;
+                 }
+             }
+             else
+             {
+                 Response.StatusCode = 201;
+                 Response.WriteAsync($"Addresse bereits eingetragen");
+             }*/
         }
 
         [HttpDelete("address")]

@@ -112,6 +112,15 @@ namespace PersonController
         /// <param name="address"></param>
         public void AddAddress(Address address)
         {
+            try
+            {
+                RepositoryAddress.Create(address);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
             //person.addresses.ForEach(address =>
             //{
             //    if (person.Id != 0)
