@@ -114,30 +114,25 @@ namespace PersonREST.Controllers
                     }
                     else if (person.contacts.Count > 0)
                     {
-                        var count = 0;
-                        person.contacts.ForEach(x =>
+                        for (int i = 0; i < person.contacts.Count; i++)
+
                         {
-                            Contact contact = datahandling.RepositoryContact.checkContact(x);
+                            Contact contact = datahandling.RepositoryContact.checkContact(person.contacts[i]);
                             if (contact == null)
                             {
-                                x.CreatedAt = DateTime.Now;
+                                person.contacts[i].CreatedAt = DateTime.Now;
                             }
                             else
                             {
-                                if (x.Delete)
+                                if (person.contacts[i].Delete)
                                 {
-                                    datahandling.RepositoryContact.Delete(x);
+                                    datahandling.RepositoryContact.Delete(person.contacts[i]);
                                 }
-                                else if (x.contact_value == contact.contact_value)
+                                else if (person.contacts[i].contact_value == contact.contact_value)
                                 {
-                                    x = null;
-                                    count++;
+                                    person.contacts.RemoveAt(i);
                                 }
                             }
-                        });
-                        if (count == person.contacts.Count)
-                        {
-                            person.contacts.Clear();
                         }
                     }
 
