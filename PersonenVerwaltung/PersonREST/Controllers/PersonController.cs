@@ -14,7 +14,7 @@ namespace PersonREST.Controllers
 
 /*
  *TODO stuff for Delte wit a notMapped bool delete
- * TODO Delete Person?  when person delet deleted all but not documents and communication sender 4
+ *
  *
  *
  */
@@ -139,13 +139,7 @@ namespace PersonREST.Controllers
                     person.ModifyAt = DateTime.Now; // sollte vom Web schon mitkommen!!! weil wir nicht wissen was geändert wurde.
                     datahandling.UpdatePerson(person);
                     Response.StatusCode = 200;
-                    return person;
-                }
-                catch (PersonException ex) // if the person doesn't exists
-                {
-                    Response.StatusCode = 500;
-                    Response.WriteAsync(ex.Message);
-                    throw;
+                    return datahandling.FindPerson(person.Id);
                 }
                 catch (Exception) // general Exception
                 {
@@ -230,6 +224,7 @@ namespace PersonREST.Controllers
                 var toDelete = datahandling.Entities.person.FirstOrDefault(x => x.Id == PersonId);
                 if (toDelete != null)
                 {
+                    toDelete.documents.ForEach(x => { datahandling.RepositoryDocument.DeleteById(x.Id); });
                     datahandling.RepositoryPerson.Delete(toDelete);
                     Response.StatusCode = 201;
                     Response.WriteAsync("Erfolgreich gelöscht");
