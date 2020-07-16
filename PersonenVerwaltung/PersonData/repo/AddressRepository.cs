@@ -24,13 +24,7 @@ namespace PersonData.repo
 
         public bool IsAddressExist(Address address)
         {
-            if (checkAddress(address) == null)
-            {
-                address.CreatedAt = DateTime.Now;
-                return true;
-            }
-
-            return false;
+            return !(checkAddress(address) == null);
         }
     }
 }

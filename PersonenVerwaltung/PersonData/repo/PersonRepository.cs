@@ -83,13 +83,12 @@ namespace PersonData.repo
             return basePerson;
         }
 
-        public bool checkPerson(Person person, AddressRepository addressRepository, ContactRepository contactRepository)
+        public bool checkPerson(Person person, ContactRepository contactRepository)
         {
             var p = entities.person.Include(x => x.contacts).FirstOrDefault(x => x.date == person.date && x.name1 == person.name1 && x.name2 == person.name2);
 
             if (p == null)
             {
-                person.contacts.ForEach(x => x.CreatedAt = System.DateTime.Now);
                 return true;
             }
             else if (contactRepository.checkContactList(p.contacts, contactRepository.check(person.contacts)) == 0)

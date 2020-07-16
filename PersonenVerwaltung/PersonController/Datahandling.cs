@@ -39,7 +39,7 @@ namespace PersonController
         /// <param name="person"></param>
         public void AddPerson(Person person)
         {
-            if (RepositoryPerson.checkPerson(person, RepositoryAddress, RepositoryContact))
+            if (RepositoryPerson.checkPerson(person, RepositoryContact))
             {
                 RepositoryPerson.Create(person);
             }

@@ -13,9 +13,8 @@ using System.Linq;
 namespace PersonREST.Controllers
 
 /*
- *TODO stuff for Delte wit a notMapped bool delete
- *
- *
+ *TODO picture ? how we get from fronted............
+ *TODO svn number check ..
  *
  */
 {
@@ -33,6 +32,7 @@ namespace PersonREST.Controllers
         [HttpGet]
         public List<BasePerson> getAllPersonsBasicData()
         {
+            //Environment.u
             //1951030189
             //Person person = new Person();
             //person.sv_nr = 1951030189;
@@ -89,7 +89,7 @@ namespace PersonREST.Controllers
             {
                 try
                 {
-                    if (person.addresses.Count > 0)
+                    if (person.addresses != null)
                     {
                         person.addresses.ForEach(x =>
                         {
@@ -106,23 +106,15 @@ namespace PersonREST.Controllers
                                     x.addressId = address.Id;
                                 }
                             }
-                            else
-                            {
-                                x.address.CreatedAt = DateTime.Now;
-                            }
                         });
                     }
-                    else if (person.contacts.Count > 0)
+                    else if (person.contacts != null)
                     {
                         for (int i = 0; i < person.contacts.Count; i++)
 
                         {
                             Contact contact = datahandling.RepositoryContact.checkContact(person.contacts[i]);
-                            if (contact == null)
-                            {
-                                person.contacts[i].CreatedAt = DateTime.Now;
-                            }
-                            else
+                            if (contact != null)
                             {
                                 if (person.contacts[i].Delete)
                                 {
@@ -136,7 +128,7 @@ namespace PersonREST.Controllers
                         }
                     }
 
-                    person.ModifyAt = DateTime.Now; // sollte vom Web schon mitkommen!!! weil wir nicht wissen was geändert wurde.
+                    person.ModifyAt = DateTime.Now;
                     datahandling.UpdatePerson(person);
                     Response.StatusCode = 200;
                     return datahandling.FindPerson(person.Id);
@@ -156,45 +148,18 @@ namespace PersonREST.Controllers
         }
 
         [HttpPost]
-        public void Create(Person person)
-        {
+        public Person Create(Person person)
+        {//++
             try
             {
-                SocialSecurityNumberClaculator socialSecurity = new SocialSecurityNumberClaculator();
-                if (person.sv_nr.HasValue)
+                if (person.Id > 0)
                 {
-                    if (person.Id > 0)
-                    {
-                        Response.WriteAsync("Bitte machen Sie ein Personen Update das hier ist für neue");
-                    }
-                    else
-                    {
-                        if (datahandling.Entities.person.FirstOrDefault(x => x.sv_nr == person.sv_nr) == null)
-                        {
-                            if (person.addresses.Count > 0)
-                            {
-                                person.addresses.ForEach(x =>
-                                {
-                                    Address address = datahandling.RepositoryAddress.checkAddress(x.address);
-                                    if (address != null)
-                                    {
-                                        x.address = null;
-                                        x.addressId = address.Id;
-                                    }
-                                });
-                            }
-
-                            CreatePerson(person);
-                        }
-                        else
-                        {
-                            Response.WriteAsync("Person mit dieser Sozialversicherungs-Nummer bereits eingetragen");
-                        }
-                    }
+                    Response.WriteAsync("Bitte machen Sie ein Personen Update das hier ist für neue");
+                    return null;
                 }
                 else
                 {
-                    if (person.addresses.Count > 0)
+                    if (/*person.addresses.Count > 0 ||*/ person.addresses != null)
                     {
                         person.addresses.ForEach(x =>
                         {
@@ -207,12 +172,14 @@ namespace PersonREST.Controllers
                         });
                     }
                     CreatePerson(person);
+                    return datahandling.FindPerson(person.Id);
                 }
             }
             catch (Exception ex)
             {
                 Response.StatusCode = 409;
                 Response.WriteAsync(ex.Message);
+                return null;
             }
         }
 
@@ -253,7 +220,7 @@ namespace PersonREST.Controllers
         {
             try
             {
-                if (datahandling.RepositoryAddress.IsAddressExist(address))
+                if (!datahandling.RepositoryAddress.IsAddressExist(address))
                 {
                     datahandling.AddAddress(address);
                     Response.StatusCode = 201;
@@ -298,7 +265,6 @@ namespace PersonREST.Controllers
             {
                 try
                 {
-                    contact.ModifyDate = DateTime.Now; // sollte vom Web schon mitkommen!!!
                     datahandling.AddContact(contact);
                     Response.StatusCode = 201;
                 }
@@ -353,7 +319,6 @@ namespace PersonREST.Controllers
             {
                 try
                 {
-                    comment.ModifyDate = DateTime.Now; // sollte vom Web schon mitkommen!!!
                     datahandling.AddComment(comment);
                     Response.StatusCode = 201;
                 }
@@ -373,8 +338,6 @@ namespace PersonREST.Controllers
         {
             try
             {
-                person.CreatedAt = DateTime.Now; // sollte vom Web schon mitkommen!!!
-                person.ModifyAt = DateTime.Now; // sollte vom Web schon mitkommen!!!
                 datahandling.AddPerson(person);
                 Response.StatusCode = 201;
             }
