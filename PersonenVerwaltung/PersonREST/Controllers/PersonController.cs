@@ -9,6 +9,7 @@ using PersonData.model.person;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 
 namespace PersonREST.Controllers
 
@@ -23,6 +24,7 @@ namespace PersonREST.Controllers
     public class PersonController : ControllerBase
     {
         private Datahandling datahandling = new Datahandling();
+
         //private PersonEntities entities = new PersonEntities();
 
         /// <summary>

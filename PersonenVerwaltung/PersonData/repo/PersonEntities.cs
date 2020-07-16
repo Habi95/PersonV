@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PersonData.model;
 using PersonData.model.course;
 using PersonData.model.material;
+using PersonData.model.person;
 
 namespace PersonData
 {
@@ -43,6 +44,7 @@ namespace PersonData
         public DbSet<notebook> notebook { get; set; }
         public DbSet<RelCommunicationClass> communication_class { get; set; }
         public DbSet<Communication> communication { get; set; }
+        public DbSet<User> user { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -63,6 +65,7 @@ namespace PersonData
             RealtionNotebook(modelBuilder);
             RealtionDocument(modelBuilder);
             RealtionCommunicaton(modelBuilder);
+            RealtionUser(modelBuilder);
         }
 
         private void RealtionComment(ModelBuilder modelBuilder)
@@ -187,6 +190,18 @@ namespace PersonData
                 .HasForeignKey(x => x.Id);
         }
 
+        private void RealtionUser(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>()
+                .HasOne(x => x.person)
+                .WithOne(x => x.user)
+                .HasForeignKey<Person>(x => x.user_id);
+
+            //modelBuilder.Entity<Person>()
+            //    .HasOne(x => x.user)
+            //    .WithOne(x => x.person);
+        }
+
         private void PrimKeys(ModelBuilder modelBuilder)
         {
             //entitity for addressTable
@@ -219,6 +234,8 @@ namespace PersonData
             modelBuilder.Entity<Communication>().HasKey(x => x.Id);
             //entity for communicaton_class
             modelBuilder.Entity<RelCommunicationClass>().HasKey(x => x.Id);
+            //entity for user
+            modelBuilder.Entity<User>().HasKey(x => x.Id);
         }
     }
 }

@@ -48,6 +48,7 @@ namespace PersonData.repo
                     x.notebook)
               .Include(x =>
                     x.equipment)
+              .Include(x => x.user)
               .AsNoTracking()
               .ToList();
         }

@@ -38,6 +38,7 @@ namespace PersonData
         public bool aktiv { get; set; }
         public bool deleted_inaktiv { get; set; }
         public bool newsletter_flag { get; set; }
+        public int? user_id { get; set; }
 
         public List<AddressPerson> addresses { get; set; }
         public List<Comment> comments { get; set; }
@@ -49,6 +50,7 @@ namespace PersonData
         public List<book> book { get; set; }
         public List<equipment> equipment { get; set; }
         public List<notebook> notebook { get; set; }
+        public User user { get; set; }
 
         [NotMapped]
         public List<Document> documents { get; set; }

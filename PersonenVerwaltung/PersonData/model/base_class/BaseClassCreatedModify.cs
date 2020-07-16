@@ -16,7 +16,7 @@ namespace PersonData
         public DateTime? ModifyAt { get; set; }
 
         [NotMapped]
-        public DateTime ModifyDate { get; set; }
+        public DateTime? ModifyDate { get; set; }
 
         [NotMapped]
         public bool Delete { get; set; }
