@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,12 +14,11 @@ namespace PersonData.repo
 
         public Contact checkContact(Contact contact)
         {
-            var k = entities.contact.FirstOrDefault(x =>
+            return entities.contact.Include(x => x.person).ThenInclude(x => x.user).AsNoTracking().FirstOrDefault(x =>
 
             x.contact_value == contact.contact_value
 
             );
-            return k;
         }
 
         public List<Contact> check(List<Contact> contacts)

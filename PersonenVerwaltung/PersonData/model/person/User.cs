@@ -9,6 +9,8 @@ namespace PersonData.model.person
         public string password { get; set; }
         public string security_word { get; set; }
         public bool authentication { get; set; }
+
+        //public int person_id { get; set; }
         public Person person { get; set; }
 
         public User(string password, string security_word, bool authentication)

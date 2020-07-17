@@ -21,9 +21,19 @@ namespace PersonREST.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class PersonController : ControllerBase
+    public class PersonController : SecurityController
     {
-        private Datahandling datahandling = new Datahandling();
+        // public Datahandling datahandling = new Datahandling();
+
+        //public PersonController()
+        //{
+        //    var isReadable = true;
+
+        //    if (datahandling.Entities.user.AsNoTracking().FirstOrDefault(x => x.password == "hash").authentication && (Request.Method == "POST" || Request.Method == "PUT" || Request.Method == "DELETE"))
+        //    {
+        //        Response.StatusCode = 403;
+        //    }
+        //}
 
         //private PersonEntities entities = new PersonEntities();
 
@@ -151,7 +161,7 @@ namespace PersonREST.Controllers
 
         [HttpPost]
         public Person Create(Person person)
-        {//++
+        {
             try
             {
                 if (person.Id > 0)
@@ -161,7 +171,7 @@ namespace PersonREST.Controllers
                 }
                 else
                 {
-                    if (/*person.addresses.Count > 0 ||*/ person.addresses != null)
+                    if (person.addresses != null)
                     {
                         person.addresses.ForEach(x =>
                         {
@@ -333,6 +343,31 @@ namespace PersonREST.Controllers
             else
             {
                 Response.StatusCode = 409;
+            }
+        }
+
+        [HttpGet("login/{email}/{password}")]
+        public bool Login(string email, string password)
+        {
+            try
+            {
+                var user = datahandling.RepositoryContact.checkContact(new Contact() { contact_value = email });
+
+                string x = datahandling.UserRepository.Hash(password, user.person_id);
+                if (x == user.person.user.password)
+                {
+                    return user.person.user.authentication;
+                }
+                else
+                {
+                    Response.StatusCode = 403;
+                    Response.WriteAsync($"Password or Email are wrong");
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 

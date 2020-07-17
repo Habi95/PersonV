@@ -15,7 +15,7 @@ namespace PersonData.repo
             this.entities = Entities;
         }
 
-        public void Create(T toAdd)
+        public virtual void Create(T toAdd)
         {
             entities.Set<T>().Add(toAdd);
             entities.SaveChanges();
@@ -41,6 +41,13 @@ namespace PersonData.repo
         {
             entities.Set<T>().Update(toUpdate);
             entities.SaveChanges();
+        }
+
+        public string GetSalt(int id)
+        {
+            var x = entities.person.AsNoTracking().FirstOrDefault(x => x.Id == id);
+            string z = x.name1 + x.name2 + x.date;
+            return z;
         }
     }
 }

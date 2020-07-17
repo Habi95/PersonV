@@ -20,6 +20,7 @@ namespace PersonController
         public ContactRepository RepositoryContact;
         public CommentRepository RepositoryComment;
         public CommunicationRepository RepositoryCommunication;
+        public UserRepository UserRepository;
 
         public Datahandling()
         {
@@ -31,6 +32,7 @@ namespace PersonController
             RepositoryContact = new ContactRepository(Entities);
             RepositoryComment = new CommentRepository(Entities);
             RepositoryCommunication = new CommunicationRepository(Entities);
+            UserRepository = new UserRepository(Entities);
         }
 
         /// <summary>
@@ -41,6 +43,10 @@ namespace PersonController
         {
             if (RepositoryPerson.checkPerson(person, RepositoryContact))
             {
+                //if (person.user != null)
+                //{
+                //    UserRepository.Create(person.user);
+                //}
                 RepositoryPerson.Create(person);
             }
             else
@@ -55,6 +61,13 @@ namespace PersonController
         /// <param name="person"></param>
         public void UpdatePerson(Person person)
         {
+            if (person.user != null)
+            {
+                person.user.person = person;
+                //person.user_id =
+                UserRepository.Create(person.user);
+                //person.user = null;
+            }
             RepositoryPerson.Update(person);
         }
 
