@@ -61,6 +61,7 @@ namespace PersonData.repo
             {
                 var classname = typeof(T).Name;
                 var classes = entities.Set<T>();
+                var oldOnes = entities.communication_class.Include(x => x.Communication).Where(x => x.Communication == null).ToList();
                 var communication = entities.communication_class.Include(x => x.Communication).Where(x => x.Communication.PersonId == Pid).ToList();
                 communication.ForEach(x =>
                 {

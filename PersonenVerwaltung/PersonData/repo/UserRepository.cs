@@ -20,14 +20,18 @@ namespace PersonData.repo
             }
         }
 
+        public void CreateFor(User toAdd)
+        {
+            toAdd.password = Hash(toAdd.password, toAdd.person.Id);
+            toAdd.security_word = Hash(toAdd.security_word, toAdd.person.Id);
+            toAdd.person = null;
+        }
+
         public override void Create(User toAdd)
         {
-            using (SHA256 hA256 = SHA256.Create())
-            {
-                toAdd.password = Hash(toAdd.password, toAdd.person.Id);
-                toAdd.security_word = Hash(toAdd.security_word, toAdd.person.Id);
-                toAdd.person = null;
-            }
+            CreateFor(toAdd);
+            entities.user.Add(toAdd);
+            entities.SaveChanges();
         }
     }
 }

@@ -187,7 +187,7 @@ namespace PersonData
             modelBuilder.Entity<RelCommunicationClass>()
                 .HasOne(x => x.Communication)
                 .WithMany(x => x.CommunicationClass)
-                .HasForeignKey(x => x.Id);
+                .HasForeignKey(x => x.CommunicationId);
         }
 
         private void RealtionUser(ModelBuilder modelBuilder)
@@ -196,10 +196,6 @@ namespace PersonData
                 .HasOne(x => x.person)
                 .WithOne(x => x.user)
                 .HasForeignKey<Person>(x => x.user_id);
-
-            //modelBuilder.Entity<Person>()
-            //    .HasOne(x => x.user)
-            //    .WithOne(x => x.person);
         }
 
         private void PrimKeys(ModelBuilder modelBuilder)
