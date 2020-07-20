@@ -17,7 +17,7 @@ namespace PersonREST.Controllers
     {
         public Datahandling datahandling = new Datahandling();
 
-        //TODO change pw with secureWord
+        //History for user what he doing about
         [HttpGet("{email}/{password}")]
         public string Login(string email, string password)
         {
@@ -28,7 +28,7 @@ namespace PersonREST.Controllers
                 string x = datahandling.UserRepository.Hash(password, user.person_id);
                 if (x.Equals(user.person.user.password))
                 {
-                    return JwtHandler.GenerateToken(user.person.user.authentication);
+                    return JwtHandler.GenerateToken(user.person.user, email);
                 }
                 else
                 {

@@ -14,12 +14,15 @@ namespace PersonData.model.person
     {
         private const string Key = "DigitalCampusVorarlbergProjektVerwaltung";
 
-        public static string GenerateToken(bool authentication)
+        public static string GenerateToken(User user, string email)
         {
             var tokenhandler = new JwtSecurityTokenHandler();
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Role, authentication.ToString()) }),
+                Subject = new ClaimsIdentity(new[] {
+                    new Claim( ClaimTypes.Email,email),
+                      new Claim( ClaimTypes.Role , user.admin.ToString()),
+                       new Claim( ClaimTypes.Actor ,user.authentication.ToString() )}),
                 Expires = DateTime.Now.AddMinutes(60).ToLocalTime(),
                 SigningCredentials = new SigningCredentials(
                     new SymmetricSecurityKey(Convert.FromBase64String(Key)), SecurityAlgorithms.HmacSha256Signature)
@@ -65,4 +68,3 @@ namespace PersonData.model.person
             };
         }
     }
-}
