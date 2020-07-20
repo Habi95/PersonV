@@ -17,6 +17,7 @@ namespace PersonREST.Controllers
     {
         public Datahandling datahandling = new Datahandling();
 
+        //TODO change pw with secureWord
         [HttpGet("{email}/{password}")]
         public string Login(string email, string password)
         {
@@ -55,6 +56,53 @@ namespace PersonREST.Controllers
                 catch (Exception)
                 {
                     Response.StatusCode = 500;
+                    throw;
+                }
+            }
+            else
+            {
+                Response.StatusCode = 409;
+                Response.WriteAsync("Person ID incorrect!");
+                return null;
+            }
+        }
+
+        [HttpPut]
+        public User UpdateUser([FromHeader] string Authorization, User user)
+        {
+            if (Token(Authorization).admin)
+            {
+                try
+                {
+                    if (datahandling.Entities.user.FirstOrDefault(x => x.Id == user.Id) != null)
+                    {
+                        if (user.Delete)
+                        {
+                            datahandling.UserRepository.Delete(user);
+                            Response.StatusCode = 200;
+                            Response.WriteAsync("Erfolgreich gelöscht");
+                            return null;
+                        }
+                        else
+                        {
+                            if (EqualsHash(user))
+                            {
+                                datahandling.UserRepository.Update(user);
+                                return user;
+                            }
+                            else
+                            {
+                                throw new Exception($"Es sind keine Änderungen am Passwort oder am Sicherheitswort gestattet");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception($"Den User mit der Id: {user.Id} exestiert nicht");
+                    }
+                }
+                catch (Exception)
+                {
                     throw;
                 }
             }
@@ -109,6 +157,16 @@ namespace PersonREST.Controllers
             {
                 throw;
             }
+        }
+
+        public bool EqualsHash(User user)
+        {
+            var x = datahandling.UserRepository.FindOne(user.Id);
+            if (x.password.Equals(user.password) && x.security_word.Equals(user.security_word))
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

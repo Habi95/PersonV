@@ -11,7 +11,6 @@ namespace PersonData.model.person
         public bool authentication { get; set; } = false;
         public bool admin { get; set; } = false;
 
-        //public int person_id { get; set; }
         public Person person { get; set; }
 
         public User(string password, string security_word)
