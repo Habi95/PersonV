@@ -12,17 +12,6 @@ namespace PersonData.repo
         {
         }
 
-        //public int Create(Person person)
-        //{
-        //    entities.person.Add(person);
-        //    return entities.SaveChanges();
-        //}
-
-        //public void DeleteOne(Person person)
-        //{
-        //    entities.person.Remove(person);
-        //    entities.SaveChanges();
-        //}
         public override List<Person> FindAll()
         {
             return entities.person
@@ -52,17 +41,6 @@ namespace PersonData.repo
               .AsNoTracking()
               .ToList();
         }
-
-        //public Person FindOne(int id)
-        //{
-        //    return entities.person.FirstOrDefault(x => x.Id == id);
-        //}
-
-        //public void Update(Person entity)
-        //{
-        //    entities.Update(entity);
-        //    entities.SaveChanges();
-        //}
 
         /// <summary>
         /// Converts Person to Base Person

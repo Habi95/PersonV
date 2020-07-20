@@ -2,6 +2,9 @@
 
 namespace PersonData.model
 {
+    /// <summary>
+    /// Contains all the data that a standard address contains
+    /// </summary>
     public class BaseAddress : BaseClassCreatedModify
     {
         public string street { get; set; }
