@@ -30,6 +30,8 @@ namespace PersonREST.Controllers
         [HttpGet]
         public List<BasePerson> getAllPersonsBasicData()
         {
+            //Token(Authorization);
+
             //Environment.u
             //1951030189
             //Person person = new Person();
@@ -81,8 +83,10 @@ namespace PersonREST.Controllers
         /// <param name="person">Object of Person with changed parameters</param>
         /// <returns>HttpStatusCode</returns>
         [HttpPut]
-        public Person UpdatePerson(Person person)
+        public Person UpdatePerson([FromHeader] string Authorization, Person person)
         {
+            //if (Token(Authorization).authentication)
+            //{
             if (datahandling.Entities.person.AsNoTracking().FirstOrDefault(x => x.Id == person.Id) != null) // check person is not null
             {
                 try
@@ -143,40 +147,56 @@ namespace PersonREST.Controllers
                 Response.WriteAsync("Person ID incorrect!");
                 return null;
             }
+            //}
+            //else
+            //{
+            //    Response.StatusCode = 403;
+            //    Response.WriteAsync("Keine Rechte");
+            //    return null;
+            //}
         }
 
         [HttpPost]
-        public Person Create(Person person)
+        public Person Create([FromHeader] string Authorization, Person person)
         {
-            try
+            if (Token(Authorization).authentication)
             {
-                if (person.Id > 0)
+                try
                 {
-                    Response.WriteAsync("Bitte machen Sie ein Personen Update das hier ist für neue");
+                    if (person.Id > 0)
+                    {
+                        Response.WriteAsync("Bitte machen Sie ein Personen Update das hier ist für neue");
+                        return null;
+                    }
+                    else
+                    {
+                        if (person.addresses != null)
+                        {
+                            person.addresses.ForEach(x =>
+                            {
+                                Address address = datahandling.RepositoryAddress.checkAddress(x.address);
+                                if (address != null)
+                                {
+                                    x.address = null;
+                                    x.addressId = address.Id;
+                                }
+                            });
+                        }
+                        CreatePerson(person);
+                        return datahandling.FindPerson(person.Id);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Response.StatusCode = 409;
+                    Response.WriteAsync(ex.Message);
                     return null;
                 }
-                else
-                {
-                    if (person.addresses != null)
-                    {
-                        person.addresses.ForEach(x =>
-                        {
-                            Address address = datahandling.RepositoryAddress.checkAddress(x.address);
-                            if (address != null)
-                            {
-                                x.address = null;
-                                x.addressId = address.Id;
-                            }
-                        });
-                    }
-                    CreatePerson(person);
-                    return datahandling.FindPerson(person.Id);
-                }
             }
-            catch (Exception ex)
+            else
             {
-                Response.StatusCode = 409;
-                Response.WriteAsync(ex.Message);
+                Response.StatusCode = 403;
+                Response.WriteAsync("Keine Rechte");
                 return null;
             }
         }
@@ -186,27 +206,35 @@ namespace PersonREST.Controllers
         /// </summary>
         /// <param name="PersonId">PersonID to delete</param>
         [HttpDelete("{PersonId}")]
-        public void DeletePerson(int PersonId)
+        public void DeletePerson([FromHeader] string Authorization, int PersonId)
         {
-            try
+            if (Token(Authorization).authentication)
             {
-                var toDelete = datahandling.Entities.person.FirstOrDefault(x => x.Id == PersonId);
-                if (toDelete != null)
+                try
                 {
-                    toDelete.documents.ForEach(x => { datahandling.RepositoryDocument.DeleteById(x.Id); });
-                    datahandling.RepositoryPerson.Delete(toDelete);
-                    Response.StatusCode = 201;
-                    Response.WriteAsync("Erfolgreich gelöscht");
+                    var toDelete = datahandling.Entities.person.FirstOrDefault(x => x.Id == PersonId);
+                    if (toDelete != null)
+                    {
+                        toDelete.documents.ForEach(x => { datahandling.RepositoryDocument.DeleteById(x.Id); });
+                        datahandling.RepositoryPerson.Delete(toDelete);
+                        Response.StatusCode = 201;
+                        Response.WriteAsync("Erfolgreich gelöscht");
+                    }
+                    else
+                    {
+                        Response.StatusCode = 500;
+                        Response.WriteAsync($"Die Person mit der ID: {PersonId} Existiert in der DB nicht");
+                    }
                 }
-                else
+                catch (Exception)
                 {
-                    Response.StatusCode = 500;
-                    Response.WriteAsync($"Die Person mit der ID: {PersonId} Existiert in der DB nicht");
+                    throw;
                 }
             }
-            catch (Exception)
+            else
             {
-                throw;
+                Response.StatusCode = 403;
+                Response.WriteAsync("Keine Rechte");
             }
         }
 
@@ -218,25 +246,33 @@ namespace PersonREST.Controllers
         /// <param name="address">Address Json with ID=0</param>
         /// <returns></returns>
         [HttpPost("address")]
-        public void CreateAddress(Address address)
+        public void CreateAddress([FromHeader] string Authorization, Address address)
         {
-            try
+            if (Token(Authorization).authentication)
             {
-                if (!datahandling.RepositoryAddress.IsAddressExist(address))
+                try
                 {
-                    datahandling.AddAddress(address);
-                    Response.StatusCode = 201;
+                    if (!datahandling.RepositoryAddress.IsAddressExist(address))
+                    {
+                        datahandling.AddAddress(address);
+                        Response.StatusCode = 201;
+                    }
+                    else
+                    {
+                        throw new PersonException($"");
+                    }
                 }
-                else
+                catch (Exception)
                 {
-                    throw new PersonException($"");
+                    var existAddress = datahandling.RepositoryAddress.checkAddress(address);
+                    Response.StatusCode = 403;
+                    Response.WriteAsync($"Die Adresse:\n{existAddress.street}\n{existAddress.place} - {existAddress.zip}\n{existAddress.country}\nWurde am {existAddress.CreatedAt} erstellt");
                 }
             }
-            catch (Exception)
+            else
             {
-                var existAddress = datahandling.RepositoryAddress.checkAddress(address);
                 Response.StatusCode = 403;
-                Response.WriteAsync($"Die Adresse:\n{existAddress.street}\n{existAddress.place} - {existAddress.zip}\n{existAddress.country}\nWurde am {existAddress.CreatedAt} erstellt");
+                Response.WriteAsync("Keine Rechte");
             }
         }
 
@@ -245,18 +281,26 @@ namespace PersonREST.Controllers
         /// </summary>
         /// <param name="address">AddressID to delete</param>
         [HttpDelete("address")]
-        public void DeleteAddress(Address address)
+        public void DeleteAddress([FromHeader] string Authorization, Address address)
         {
-            if (datahandling.RepositoryAddress.checkAddress(address) != null)
+            if (Token(Authorization).authentication)
             {
-                datahandling.RepositoryAddress.Delete(address);
-                Response.StatusCode = 201;
-                Response.WriteAsync("Erfolgreich gelöscht");
+                if (datahandling.RepositoryAddress.checkAddress(address) != null)
+                {
+                    datahandling.RepositoryAddress.Delete(address);
+                    Response.StatusCode = 201;
+                    Response.WriteAsync("Erfolgreich gelöscht");
+                }
+                else
+                {
+                    Response.StatusCode = 500;
+                    Response.WriteAsync($"Die Addresse mit der ID: {address.Id} gibt es nicht in der Datenbank");
+                }
             }
             else
             {
-                Response.StatusCode = 500;
-                Response.WriteAsync($"Die Addresse mit der ID: {address.Id} gibt es nicht in der Datenbank");
+                Response.StatusCode = 403;
+                Response.WriteAsync("Keine Rechte");
             }
         }
 
@@ -265,24 +309,32 @@ namespace PersonREST.Controllers
         /// </summary>
         /// <param name="contact">Contact Json with ID=0</param>
         [HttpPost("contact")]
-        public void CreateContact(Contact contact)
+        public void CreateContact([FromHeader] string Authorization, Contact contact)
         {
-            if (contact.Id == 0 && contact.person_id != 0)
+            if (Token(Authorization).authentication)
             {
-                try
+                if (contact.Id == 0 && contact.person_id != 0)
                 {
-                    datahandling.AddContact(contact);
-                    Response.StatusCode = 201;
+                    try
+                    {
+                        datahandling.AddContact(contact);
+                        Response.StatusCode = 201;
+                    }
+                    catch (Exception)
+                    {
+                        Response.StatusCode = 500;
+                        throw;
+                    }
                 }
-                catch (Exception)
+                else
                 {
-                    Response.StatusCode = 500;
-                    throw;
+                    Response.StatusCode = 409;
                 }
             }
             else
             {
-                Response.StatusCode = 409;
+                Response.StatusCode = 403;
+                Response.WriteAsync("Keine Rechte");
             }
         }
 
@@ -291,26 +343,34 @@ namespace PersonREST.Controllers
         /// </summary>
         /// <param name="comment"></param>
         [HttpDelete("contact/{conatctValue}")]
-        public void DeleteContact(string conatctValue)
+        public void DeleteContact([FromHeader] string Authorization, string conatctValue)
         {
-            try
+            if (Token(Authorization).authentication)
             {
-                var toDelete = datahandling.RepositoryContact.checkContact(new Contact { contact_value = conatctValue });
-                if (toDelete != null)
+                try
                 {
-                    datahandling.RepositoryContact.Delete(toDelete);
-                    Response.StatusCode = 201;
-                    Response.WriteAsync("Erfolgreich gelöscht");
+                    var toDelete = datahandling.RepositoryContact.checkContact(new Contact { contact_value = conatctValue });
+                    if (toDelete != null)
+                    {
+                        datahandling.RepositoryContact.Delete(toDelete);
+                        Response.StatusCode = 201;
+                        Response.WriteAsync("Erfolgreich gelöscht");
+                    }
+                    else
+                    {
+                        Response.StatusCode = 500;
+                        Response.WriteAsync($"Der Kontakt: {conatctValue} Existiert in der DB nicht");
+                    }
                 }
-                else
+                catch (Exception)
                 {
-                    Response.StatusCode = 500;
-                    Response.WriteAsync($"Der Kontakt: {conatctValue} Existiert in der DB nicht");
+                    throw;
                 }
             }
-            catch (Exception)
+            else
             {
-                throw;
+                Response.StatusCode = 403;
+                Response.WriteAsync("Keine Rechte");
             }
         }
 
@@ -319,55 +379,32 @@ namespace PersonREST.Controllers
         /// </summary>
         /// <param name="comment">Comment Json with ID=0</param>
         [HttpPost("comment")]
-        public void CreateComment(Comment comment)
+        public void CreateComment([FromHeader] string Authorization, Comment comment)
         {
-            if (comment.Id == 0 && comment.person_id != 0)
+            if (Token(Authorization).authentication)
             {
-                try
+                if (comment.Id == 0 && comment.person_id != 0)
                 {
-                    datahandling.AddComment(comment);
-                    Response.StatusCode = 201;
+                    try
+                    {
+                        datahandling.AddComment(comment);
+                        Response.StatusCode = 201;
+                    }
+                    catch (Exception)
+                    {
+                        Response.StatusCode = 500;
+                        throw;
+                    }
                 }
-                catch (Exception)
+                else
                 {
-                    Response.StatusCode = 500;
-                    throw;
+                    Response.StatusCode = 409;
                 }
             }
             else
             {
-                Response.StatusCode = 409;
-            }
-        }
-
-        /// <summary>
-        /// Login from Webinterface with email and password
-        /// </summary>
-        /// <param name="email"></param>
-        /// <param name="password"></param>
-        /// <returns>true if login is successful</returns>
-        [HttpGet("login/{email}/{password}")]
-        public bool Login(string email, string password)
-        {
-            try
-            {
-                var user = datahandling.RepositoryContact.checkContact(new Contact() { contact_value = email });
-
-                string x = datahandling.UserRepository.Hash(password, user.person_id);
-                if (x == user.person.user.password)
-                {
-                    return user.person.user.authentication;
-                }
-                else
-                {
-                    Response.StatusCode = 403;
-                    Response.WriteAsync($"Password or Email are wrong");
-                    return false;
-                }
-            }
-            catch (Exception)
-            {
-                throw;
+                Response.StatusCode = 403;
+                Response.WriteAsync("Keine Rechte");
             }
         }
 

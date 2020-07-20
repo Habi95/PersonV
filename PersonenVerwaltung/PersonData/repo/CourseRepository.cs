@@ -16,7 +16,7 @@ namespace PersonData.repo
             this.entities = entities;
         }
 
-        public Tuple<List<Course>, List<Course>> CompletedCourses<T>(int id)
+        public Tuple<List<Course>, List<Course>> CompletedCourses<T>(int id) // ()
         {
             var completed = entities.course_participants.Include(x => x.Course).Where(x => x.ParticipantId == id && x.Completed).ToList();
 

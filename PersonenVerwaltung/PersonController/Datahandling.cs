@@ -46,10 +46,6 @@ namespace PersonController
         {
             if (RepositoryPerson.checkPerson(person, RepositoryContact))
             {
-                //if (person.user != null)
-                //{
-                //    UserRepository.Create(person.user);
-                //}
                 RepositoryPerson.Create(person);
             }
             else
@@ -67,9 +63,8 @@ namespace PersonController
             if (person.user != null)
             {
                 person.user.person = person;
-                //person.user_id =
-                UserRepository.Create(person.user);
-                //person.user = null;
+
+                UserRepository.CreateFor(person.user);
             }
             RepositoryPerson.Update(person);
         }
