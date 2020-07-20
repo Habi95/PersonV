@@ -8,6 +8,9 @@ using System.Linq;
 
 namespace PersonController
 {
+    /// <summary>
+    /// This class manages the handling of the repositories. Person, Address, Contact and Comment
+    /// </summary>
     public class Datahandling
     {
         public PersonEntities Entities = new PersonEntities();
@@ -115,7 +118,7 @@ namespace PersonController
         }
 
         /// <summary>
-        /// id == Person ID
+        /// Add's a new address to DB id == Person ID
         /// </summary>
         /// <param name="address"></param>
         public void AddAddress(Address address)
@@ -130,6 +133,10 @@ namespace PersonController
             }
         }
 
+        /// <summary>
+        /// Add's a new Contact to DB
+        /// </summary>
+        /// <param name="contactInfo"></param>
         public void AddContact(Contact contactInfo)
         {
             try
@@ -142,6 +149,13 @@ namespace PersonController
             }
         }
 
+        /// <summary>
+        /// Add's a relation between PersonID and AddressID to the DB
+        /// </summary>
+        /// <param name="PersonId"></param>
+        /// <param name="AddressId"></param>
+        /// <param name="billingAddress"></param>
+        /// <param name="contactType"></param>
         public void AddAddressPerson(int PersonId, int AddressId, bool billingAddress, EContactType contactType)
         {
             RepositoryAddressPerson.Create(new AddressPerson()
@@ -153,6 +167,10 @@ namespace PersonController
             }); ;
         }
 
+        /// <summary>
+        /// Add's a new Comment to DB
+        /// </summary>
+        /// <param name="comment"></param>
         public void AddComment(Comment comment)
         {
             try

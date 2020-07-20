@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PersonData
 {
+    /// <summary>
+    /// Contains all data that each class contains
+    /// </summary>
     public class BaseClassCreatedModify
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

@@ -23,20 +23,6 @@ namespace PersonREST.Controllers
     [Route("[controller]")]
     public class PersonController : SecurityController
     {
-        // public Datahandling datahandling = new Datahandling();
-
-        //public PersonController()
-        //{
-        //    var isReadable = true;
-
-        //    if (datahandling.Entities.user.AsNoTracking().FirstOrDefault(x => x.password == "hash").authentication && (Request.Method == "POST" || Request.Method == "PUT" || Request.Method == "DELETE"))
-        //    {
-        //        Response.StatusCode = 403;
-        //    }
-        //}
-
-        //private PersonEntities entities = new PersonEntities();
-
         /// <summary>
         /// base.url/Person Lists all Base Persons
         /// </summary>
@@ -215,6 +201,10 @@ namespace PersonREST.Controllers
             }
         }
 
+        /// <summary>
+        /// Delete's the Person with ID 
+        /// </summary>
+        /// <param name="PersonId">PersonID to delete</param>
         [HttpDelete("{PersonId}")]
         public void DeletePerson([FromHeader] string Authorization, int PersonId)
         {
@@ -286,6 +276,10 @@ namespace PersonREST.Controllers
             }
         }
 
+        /// <summary>
+        /// Delete's the address with ID 
+        /// </summary>
+        /// <param name="address">AddressID to delete</param>
         [HttpDelete("address")]
         public void DeleteAddress([FromHeader] string Authorization, Address address)
         {
@@ -345,7 +339,7 @@ namespace PersonREST.Controllers
         }
 
         /// <summary>
-        /// delete contact by value
+        /// Delete contact by value
         /// </summary>
         /// <param name="comment"></param>
         [HttpDelete("contact/{conatctValue}")]
@@ -414,6 +408,10 @@ namespace PersonREST.Controllers
             }
         }
 
+        /// <summary>
+        /// Method used in this class to add a Person to the DB
+        /// </summary>
+        /// <param name="person"></param>
         private void CreatePerson(Person person)
         {
             try
