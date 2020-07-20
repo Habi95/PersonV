@@ -8,7 +8,7 @@ namespace PersonData.repo
 
         T FindOne(int id);
 
-        int Create(T entity); // returns last insert id
+        int Create(T entity);
 
         void Delete(T entity);
 

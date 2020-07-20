@@ -10,7 +10,7 @@ namespace PersonData.model.course
     public class Communication
     {
         /// <summary>
-        /// /// id in DB (is assigned by DB as autoIncrement)
+        /// id in DB (is assigned by DB as autoIncrement)
         /// </summary>
         [Column("id")]
         public int Id { get; set; }

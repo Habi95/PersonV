@@ -15,6 +15,9 @@ namespace PersonData
         public string title { get; set; }
         private long? _sv_nr;
 
+        /// <summary>
+        /// SV-Number check
+        /// </summary>
         public long? sv_nr
         {
             get
