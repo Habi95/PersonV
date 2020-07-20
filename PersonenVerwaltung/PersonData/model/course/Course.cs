@@ -12,12 +12,6 @@ namespace Data.Models
     public class Course : BaseClassCreatedModify
     {
         /// <summary>
-        /// id in DB (is assigned by DB as autoIncrement)
-        /// </summary>
-        //[Column("id")]
-        //public int Id { get; set; }
-
-        /// <summary>
         /// the courses' title
         /// </summary>
         [Column("title", TypeName = "varchar(250)")]
@@ -66,12 +60,6 @@ namespace Data.Models
         public double? Price { get; set; }
 
         /// <summary>
-        /// the id of the classromm the course is held in
-        /// </summary>
-        //[Column("classroom_id")]
-        //public int? ClassroomID { get; set; }
-
-        /// <summary>
         /// the amount of maximum participants
         /// </summary>
         [Column("participant_max")]
@@ -95,25 +83,10 @@ namespace Data.Models
         [Column("modified@")]
         public DateTime? ModifiedAt { get; set; }
 
-        /// <summary>
-        /// a list of relations to the courses' contents
-        /// </summary>
-        //[NotMapped]
-        //public List<RelCourseContent> CourseContents { get; set; }
-
-        /// <summary>
-        /// a list of relations to the courses' subventions
-        /// </summary>
-        //[NotMapped]
-        //public List<RelCourseSubvention> CourseSubventions { get; set; }
-
         [NotMapped]
         public List<RelCourseParticipant> RelCourseParticipants { get; set; }
 
         [NotMapped]
         public List<RelCourseTrainer> RelCourseTrainers { get; set; }
-
-        //[NotMapped]
-        //public List<Absence> Absences { get; set; }
     }
 }
