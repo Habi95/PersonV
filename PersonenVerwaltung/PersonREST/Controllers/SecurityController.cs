@@ -114,6 +114,40 @@ namespace PersonREST.Controllers
             }
         }
 
+        [HttpPut("setpassword/{email}/{securityWord}/{newPassword}")]
+        public User ChangePassword(string email, string securityWord, string newPassword)
+        {
+            try
+            {
+                var user = datahandling.RepositoryContact.checkContact(new Contact() { contact_value = email }).person.user;
+                var sw = datahandling.UserRepository.Hash(securityWord, user.person.Id);
+                if (user != null)
+                {
+                    if (sw.Equals(user.security_word))
+                    {
+                        user.password = datahandling.UserRepository.Hash(newPassword, user.person.Id);
+                        return user;
+                    }
+                    else
+                    {
+                        Response.StatusCode = 403;
+                        Response.WriteAsync($"Falsches Sicherheitswort");
+                    }
+                }
+                else
+                {
+                    Response.StatusCode = 403;
+                    Response.WriteAsync($"Kein User gefunden");
+                    return null;
+                }
+                return null;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         [HttpPost("{email}/{password}/{secureWord}")]
         public User CreateUser([FromHeader] string Authorization, string email, string password, string secureWord)
         {
@@ -130,7 +164,7 @@ namespace PersonREST.Controllers
                 else
                 {
                     Response.StatusCode = 403;
-                    Response.WriteAsync($"Auf der Email: {email} besteht bereits ein A");
+                    Response.WriteAsync($"Auf der Email: {email} besteht bereits ein Account");
                     return null;
                 }
             }
