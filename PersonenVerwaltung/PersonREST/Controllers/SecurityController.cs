@@ -43,7 +43,7 @@ namespace PersonREST.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet("user")]
         public List<User> GetUsers([FromHeader] string Authorization)
         {
             if (Token(Authorization).admin)
@@ -67,7 +67,7 @@ namespace PersonREST.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPut("user")]
         public User UpdateUser([FromHeader] string Authorization, User user)
         {
             if (Token(Authorization).admin)
