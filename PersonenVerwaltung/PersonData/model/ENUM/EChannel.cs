@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PersonData.model.ENUM
+﻿namespace PersonData.model.ENUM
 {
     /// <summary>
     /// different communication channels
     /// </summary>
+
     public enum EChannel
     {
         Email,

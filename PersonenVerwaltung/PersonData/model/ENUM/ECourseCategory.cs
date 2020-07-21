@@ -3,6 +3,7 @@
     /// <summary>
     /// different kinds of course categories
     /// </summary>
+
     public enum ECourseCategory
     {
         CodingCampus,

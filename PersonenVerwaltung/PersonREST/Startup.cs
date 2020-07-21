@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json.Converters;
+using System.Text.Json.Serialization;
+using System.Web.Http;
 
 namespace PersonREST
 {
@@ -32,6 +35,12 @@ namespace PersonREST
                                 .AllowAnyMethod()
                                 .AllowAnyHeader();
                     });
+            });
+
+            services.AddMvc().AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.Converters.Add(new StringEnumConverter());
+                options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
             });
         }
 

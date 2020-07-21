@@ -3,6 +3,7 @@
     /// <summary>
     /// Employment relationship
     /// </summary>
+
     public enum EFunction
     {
         Trainer_Intern,
