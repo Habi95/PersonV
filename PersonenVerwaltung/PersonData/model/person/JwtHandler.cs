@@ -57,14 +57,21 @@ namespace PersonData.model.person
 
         public static Token CreateToken(List<Claim> claims)
         {
-            var role = claims[0].ToString();
+            var email = claims[0].ToString();
+            var emailA = email.Split(" ");
+            var role = claims[1].ToString();
             var roleA = role.Split(" ");
-            var date = claims[2].ToString();
+            var roleB = claims[2].ToString();
+            var roleBA = roleB.Split(" ");
+            var date = claims[3].ToString();
             var p = date.Split(" ");
             return new Token()
             {
+                email = emailA[1],
                 authentication = bool.Parse(roleA[1]),
+                admin = bool.Parse(roleBA[1]),
                 expDate = DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt32(p[1])).DateTime.ToLocalTime()
             };
         }
     }
+}

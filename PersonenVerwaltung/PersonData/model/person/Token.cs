@@ -7,6 +7,7 @@ namespace PersonData.model.person
 {
     public class Token
     {
+        public string email { get; set; }
         public bool authentication { get; set; }
         public bool admin { get; set; }
         public DateTime expDate { get; set; }
