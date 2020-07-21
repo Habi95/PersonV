@@ -250,8 +250,8 @@ namespace PersonREST.Controllers
         [HttpPost("address")]
         public void CreateAddress([FromHeader] string Authorization, Address address)
         {
-            if (Token(Authorization).authentication)
-            {
+            //if (Token(Authorization).authentication)
+            //{
                 try
                 {
                     if (!datahandling.RepositoryAddress.IsAddressExist(address))
@@ -270,12 +270,12 @@ namespace PersonREST.Controllers
                     Response.StatusCode = 403;
                     Response.WriteAsync($"Die Adresse:\n{existAddress.street}\n{existAddress.place} - {existAddress.zip}\n{existAddress.country}\nWurde am {existAddress.CreatedAt} erstellt");
                 }
-            }
-            else
-            {
-                Response.StatusCode = 403;
-                Response.WriteAsync("Keine Rechte");
-            }
+            //}
+            //else
+            //{
+            //    Response.StatusCode = 403;
+            //    Response.WriteAsync("Keine Rechte");
+            //}
         }
 
         /// <summary>
@@ -285,8 +285,8 @@ namespace PersonREST.Controllers
         [HttpDelete("address")]
         public void DeleteAddress([FromHeader] string Authorization, Address address)
         {
-            if (Token(Authorization).authentication)
-            {
+            //if (Token(Authorization).authentication)
+            //{
                 if (datahandling.RepositoryAddress.checkAddress(address) != null)
                 {
                     datahandling.RepositoryAddress.Delete(address);
@@ -298,12 +298,12 @@ namespace PersonREST.Controllers
                     Response.StatusCode = 500;
                     Response.WriteAsync($"Die Addresse mit der ID: {address.Id} gibt es nicht in der Datenbank");
                 }
-            }
-            else
-            {
-                Response.StatusCode = 403;
-                Response.WriteAsync("Keine Rechte");
-            }
+            //}
+            //else
+            //{
+            //    Response.StatusCode = 403;
+            //    Response.WriteAsync("Keine Rechte");
+            //}
         }
 
         /// <summary>
@@ -313,8 +313,8 @@ namespace PersonREST.Controllers
         [HttpPost("contact")]
         public void CreateContact([FromHeader] string Authorization, Contact contact)
         {
-            if (Token(Authorization).authentication)
-            {
+            //if (Token(Authorization).authentication)
+            //{
                 if (contact.Id == 0 && contact.person_id != 0)
                 {
                     try
@@ -332,12 +332,12 @@ namespace PersonREST.Controllers
                 {
                     Response.StatusCode = 409;
                 }
-            }
-            else
-            {
-                Response.StatusCode = 403;
-                Response.WriteAsync("Keine Rechte");
-            }
+            //}
+            //else
+            //{
+            //    Response.StatusCode = 403;
+            //    Response.WriteAsync("Keine Rechte");
+            //}
         }
 
         /// <summary>
@@ -347,8 +347,8 @@ namespace PersonREST.Controllers
         [HttpDelete("contact/{conatctValue}")]
         public void DeleteContact([FromHeader] string Authorization, string conatctValue)
         {
-            if (Token(Authorization).authentication)
-            {
+            //if (Token(Authorization).authentication)
+            //{
                 try
                 {
                     var toDelete = datahandling.RepositoryContact.checkContact(new Contact { contact_value = conatctValue });
@@ -368,12 +368,12 @@ namespace PersonREST.Controllers
                 {
                     throw;
                 }
-            }
-            else
-            {
-                Response.StatusCode = 403;
-                Response.WriteAsync("Keine Rechte");
-            }
+            //}
+            //else
+            //{
+            //    Response.StatusCode = 403;
+            //    Response.WriteAsync("Keine Rechte");
+            //}
         }
 
         /// <summary>
@@ -383,8 +383,8 @@ namespace PersonREST.Controllers
         [HttpPost("comment")]
         public void CreateComment([FromHeader] string Authorization, Comment comment)
         {
-            if (Token(Authorization).authentication)
-            {
+            //if (Token(Authorization).authentication)
+            //{
                 if (comment.Id == 0 && comment.person_id != 0)
                 {
                     try
@@ -402,12 +402,12 @@ namespace PersonREST.Controllers
                 {
                     Response.StatusCode = 409;
                 }
-            }
-            else
-            {
-                Response.StatusCode = 403;
-                Response.WriteAsync("Keine Rechte");
-            }
+            //}
+            //else
+            //{
+            //    Response.StatusCode = 403;
+            //    Response.WriteAsync("Keine Rechte");
+            //}
         }
 
         /// <summary>
