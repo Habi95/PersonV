@@ -9,6 +9,9 @@ using SecurityData.model;
 
 namespace TokenRest.Controllers
 {
+    /// <summary>
+    /// Actuallly NOT in use
+    /// </summary>
     [Route("[controller]")]
     [ApiController]
     public class SecurityController : ControllerBase
