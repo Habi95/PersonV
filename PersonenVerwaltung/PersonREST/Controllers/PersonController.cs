@@ -21,8 +21,10 @@ namespace PersonREST.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class PersonController : SecurityController
+    public class PersonController : TokenRest.Controllers.SecurityController
     {
+
+        Datahandling datahandling = new Datahandling();
         /// <summary>
         /// base.url/Person Lists all Base Persons
         /// </summary>
