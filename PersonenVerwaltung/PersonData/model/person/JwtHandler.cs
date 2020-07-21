@@ -63,7 +63,7 @@ namespace PersonData.model.person
             var roleA = role.Split(" ");
             var roleB = claims[2].ToString();
             var roleBA = roleB.Split(" ");
-            var date = claims[3].ToString();
+            var date = claims[4].ToString();
             var p = date.Split(" ");
             return new Token()
             {
