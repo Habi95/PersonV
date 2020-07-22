@@ -2,6 +2,9 @@
 
 namespace PersonData
 {
+    /// <summary>
+    /// Identifies the document from whom it comes Person or Course
+    /// </summary>
     public class DocumentClass
     {
         public int id { get; set; }

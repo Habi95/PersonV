@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PersonController", "PersonC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PersonREST", "PersonREST\PersonREST.csproj", "{193FC779-5416-4795-B590-0DE0DC8525A0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbTest", "DbTest\DbTest.csproj", "{8AE704AA-880B-4E92-B754-124E9B6C342C}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecurityController", "..\TokenRest\SecurityController\SecurityController.csproj", "{897A5CAD-1F92-420D-9600-2F6E914E0507}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecurityData", "..\TokenRest\SecurityData\SecurityData.csproj", "{E7A374D2-6F67-4178-9898-F3B6A7ABBA6C}"
@@ -35,10 +33,6 @@ Global
 		{193FC779-5416-4795-B590-0DE0DC8525A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{193FC779-5416-4795-B590-0DE0DC8525A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{193FC779-5416-4795-B590-0DE0DC8525A0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8AE704AA-880B-4E92-B754-124E9B6C342C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8AE704AA-880B-4E92-B754-124E9B6C342C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8AE704AA-880B-4E92-B754-124E9B6C342C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8AE704AA-880B-4E92-B754-124E9B6C342C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{897A5CAD-1F92-420D-9600-2F6E914E0507}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{897A5CAD-1F92-420D-9600-2F6E914E0507}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{897A5CAD-1F92-420D-9600-2F6E914E0507}.Release|Any CPU.ActiveCfg = Release|Any CPU
