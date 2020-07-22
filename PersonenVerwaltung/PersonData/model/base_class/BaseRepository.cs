@@ -6,6 +6,10 @@ using System.Text;
 
 namespace PersonData.repo
 {
+    /// <summary>
+    /// This Repository is used as a Base Class for all other Repositorys
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public abstract class BaseRepository<T> where T : BaseClassCreatedModify
     {
         public PersonEntities entities = new PersonEntities();
