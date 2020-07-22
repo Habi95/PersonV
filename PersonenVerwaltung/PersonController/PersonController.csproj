@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\TokenRest\SecurityController\SecurityController.csproj" />
     <ProjectReference Include="..\PersonData\PersonData.csproj" />
   </ItemGroup>
 

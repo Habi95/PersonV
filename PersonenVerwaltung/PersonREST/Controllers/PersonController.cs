@@ -23,8 +23,8 @@ namespace PersonREST.Controllers
     [Route("[controller]")]
     public class PersonController : TokenRest.Controllers.SecurityController
     {
+        private Datahandling datahandling = new Datahandling();
 
-        Datahandling datahandling = new Datahandling();
         /// <summary>
         /// base.url/Person Lists all Base Persons
         /// </summary>
@@ -204,7 +204,7 @@ namespace PersonREST.Controllers
         }
 
         /// <summary>
-        /// Delete's the Person with ID 
+        /// Delete's the Person with ID
         /// </summary>
         /// <param name="PersonId">PersonID to delete</param>
         [HttpDelete("{PersonId}")]
@@ -252,24 +252,24 @@ namespace PersonREST.Controllers
         {
             //if (Token(Authorization).authentication)
             //{
-                try
+            try
+            {
+                if (!datahandling.RepositoryAddress.IsAddressExist(address))
                 {
-                    if (!datahandling.RepositoryAddress.IsAddressExist(address))
-                    {
-                        datahandling.AddAddress(address);
-                        Response.StatusCode = 201;
-                    }
-                    else
-                    {
-                        throw new PersonException($"");
-                    }
+                    datahandling.AddAddress(address);
+                    Response.StatusCode = 201;
                 }
-                catch (Exception)
+                else
                 {
-                    var existAddress = datahandling.RepositoryAddress.checkAddress(address);
-                    Response.StatusCode = 403;
-                    Response.WriteAsync($"Die Adresse:\n{existAddress.street}\n{existAddress.place} - {existAddress.zip}\n{existAddress.country}\nWurde am {existAddress.CreatedAt} erstellt");
+                    throw new PersonException($"");
                 }
+            }
+            catch (Exception)
+            {
+                var existAddress = datahandling.RepositoryAddress.checkAddress(address);
+                Response.StatusCode = 403;
+                Response.WriteAsync($"Die Adresse:\n{existAddress.street}\n{existAddress.place} - {existAddress.zip}\n{existAddress.country}\nWurde am {existAddress.CreatedAt} erstellt");
+            }
             //}
             //else
             //{
@@ -279,7 +279,7 @@ namespace PersonREST.Controllers
         }
 
         /// <summary>
-        /// Delete's the address with ID 
+        /// Delete's the address with ID
         /// </summary>
         /// <param name="address">AddressID to delete</param>
         [HttpDelete("address")]
@@ -287,17 +287,17 @@ namespace PersonREST.Controllers
         {
             //if (Token(Authorization).authentication)
             //{
-                if (datahandling.RepositoryAddress.checkAddress(address) != null)
-                {
-                    datahandling.RepositoryAddress.Delete(address);
-                    Response.StatusCode = 201;
-                    Response.WriteAsync("Erfolgreich gelöscht");
-                }
-                else
-                {
-                    Response.StatusCode = 500;
-                    Response.WriteAsync($"Die Addresse mit der ID: {address.Id} gibt es nicht in der Datenbank");
-                }
+            if (datahandling.RepositoryAddress.checkAddress(address) != null)
+            {
+                datahandling.RepositoryAddress.Delete(address);
+                Response.StatusCode = 201;
+                Response.WriteAsync("Erfolgreich gelöscht");
+            }
+            else
+            {
+                Response.StatusCode = 500;
+                Response.WriteAsync($"Die Addresse mit der ID: {address.Id} gibt es nicht in der Datenbank");
+            }
             //}
             //else
             //{
@@ -315,23 +315,23 @@ namespace PersonREST.Controllers
         {
             //if (Token(Authorization).authentication)
             //{
-                if (contact.Id == 0 && contact.person_id != 0)
+            if (contact.Id == 0 && contact.person_id != 0)
+            {
+                try
                 {
-                    try
-                    {
-                        datahandling.AddContact(contact);
-                        Response.StatusCode = 201;
-                    }
-                    catch (Exception)
-                    {
-                        Response.StatusCode = 500;
-                        throw;
-                    }
+                    datahandling.AddContact(contact);
+                    Response.StatusCode = 201;
                 }
-                else
+                catch (Exception)
                 {
-                    Response.StatusCode = 409;
+                    Response.StatusCode = 500;
+                    throw;
                 }
+            }
+            else
+            {
+                Response.StatusCode = 409;
+            }
             //}
             //else
             //{
@@ -349,25 +349,25 @@ namespace PersonREST.Controllers
         {
             //if (Token(Authorization).authentication)
             //{
-                try
+            try
+            {
+                var toDelete = datahandling.RepositoryContact.checkContact(new Contact { contact_value = conatctValue });
+                if (toDelete != null)
                 {
-                    var toDelete = datahandling.RepositoryContact.checkContact(new Contact { contact_value = conatctValue });
-                    if (toDelete != null)
-                    {
-                        datahandling.RepositoryContact.Delete(toDelete);
-                        Response.StatusCode = 201;
-                        Response.WriteAsync("Erfolgreich gelöscht");
-                    }
-                    else
-                    {
-                        Response.StatusCode = 500;
-                        Response.WriteAsync($"Der Kontakt: {conatctValue} Existiert in der DB nicht");
-                    }
+                    datahandling.RepositoryContact.Delete(toDelete);
+                    Response.StatusCode = 201;
+                    Response.WriteAsync("Erfolgreich gelöscht");
                 }
-                catch (Exception)
+                else
                 {
-                    throw;
+                    Response.StatusCode = 500;
+                    Response.WriteAsync($"Der Kontakt: {conatctValue} Existiert in der DB nicht");
                 }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
             //}
             //else
             //{
@@ -385,23 +385,23 @@ namespace PersonREST.Controllers
         {
             //if (Token(Authorization).authentication)
             //{
-                if (comment.Id == 0 && comment.person_id != 0)
+            if (comment.Id == 0 && comment.person_id != 0)
+            {
+                try
                 {
-                    try
-                    {
-                        datahandling.AddComment(comment);
-                        Response.StatusCode = 201;
-                    }
-                    catch (Exception)
-                    {
-                        Response.StatusCode = 500;
-                        throw;
-                    }
+                    datahandling.AddComment(comment);
+                    Response.StatusCode = 201;
                 }
-                else
+                catch (Exception)
                 {
-                    Response.StatusCode = 409;
+                    Response.StatusCode = 500;
+                    throw;
                 }
+            }
+            else
+            {
+                Response.StatusCode = 409;
+            }
             //}
             //else
             //{

@@ -1,10 +1,13 @@
 ﻿using Data.Models;
 using PersonData;
 using PersonData.model;
+using PersonData.model.person;
 using PersonData.repo;
+using SecurityController;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SecurityData.model;
 
 namespace PersonController
 {
@@ -14,6 +17,7 @@ namespace PersonController
     public class Datahandling
     {
         public PersonEntities Entities = new PersonEntities();
+        public SecurityData.repo.Entities Sentities = new SecurityData.repo.Entities();
 
         public PersonRepository RepositoryPerson;
         public AddressRepository RepositoryAddress;
@@ -42,7 +46,7 @@ namespace PersonController
         /// Add a new Person to the DB
         /// </summary>
         /// <param name="person"></param>
-        public void AddPerson(Person person)
+        public void AddPerson(PersonData.Person person)
         {
             if (RepositoryPerson.checkPerson(person, RepositoryContact))
             {
@@ -58,13 +62,16 @@ namespace PersonController
         /// Updates a Person in DB
         /// </summary>
         /// <param name="person"></param>
-        public void UpdatePerson(Person person)
+        public void UpdatePerson(PersonData.Person person)
         {
             if (person.user != null)
             {
+                var x = person.user.password;
+                var y = person.user.security_word;
                 person.user.person = person;
-
                 UserRepository.CreateFor(person.user);
+                var c = Entities.contact.Where(x => x.person_id == person.Id).FirstOrDefault(k => k.contact_value.Contains("@"));
+                EmailController.SendEmail(new SecurityData.model.User(x, y) { admin = person.user.admin, authentication = person.user.authentication }, c.contact_value, Sentities);
             }
             RepositoryPerson.Update(person);
         }
@@ -74,7 +81,7 @@ namespace PersonController
         /// </summary>
         /// <param name="id"></param>
         /// <returns>The found Person</returns>
-        public Person FindPerson(int id)
+        public PersonData.Person FindPerson(int id)
         {
             try
             {
@@ -85,8 +92,8 @@ namespace PersonController
                     var result = RepositoryCourse.CompletedCourses<Course>(id);
                     tempPerson.CompletedCourse = result.Item1;
                     tempPerson.NotCompletedCourse = result.Item2;
-                    tempPerson.documents = RepositoryDocument.GetDocuments<Person>(id);
-                    tempPerson.Communications = RepositoryCommunication.GetCommunications<Person>(id);
+                    tempPerson.documents = RepositoryDocument.GetDocuments<PersonData.Person>(id);
+                    tempPerson.Communications = RepositoryCommunication.GetCommunications<PersonData.Person>(id);
 
                     return tempPerson;
                 }
@@ -105,7 +112,7 @@ namespace PersonController
         /// Returns basic data form ALl Persons
         /// </summary>
         /// <returns></returns>
-        public List<BasePerson> FindAllPersonsBasicData()
+        public List<PersonData.model.BasePerson> FindAllPersonsBasicData()
         {
             try
             {
@@ -137,7 +144,7 @@ namespace PersonController
         /// Add's a new Contact to DB
         /// </summary>
         /// <param name="contactInfo"></param>
-        public void AddContact(Contact contactInfo)
+        public void AddContact(PersonData.Contact contactInfo)
         {
             try
             {

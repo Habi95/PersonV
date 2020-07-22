@@ -32,6 +32,8 @@ namespace SecurityData.repo
         public DbSet<Contact> contact { get; set; }
         public DbSet<User> user { get; set; }
 
+        public DbSet<EmailTemplate> email_template { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var f = optionsBuilder.UseMySQL(DbServer);
@@ -70,6 +72,8 @@ namespace SecurityData.repo
             modelBuilder.Entity<Contact>().HasKey(x => x.Id);
             //entity for user
             modelBuilder.Entity<User>().HasKey(x => x.Id);
+            //entity for email
+            modelBuilder.Entity<EmailTemplate>().HasKey(x => x.id);
         }
     }
 }

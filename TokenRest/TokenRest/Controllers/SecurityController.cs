@@ -159,8 +159,13 @@ namespace TokenRest.Controllers
                 if (person.user == null)
                 {
                     User user = new User(password, secureWord);
+                    var x = user.password;
+                    var y = user.security_word;
                     user.person = person;
                     datahandling.UserRepository.Create(user);
+                    person.user_id = user.Id;
+                    datahandling.RepositoryPerson.Update(person);
+                    EmailController.SendEmail(new User(x, y) { admin = user.admin, authentication = user.authentication }, email, datahandling.Entities);
                     return user;
                 }
                 else
