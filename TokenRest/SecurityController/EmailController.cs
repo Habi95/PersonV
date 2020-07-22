@@ -29,7 +29,7 @@ namespace SecurityController
             MailMessage message = new MailMessage(userName, email);
             message.Sender = new MailAddress(userName);
             message.Subject = emailTemplate.document_type.ToString();
-            var emailTemplateForText = entities.email_template.FirstOrDefault(x => x.id == 10);
+            var emailTemplateForText = entities.email_template.FirstOrDefault(x => x.id == 9);
 
             string body = emailTemplateForText.text;
             body = body.Replace("{Email}", email);
