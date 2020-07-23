@@ -33,5 +33,11 @@ namespace PersonData.repo
             entities.user.Add(toAdd);
             entities.SaveChanges();
         }
+
+        public string GeneratePassword()
+        {
+            string newPwd = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 10);
+            return newPwd;
+        }
     }
 }

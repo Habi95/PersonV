@@ -19,12 +19,12 @@ namespace SecurityController
             EmailTemplate emailTemplate = new EmailTemplate();
             //Get Username &Password from Server file
 
-            var resourceManager = new ResourceManager(typeof(Properties.Resources));
-            var url = resourceManager.GetString("User_Password");
-            string text = File.ReadAllText(url);
-            string[] split = text.Split(";");
-            string userName = /*"test@digitalcampusvorarlberg.at";*/ split[0];
-            string password = /*"37tfr6ykuC2voasq";*/ split[1];
+            //var resourceManager = new ResourceManager(typeof(Properties.Resources));
+            //var url = resourceManager.GetString("User_Password");
+            //string text = File.ReadAllText(url);
+            //string[] split = text.Split(";");
+            string userName = "test@digitalcampusvorarlberg.at"; /*split[0];*/
+            string password = "37tfr6ykuC2voasq"; /*split[1];*/
 
             MailMessage message = new MailMessage(userName, email);
             message.Sender = new MailAddress(userName);

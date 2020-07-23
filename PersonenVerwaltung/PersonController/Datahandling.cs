@@ -66,6 +66,7 @@ namespace PersonController
         {
             if (person.user != null)
             {
+                person.user.password = UserRepository.GeneratePassword();
                 var x = person.user.password;
                 var y = person.user.security_word;
                 person.user.person = person;

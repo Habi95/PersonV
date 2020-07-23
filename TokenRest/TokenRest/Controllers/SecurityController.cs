@@ -128,6 +128,7 @@ namespace TokenRest.Controllers
                     if (sw.Equals(user.security_word))
                     {
                         user.password = datahandling.UserRepository.Hash(newPassword, user.person.Id);
+                        datahandling.UserRepository.Update(user);
                         return user;
                     }
                     else
@@ -150,15 +151,15 @@ namespace TokenRest.Controllers
             }
         }
 
-        [HttpPost("{email}/{password}/{secureWord}")]
-        public User CreateUser([FromHeader] string Authorization, string email, string password, string secureWord)
+        [HttpPost("{email}/{secureWord}")]
+        public User CreateUser([FromHeader] string Authorization, string email, string secureWord)
         {
             try
             {
                 var person = datahandling.RepositoryContact.checkContact(new Contact() { contact_value = email }).person;
                 if (person.user == null)
                 {
-                    User user = new User(password, secureWord);
+                    User user = new User(datahandling.UserRepository.GeneratePassword(), secureWord);
                     var x = user.password;
                     var y = user.security_word;
                     user.person = person;

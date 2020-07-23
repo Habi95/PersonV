@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
+using System.Web;
 
 namespace SecurityData.repo
 {
@@ -32,6 +33,12 @@ namespace SecurityData.repo
             CreateFor(toAdd);
             entities.user.Add(toAdd);
             entities.SaveChanges();
+        }
+
+        public string GeneratePassword()
+        {
+            string newPwd = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 10);
+            return newPwd;
         }
     }
 }
