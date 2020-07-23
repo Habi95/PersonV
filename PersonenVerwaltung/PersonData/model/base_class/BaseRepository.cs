@@ -25,7 +25,7 @@ namespace PersonData.repo
             entities.SaveChanges();
         }
 
-        public void Delete(T toDelete)
+        public virtual void Delete(T toDelete)
         {
             entities.Set<T>().Remove(toDelete);
             entities.SaveChanges();

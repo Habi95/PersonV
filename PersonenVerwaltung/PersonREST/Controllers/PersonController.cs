@@ -102,7 +102,7 @@ namespace PersonREST.Controllers
                             {
                                 if (x.address.Delete)
                                 {
-                                    datahandling.RepositoryAddress.Delete(address);
+                                    datahandling.RepositoryAddressPerson.Delete(datahandling.Entities.addressperson.AsNoTracking().FirstOrDefault(x => x.addressId == address.Id && x.personId == person.Id));
                                 }
                                 else
                                 {
